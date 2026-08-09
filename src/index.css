@@ -1,0 +1,177 @@
+@import '@fontsource/space-grotesk/latin-500.css';
+@import '@fontsource/space-grotesk/latin-600.css';
+@import '@fontsource/space-grotesk/latin-700.css';
+@import '@fontsource/ibm-plex-sans/latin-400.css';
+@import '@fontsource/ibm-plex-sans/latin-500.css';
+@import '@fontsource/ibm-plex-sans/latin-600.css';
+@import '@fontsource/ibm-plex-sans/latin-700.css';
+@import '@fontsource/ibm-plex-mono/latin-400.css';
+@import '@fontsource/ibm-plex-mono/latin-500.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 7rem;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    color-scheme: dark;
+  }
+  body {
+    background-color: #0b080c;
+    color: #f2ecee;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: rgba(223, 54, 64, 0.35);
+    color: #f5f0f2;
+  }
+  :focus-visible {
+    outline: 2px solid #df3640;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #96202b #0b080c;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-track {
+    background: #0b080c;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: #4a1218;
+    border-radius: 999px;
+    border: 2px solid #0b080c;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: #96202b;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+  }
+  .font-mono {
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Elevated panels (hero, contact, footer) - lifted a step off the page
+     black so the section edges read without a border. */
+  .dark-panel {
+    background: radial-gradient(
+      ellipse 120% 100% at 50% -10%,
+      #1e1620 0%,
+      #120d15 55%,
+      #08060a 100%
+    );
+    color: #f5f0f2;
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    animation: marquee 26s linear infinite;
+  }
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+
+  /* Defined by hand rather than left to Tailwind's `theme.extend.animation`:
+     Tailwind's JIT only emits a `@keyframes` block for animations reachable
+     through a scanned `animate-*` utility class. Nothing in the codebase
+     used `animate-marquee` as a literal class name, so the keyframes were
+     silently dropped from the production bundle and `.marquee-track`
+     referenced an animation that did not exist - it rendered static. Kept
+     here as plain CSS so it always ships regardless of what utilities are
+     scanned. */
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .gradient-divider {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(242, 236, 238, 0.14) 15%,
+      rgba(242, 236, 238, 0.14) 85%,
+      transparent
+    );
+  }
+  .gradient-divider-dark {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(242, 236, 238, 0.18) 15%,
+      rgba(242, 236, 238, 0.18) 85%,
+      transparent
+    );
+  }
+
+  /* Premium hairline - the "expensive" gold seam used to cap the hero ticker
+     and the footer's top edge. Kept to a thin gradient, never a solid fill,
+     so it reads as a detail rather than a decoration. */
+  .gradient-divider-gold {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(212, 175, 55, 0.75) 20%,
+      rgba(241, 223, 160, 0.9) 50%,
+      rgba(212, 175, 55, 0.75) 80%,
+      transparent
+    );
+  }
+
+  .text-gradient-crimson {
+    background: linear-gradient(100deg, #f4737b 0%, #df3640 55%, #96202b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* Very short viewports still have to hold the whole hero inside one fold. */
+@media (max-height: 700px) and (max-width: 1023px) {
+  #hero {
+    padding-top: 5.25rem;
+  }
+  #hero .hero-badge {
+    display: none;
+  }
+  #hero h1 {
+    font-size: 2rem;
+    line-height: 1.05;
+  }
+  #hero p {
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @page { size: A4; margin: 9mm 11mm 8mm 11mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+    color: #16121A; font-size: 8.5pt; line-height: 1.28; margin: 0;
+  }
+  a { color: #96202B; text-decoration: none; }
+
+  .name { font-size: 19pt; font-weight: 700; letter-spacing: .06em; margin: 0; color: #0B080C; }
+  .tagline { font-size: 9.6pt; font-weight: 600; color: #96202B; letter-spacing: .08em;
+             text-transform: uppercase; margin: 3px 0 7px; }
+  .contact { font-size: 8.6pt; color: #46404C; }
+  .contact span { white-space: nowrap; }
+  .sep { color: #C9C2CE; padding: 0 5px; }
+
+  .rule { height: 2.2px; background: #DF3640; margin: 7px 0 8px; border-radius: 2px; }
+
+  h2 { font-size: 8.6pt; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+       color: #0B080C; margin: 9px 0 4px; padding-bottom: 2px;
+       border-bottom: 1px solid #DCD6E0; }
+  h2:first-of-type { margin-top: 4px; }
+
+  .summary { font-size: 8.5pt; color: #2E2833; margin: 0; text-align: justify; }
+
+  .job { margin-bottom: 5px; }
+  .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .role { font-weight: 700; font-size: 9.4pt; color: #0B080C; }
+  .org { font-weight: 600; color: #96202B; }
+  .when { font-size: 8.4pt; color: #6B6472; font-style: italic; white-space: nowrap; }
+  ul { margin: 3px 0 0; padding-left: 14px; }
+  li { margin-bottom: 0.5px; }
+
+  .proj { margin-bottom: 4px; }
+  .proj-head { font-weight: 700; font-size: 9pt; color: #0B080C; }
+  .proj-link { font-size: 8.3pt; font-weight: 500; }
+  .stack { font-size: 8.3pt; color: #6B6472; font-style: italic; }
+
+  table.sk { width: 100%; border-collapse: collapse; }
+  table.sk td { vertical-align: top; padding: 0.5px 0; font-size: 8.3pt; }
+  td.k { width: 118px; font-weight: 700; color: #0B080C; padding-right: 8px; }
+
+  .edu { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
+  .edu-l { font-size: 8.8pt; }
+  .edu-deg { font-weight: 700; color: #0B080C; }
+  .edu-school { color: #46404C; }
+
+  .two { display: flex; gap: 20px; }
+  .two > div { flex: 1; }
+  .ref-name { font-weight: 700; font-size: 9.2pt; color: #0B080C; }
+  .ref-meta { font-size: 8.5pt; color: #46404C; }
+</style>
+</head>
+<body>
+
+  <div class="name">MD. SAIFUZZAMAN NAIM</div>
+  <div class="tagline">AI-SaaS Engineer &middot; Full-Stack &middot; Machine Learning &middot; Secure Systems</div>
+  <div class="contact">
+    <span>Dhaka, Bangladesh</span><span class="sep">|</span>
+    <span>+880 1776-525005</span><span class="sep">|</span>
+    <span><a href="mailto:saifuzzaman.naim007@gmail.com">saifuzzaman.naim007@gmail.com</a></span><br>
+    <span><a href="https://cloudmonk.cc">cloudmonk.cc</a></span><span class="sep">|</span>
+    <span><a href="https://github.com/SAIFZaman007">github.com/SAIFZaman007</a></span><span class="sep">|</span>
+    <span><a href="https://www.linkedin.com/in/saifzaman">linkedin.com/in/saifzaman</a></span>
+  </div>
+  <div class="rule"></div>
+
+  <h2>Profile</h2>
+  <p class="summary">
+    AI-SaaS engineer who takes products from brief to production &mdash; FastAPI and React systems,
+    LLM and retrieval pipelines, payments, auth, and the deployment around them. Leading the AI-SaaS
+    team at Maktech after promotion from intern within two months, alongside contract delivery for
+    international clients. Comfortable owning the unglamorous layers &mdash; migrations, webhooks,
+    CI, hardening &mdash; that decide whether a launch holds.
+  </p>
+
+  <h2>Experience</h2>
+
+  <div class="job">
+    <div class="job-head">
+      <div><span class="role">AI-SaaS Engineer, Team Lead</span> &mdash; <span class="org">Maktech</span>, Dhaka</div>
+      <div class="when">Jan 2026 &ndash; Present</div>
+    </div>
+    <ul>
+      <li>Lead the AI-SaaS engineering team, owning architecture and delivery across client and internal products.</li>
+      <li>Ship full-stack products end to end: FastAPI + PostgreSQL backends, React/Vite front ends, Stripe payments, containerised deployment.</li>
+      <li>Build LLM and retrieval-augmented systems over client data using pgvector, ChromaDB, and Pinecone.</li>
+      <li>Set team standards &mdash; API documentation, code review, deployment health checks, incident triage.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-head">
+      <div><span class="role">Intern, AI-SaaS</span> &mdash; <span class="org">Maktech</span>, Dhaka</div>
+      <div class="when">Nov 2025 &ndash; Dec 2025</div>
+    </div>
+    <ul><li>Shipped production features on live client products; promoted to team lead within two months.</li></ul>
+  </div>
+
+  <div class="job">
+    <div class="job-head">
+      <div><span class="role">Freelance Software Engineer</span> &mdash; <span class="org">Independent</span></div>
+      <div class="when">2024 &ndash; Present</div>
+    </div>
+    <ul>
+      <li>Contract full-stack, AI, and SaaS delivery for clients across the UK, US, New Zealand, and Nigeria &mdash; scope, architect, build, hand over.</li>
+      <li>Representative work: a Cisco certification platform (FastAPI, Prisma, React, Stripe), a restaurant operations API (75 endpoints, 16 modules), a Solana trading terminal front end.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job-head">
+      <div><span class="role">Quality Assurance Intern</span> &mdash; <span class="org">Summit Towers Limited</span>, Dhaka</div>
+      <div class="when">Aug 2025 &ndash; Oct 2025</div>
+    </div>
+    <ul>
+      <li>Quality &amp; Service Assurance: snag analysis, data backup, ad-hoc project management; supported telecom engineering and vendor management.</li>
+    </ul>
+  </div>
+
+  <h2>Selected Projects</h2>
+
+  <div class="proj">
+    <div class="proj-head">Trubbi &mdash; Group Trip Planning Platform
+      <span class="proj-link"><a href="https://www.trubbi.ai/">trubbi.ai</a></span></div>
+    <div>Group travel planning product removing the coordination overhead of planning trips; shipped through launch and waitlist onboarding. <span class="stack">React &middot; FastAPI &middot; PostgreSQL</span></div>
+  </div>
+
+  <div class="proj">
+    <div class="proj-head">Addvanced AI &mdash; Deal Hunter
+      <span class="proj-link"><a href="https://addvancedai.com/">addvancedai.com</a></span></div>
+    <div>AI deal-discovery platform surfacing and ranking offers automatically, replacing manual comparison with a scored feed. <span class="stack">Python &middot; React &middot; LLM</span></div>
+  </div>
+
+  <div class="proj">
+    <div class="proj-head">Elyxa AI
+      <span class="proj-link"><a href="https://elyxaai.com/">elyxaai.com</a></span></div>
+    <div>AI SaaS platform delivered end to end &mdash; product surface, API layer, deployment. <span class="stack">React &middot; FastAPI &middot; AI</span></div>
+  </div>
+
+  <div class="proj">
+    <div class="proj-head">CTHTS &mdash; Cyber Threat Hunting &amp; Termination System</div>
+    <div>ML platform analysing live network traffic to detect and block malicious IPs automatically. <strong>Top-20 of 130+ teams</strong>, NSU Innovation Challenge. <span class="stack">Suricata &middot; Cowrie &middot; T-Pot &middot; NS-3 &middot; PyTorch</span></div>
+  </div>
+
+  <div class="proj">
+    <div class="proj-head">iBDs &mdash; Intelligent Blood Donation System</div>
+    <div>Nationwide platform matching donors to urgent needs, forecasting demand, and screening eligibility from historical data. <span class="stack">React &middot; Node &middot; ASP.NET &middot; PostgreSQL &middot; PyTorch</span></div>
+  </div>
+
+  <h2>Technical Skills</h2>
+  <table class="sk">
+    <tr><td class="k">Programming</td><td>Python, TypeScript/JavaScript, C++, Java, SQL, PHP</td></tr>
+    <tr><td class="k">Backend</td><td>FastAPI, Django, Node.js, REST/OpenAPI, Prisma, Celery, Stripe, JWT/OAuth</td></tr>
+    <tr><td class="k">Frontend</td><td>React 19, Vite, TypeScript, Tailwind CSS, Framer Motion, Three.js</td></tr>
+    <tr><td class="k">AI / ML</td><td>PyTorch, TensorFlow, scikit-learn, OpenCV, YOLO, RAG pipelines, pgvector, ChromaDB, Pinecone</td></tr>
+    <tr><td class="k">Data</td><td>PostgreSQL, MongoDB, Redis, Pandas, NumPy, Matplotlib, Seaborn</td></tr>
+    <tr><td class="k">DevOps</td><td>Docker, Kubernetes, Drone CI, GitHub Actions, Coolify, Cloudflare, Nginx, Linux</td></tr>
+    <tr><td class="k">Security</td><td>Suricata, Wireshark, Nmap, T-Pot, Elasticsearch, IDS/IPS, CSP &amp; header hardening</td></tr>
+    <tr><td class="k">Languages</td><td>Bangla (native) &middot; English (professional working proficiency)</td></tr>
+  </table>
+
+  <h2>Education</h2>
+  <div class="edu">
+    <div class="edu-l"><span class="edu-deg">BSc in Computer Science and Engineering</span> <span class="edu-school">&mdash; North South University, Dhaka</span></div>
+    <div class="when">2019 &ndash; Apr 2025</div>
+  </div>
+  <div class="edu">
+    <div class="edu-l"><span class="edu-deg">Higher Secondary Certificate, Science</span> <span class="edu-school">&mdash; Cambrian College, Dhaka &mdash; GPA 3.61</span></div>
+    <div class="when">2017 &ndash; 2018</div>
+  </div>
+  <div class="edu">
+    <div class="edu-l"><span class="edu-deg">Secondary School Certificate, Science</span> <span class="edu-school">&mdash; Noakhali Zilla School &mdash; GPA 4.61</span></div>
+    <div class="when">2014 &ndash; 2016</div>
+  </div>
+
+  <h2>References</h2>
+  <div class="two">
+    <div>
+      <span class="ref-name">Md. Noor-A-Alam Siddiqi</span>
+      <span class="ref-meta">&mdash; CTO, Summit Towers Limited &middot; alam.siddiqi@summit-towers.net</span>
+    </div>
+    <div>
+      <span class="ref-name">Dr. Shahnewaz Siddique</span>
+      <span class="ref-meta">&mdash; Associate Professor, ECE, NSU &middot; shahnewaz.siddique@northsouth.edu</span>
+    </div>
+  </div>
+
+</body>
+</html>
