@@ -48,7 +48,7 @@ function SkillCard({ skill, idx }: { skill: (typeof skills)[0]; idx: number }) {
 
 export default function Skills() {
   return (
-    <section id="skills" className="relative py-20 sm:py-28">
+    <section id="skills" className="relative py-20 sm:py-20">
       <div className="max-w-content mx-auto px-6">
         <SectionHeading index="05" label="Capabilities" title="The toolkit" accent="toolkit" />
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

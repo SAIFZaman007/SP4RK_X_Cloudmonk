@@ -61,7 +61,7 @@ export default function Services() {
   });
 
   return (
-    <section id="services" className="relative py-20 sm:py-28">
+    <section id="services" className="relative py-20 sm:py-10">
       <div className="max-w-content mx-auto px-6">
         <SectionHeading index="02" label="Services" title="What I can run for you" accent="run" />
         <p className="mb-10 max-w-2xl text-balance text-base leading-relaxed text-fg-70">
