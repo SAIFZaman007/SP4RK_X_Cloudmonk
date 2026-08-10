@@ -17,7 +17,7 @@ import ScrollProgress from './components/motion/ScrollProgress';
 function App() {
   return (
     <MotionConfig reducedMotion="user">
-      <div className="relative min-h-screen">
+      <div className="grain relative min-h-screen">
         <ScrollProgress />
         <Navbar />
         <main className="relative z-10">

@@ -113,6 +113,46 @@ accounts for iOS Safari's collapsing toolbar. Below `lg` the deck moves to
 Verified at 375×600, 402×700, 402×874, 1366×768, 1440×900, 1920×1080.
 **If you add anything to the hero, re-check those sizes.**
 
+
+### Navbar and mobile sheet are dark-first, always
+
+The bar never inverts to a light surface. Scrolling only densifies the glass
+and firms up the border. An earlier revision animated
+`backgroundColor` to the light-theme cream while the link text had already
+moved to the light `bone`/`fg` tokens - white on white, invisible on scroll.
+The same fault hit the mobile sheet (`bg-bone/95` panel, light links).
+
+Those colours were **hardcoded rgba inside a Framer `animate` object**, not
+Tailwind classes, so a palette-wide rename could not see them. If you ever
+re-theme, grep for raw `rgba(` in `src/components/` as well as for tokens.
+
+### Marquee
+
+`Marquee` takes a `speed` prop (seconds per cycle). Mobile uses a shorter
+duration because the track is shorter and a long duration reads as drift.
+
+Three things keep it working where it previously did not:
+- **It renders on mobile.** `MobileDeckBand` used to print a static wrapped
+  list, so the animated component never mounted below `lg` - which looked like
+  "the marquee is broken on mobile".
+- **Hover-pause is gated behind `@media (hover: hover) and (pointer: fine)`.**
+  On touch, `:hover` latches after a tap and freezes the track until the user
+  taps elsewhere.
+- **`-webkit-mask-image` is set explicitly.** Tailwind's arbitrary
+  `[mask-image:...]` utility emits only the unprefixed property, which iOS
+  Safari ignores.
+
+Under `prefers-reduced-motion` the track drops its duplicate copy and wraps
+into a centred list, rather than being parked mid-translate by the blanket
+`animation-duration: 0.01ms` override.
+
+### Film grain
+
+`.grain` on the app root paints a fixed feTurbulence noise layer at ~3%
+opacity. On near-black, wide radial gradients band into visible steps on 8-bit
+displays; the noise dithers them away. It is inline SVG, so no extra request,
+and `img-src 'self' data:` already permits it.
+
 ### Gotchas
 
 - Framer's `x`/`y` occupy the same transform slot as CSS `translateX/Y`, so the

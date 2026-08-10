@@ -79,14 +79,40 @@
     color: #f5f0f2;
   }
 
+  /* Film grain. On near-black backgrounds, wide radial gradients band into
+     visible steps on 8-bit displays; a faint noise layer dithers those steps
+     away and is the cheapest large gain in perceived quality here. Generated
+     inline via feTurbulence - no image request, and `img-src 'self' data:`
+     already covers it in the CSP. */
+  .grain::after {
+    content: '';
+    position: fixed;
+    inset: -50%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.032;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  }
+
   .marquee-track {
     display: flex;
     width: max-content;
     will-change: transform;
+    /* duration comes from the component via an inline animation-duration */
     animation: marquee 26s linear infinite;
   }
-  .marquee-track:hover {
-    animation-play-state: paused;
+  /* Pause on hover only where hovering is a real input. On touch, :hover can
+     latch after a tap and freeze the marquee until the user taps elsewhere -
+     which reads as "the animation is broken". */
+  @media (hover: hover) and (pointer: fine) {
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
   }
 
   /* Defined by hand rather than left to Tailwind's `theme.extend.animation`:
@@ -173,5 +199,22 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* The blanket rule above would otherwise park the marquee mid-translate.
+     Fall back to a centred, wrapped list and drop the duplicate copy. */
+  .marquee-track {
+    animation: none !important;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.5rem;
+  }
+  .marquee-track > [aria-hidden='true'] {
+    display: none;
+  }
+  .marquee-mask {
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 }

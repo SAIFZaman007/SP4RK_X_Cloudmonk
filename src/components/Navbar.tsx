@@ -55,13 +55,18 @@ export default function Navbar() {
       >
         <motion.nav
           animate={{
-            backgroundColor: scrolled ? 'rgba(247,241,230,0.75)' : 'rgba(27,37,55,0.35)',
-            borderColor: scrolled ? 'rgba(27,36,52,0.12)' : 'rgba(247,241,230,0.14)',
+            // Dark-first: the bar NEVER inverts to a light surface. Scrolling
+            // only densifies the glass and firms up the edge. (The previous
+            // values were the light-theme originals - hardcoded rgba inside a
+            // motion `animate` object, so the palette rename could not see
+            // them - which turned the bar cream-white under light text.)
+            backgroundColor: scrolled ? 'rgba(9,6,10,0.82)' : 'rgba(11,8,12,0.28)',
+            borderColor: scrolled ? 'rgba(242,236,238,0.16)' : 'rgba(242,236,238,0.10)',
             boxShadow: scrolled
-              ? '0 10px 40px -12px rgba(27,36,52,0.25)'
-              : '0 10px 40px -12px rgba(13,19,30,0.5)',
+              ? '0 12px 44px -14px rgba(0,0,0,0.85), 0 0 0 1px rgba(223,54,64,0.10)'
+              : '0 10px 40px -14px rgba(0,0,0,0.55)',
           }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           className="flex w-full items-center justify-between gap-1 rounded-full border px-2 py-2 backdrop-blur-xl sm:w-auto sm:justify-start sm:gap-2 sm:px-3"
           aria-label="Primary"
         >
@@ -79,22 +84,12 @@ export default function Navbar() {
                 height={32}
               />
             </span>
-            <span
-              className={cn(
-                'font-mono text-[13px] transition-colors',
-                scrolled ? 'text-fg-70' : 'text-bone/80'
-              )}
-            >
+            <span className="font-mono text-[13px] text-bone/75 transition-colors group-hover:text-bone">
               {domain}
             </span>
           </a>
 
-          <span
-            className={cn(
-              'hidden h-5 w-px transition-colors md:block',
-              scrolled ? 'bg-line' : 'bg-bone/15'
-            )}
-          />
+          <span className="hidden h-5 w-px bg-bone/15 md:block" />
 
           {/* Desktop links */}
           <div className="hidden items-center md:flex" onMouseLeave={() => setHovered(null)}>
@@ -105,13 +100,7 @@ export default function Navbar() {
                 onMouseEnter={() => setHovered(id)}
                 className={cn(
                   'relative rounded-full px-3.5 py-2 font-mono text-[13px] transition-colors duration-200 lg:px-4',
-                  highlighted === id
-                    ? scrolled
-                      ? 'text-fg'
-                      : 'text-bone'
-                    : scrolled
-                      ? 'text-fg-45 hover:text-fg'
-                      : 'text-bone/55 hover:text-bone'
+                  highlighted === id ? 'text-bone' : 'text-bone/55 hover:text-bone'
                 )}
               >
                 {highlighted === id && (
@@ -120,7 +109,9 @@ export default function Navbar() {
                     transition={{ type: 'spring', stiffness: 400, damping: 32 }}
                     className={cn(
                       'absolute inset-0 -z-10 rounded-full',
-                      scrolled ? 'bg-crimson/12' : 'bg-bone/10'
+                      active === id && hovered === null
+                        ? 'bg-crimson/20 ring-1 ring-crimson/30'
+                        : 'bg-bone/10'
                     )}
                   />
                 )}
@@ -146,10 +137,7 @@ export default function Navbar() {
             <Dialog.Trigger asChild>
               <button
                 aria-label="Open menu"
-                className={cn(
-                  'grid h-9 w-9 place-items-center rounded-full transition-colors md:hidden',
-                  scrolled ? 'text-fg-70 hover:bg-fg/5' : 'text-bone/80 hover:bg-bone/10'
-                )}
+                className="grid h-9 w-9 place-items-center rounded-full text-bone/80 transition-colors hover:bg-bone/10 md:hidden"
               >
                 <Menu className="h-5 w-5" />
               </button>
@@ -172,12 +160,12 @@ export default function Navbar() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -16, scale: 0.97 }}
                       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                      className="fixed inset-x-4 top-3 z-[70] rounded-3xl border border-line bg-bone/95 p-5 shadow-panel backdrop-blur-xl sm:top-5"
+                      className="fixed inset-x-4 top-3 z-[70] rounded-3xl border border-line-strong bg-coal-900/95 p-5 shadow-panel backdrop-blur-xl sm:top-5"
                     >
                       <Dialog.Title className="sr-only">Navigation</Dialog.Title>
                       <div className="mb-3 flex items-center justify-between">
                         <span className="flex items-center gap-2">
-                          <span className="grid h-8 w-8 flex-shrink-0 place-items-center overflow-hidden rounded-full ring-1 ring-line">
+                          <span className="grid h-8 w-8 flex-shrink-0 place-items-center overflow-hidden rounded-full ring-1 ring-line-strong">
                             <img
                               src="/logo-mark.png"
                               alt="SZ logomark"
@@ -186,12 +174,12 @@ export default function Navbar() {
                               height={32}
                             />
                           </span>
-                          <span className="font-mono text-[13px] text-fg-70">{domain}</span>
+                          <span className="font-mono text-[13px] text-bone/75">{domain}</span>
                         </span>
                         <Dialog.Close asChild>
                           <button
                             aria-label="Close menu"
-                            className="grid h-9 w-9 place-items-center rounded-full text-fg-45 transition-colors hover:bg-fg/5 hover:text-fg"
+                            className="grid h-9 w-9 place-items-center rounded-full text-bone/50 transition-colors hover:bg-bone/10 hover:text-bone"
                           >
                             <X className="h-5 w-5" />
                           </button>
@@ -207,7 +195,7 @@ export default function Navbar() {
                             initial={{ opacity: 0, x: -14 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.06 + i * 0.05 }}
-                            className="rounded-2xl px-4 py-3 font-display text-lg font-medium text-fg transition-colors hover:bg-crimson/10 hover:text-crimson-light-light"
+                            className="rounded-2xl px-4 py-3 font-display text-lg font-medium text-bone transition-colors hover:bg-crimson/12 hover:text-crimson-light"
                           >
                             {label}
                           </motion.a>

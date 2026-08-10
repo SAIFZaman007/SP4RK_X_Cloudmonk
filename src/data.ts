@@ -13,6 +13,8 @@ export const site = {
   // Short brand handle - used only where the mark, not the full name, should
   // carry (footer wordmark). Everywhere else uses `name` or `legalName`.
   brand: 'SP4RK',
+  // Shown in the footer bottom bar as a live availability signal.
+  availability: 'Available for new projects',
   role: 'AI-SaaS Engineer',
   title: 'Saif Zaman | AI-SaaS Engineer - Full-Stack, ML & Secure Systems',
   description:

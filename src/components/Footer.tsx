@@ -223,9 +223,20 @@ export default function Footer() {
           <p className="font-mono text-xs text-bone/40">
             © {year} {site.legalName}
           </p>
-          <p className="font-mono text-[11px] text-bone/40 sm:text-xs">
-            React · TypeScript · Tailwind · Framer Motion
-          </p>
+          {/* The last line before a visitor leaves is prime real estate, so it
+              carries an availability signal and a route back to contact -
+              a framework credit list tells the visitor nothing they can act on. */}
+          <a
+            href="#contact"
+            className="group inline-flex items-center gap-2 rounded-full border border-bone/12 px-3.5 py-1.5 font-mono text-[11px] text-bone/55 transition-colors duration-300 hover:border-crimson/40 hover:text-bone sm:text-xs"
+          >
+            <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-70" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-gold" />
+            </span>
+            {site.availability}
+            <ArrowUpRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
         </div>
       </div>
     </footer>

@@ -1,6 +1,8 @@
 node_modules
 dist
 dist-ssr
+# Build output. `spark/` was a committed copy of an old build - never commit artifacts.
+spark
 .DS_Store
 *.local
 *.log
