@@ -13,8 +13,11 @@ export const site = {
   // Short brand handle - used only where the mark, not the full name, should
   // carry (footer wordmark). Everywhere else uses `name` or `legalName`.
   brand: 'SP4RK',
-  // Shown in the footer bottom bar as a live availability signal.
-  availability: 'Available for new projects',
+  // Closing line in the footer. It replaced an availability pill: the last
+  // thing a visitor reads on the way out should be the thesis of the work,
+  // not a fourth call to action - `hero.status` already carries availability,
+  // and the Contact section carries the ask.
+  quote: 'Code — that protects, learns, and evolves.',
   role: 'AI-SaaS Engineer',
   title: 'Saif Zaman | AI-SaaS Engineer - Full-Stack, ML & Secure Systems',
   description:
@@ -28,10 +31,10 @@ export const site = {
 
 export const hero = {
   eyebrow: 'AI-SaaS Engineer - Dhaka, BD',
-  headline: ['AI products', 'that survive', 'production.'],
+  headline: ['AI-based products', 'shipped for the', 'real world...'],
   subtitle:
     'I build and ship full-stack AI systems end to end - FastAPI and React, LLM and RAG pipelines, payments, auth, and the deployment around them. Currently leading AI-SaaS engineering at Maktech, and taking on select contract work.',
-  status: 'Available for projects',
+  status: 'Available for collaborations',
   stats: [
     { number: 20, suffix: '+', label: 'products shipped live' },
     { number: 7, suffix: '+', label: 'yrs writing code' },

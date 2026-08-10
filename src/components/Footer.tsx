@@ -115,7 +115,7 @@ export default function Footer() {
                   height={36}
                 />
               </span>
-              <span className="font-display text-lg font-semibold tracking-wide text-bone">
+              <span className="font-headline text-lg font-semibold tracking-wide text-bone">
                 {site.brand}
               </span>
             </div>
@@ -209,34 +209,44 @@ export default function Footer() {
             className="absolute inset-0 bg-gradient-to-t from-gold/[0.10] via-transparent to-transparent blur-2xl"
             aria-hidden="true"
           />
-          <span className="relative block bg-gradient-to-b from-bone/35 to-bone/[0.05] bg-clip-text text-center font-display text-[15vw] font-bold leading-[0.85] tracking-tightest text-transparent">
+          <span className="relative block bg-gradient-to-b from-bone/35 to-bone/[0.05] bg-clip-text text-center font-headline text-[15vw] font-bold leading-[0.85] tracking-wordmark text-transparent">
             {site.brand}
           </span>
         </motion.div>
 
-        {/* Bottom bar */}
-        <div className="relative mt-8 flex flex-col items-center justify-between gap-2 pb-20 pt-6 text-center sm:flex-row sm:gap-3 sm:pb-6 sm:text-left">
+        {/* Bottom bar.
+            The last line before a visitor leaves is prime real estate, so it
+            carries the thesis of the work rather than a framework credit list
+            or a fourth call to action. Centred and given its own line: a
+            statement squeezed into the right-hand slot of a justify-between
+            row reads as a footnote, which is the opposite of the intent. */}
+        <div className="relative mt-8 pb-20 pt-8 sm:pb-8">
           <span
             className="gradient-divider-gold absolute inset-x-0 top-0 h-px w-full opacity-40"
             aria-hidden="true"
           />
-          <p className="font-mono text-xs text-bone/40">
+
+          <blockquote className="mx-auto flex max-w-2xl items-center justify-center gap-4">
+            {/* Hairlines flank the quote rather than underline it, so the
+                sentence is framed by the same gold seam that caps the hero
+                ticker and this footer's top edge. Dropped below sm, where
+                they would leave the text ~120px to wrap inside. */}
+            <span
+              className="gradient-divider-gold hidden h-px min-w-0 flex-1 opacity-60 sm:block"
+              aria-hidden="true"
+            />
+            <p className="quote-sheen font-headline text-center text-[12.5px] font-medium leading-relaxed tracking-[0.02em] sm:text-[13.5px]">
+              “{site.quote}”
+            </p>
+            <span
+              className="gradient-divider-gold hidden h-px min-w-0 flex-1 opacity-60 sm:block"
+              aria-hidden="true"
+            />
+          </blockquote>
+
+          <p className="mt-6 text-center font-mono text-[11px] text-bone/35 sm:text-xs">
             © {year} {site.legalName}
           </p>
-          {/* The last line before a visitor leaves is prime real estate, so it
-              carries an availability signal and a route back to contact -
-              a framework credit list tells the visitor nothing they can act on. */}
-          <a
-            href="#contact"
-            className="group inline-flex items-center gap-2 rounded-full border border-bone/12 px-3.5 py-1.5 font-mono text-[11px] text-bone/55 transition-colors duration-300 hover:border-crimson/40 hover:text-bone sm:text-xs"
-          >
-            <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-70" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-gold" />
-            </span>
-            {site.availability}
-            <ArrowUpRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </a>
         </div>
       </div>
     </footer>

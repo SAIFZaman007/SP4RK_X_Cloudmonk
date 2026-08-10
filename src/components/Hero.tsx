@@ -48,9 +48,6 @@ function Stat({
 export default function Hero() {
   const { ref: statsRef, inView: statsInView } = useInView(0.4);
   const heroRef = useRef<HTMLDivElement>(null);
-  // NOTE: framer-motion's `x`/`y` compile to the same transform slot as
-  // translateX/translateY, so a CSS `translateX(-50%)` centering trick gets
-  // silently overwritten. Centre the glow by subtracting half its size here.
   const GLOW = 460;
   const glowX = useMotionValue(-GLOW);
   const glowY = useMotionValue(-GLOW);
@@ -115,14 +112,21 @@ export default function Hero() {
               {hero.eyebrow}
             </motion.p>
 
+            {/* Size, family, weight and tracking live in .hero-headline
+                (index.css). The fluid clamp there is too long to read inline,
+                and keeping it in CSS puts it next to the short-viewport
+                override that has to stay in step with it. */}
             <motion.h1
               initial="hidden"
               animate="visible"
               variants={headlineVariants}
-              className="text-balance mt-2.5 font-display text-[2.5rem] font-semibold leading-[1.03] tracking-tightest text-bone sm:text-[3.2rem] lg:text-[3.1rem] xl:text-[3.5rem] 2xl:text-[3.9rem]"
+              className="hero-headline text-balance mt-2.5 text-bone"
             >
               {hero.headline.map((line, i) => (
-                <span key={i} className="block overflow-hidden pb-1">
+                // overflow-hidden is the reveal mask for the line inside it;
+                // the padding keeps that mask clear of the descenders (the "p"
+                // in "products"), which sit ~3% of an em deeper in Sora.
+                <span key={i} className="block overflow-hidden pb-1.5">
                   <motion.span
                     custom={i}
                     variants={lineVariants}

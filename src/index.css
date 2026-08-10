@@ -1,3 +1,14 @@
+/* Headline face. Sora carries the hero H1 and the footer wordmark: it holds a
+   higher cap-height and a wider, more geometric frame than Space Grotesk, so
+   it reads as a deliberate display voice at 3rem+ instead of "the UI font,
+   enlarged". Swapping the whole headline voice is a two-line change - these
+   three imports and --font-headline below. Alternates that fit this palette:
+     @fontsource/unbounded     - wider, overtly futuristic (retune the clamp)
+     @fontsource/chakra-petch  - angular and cyber-leaning
+     @fontsource/bricolage-grotesque - editorial, more human */
+@import '@fontsource/sora/latin-500.css';
+@import '@fontsource/sora/latin-600.css';
+@import '@fontsource/sora/latin-700.css';
 @import '@fontsource/space-grotesk/latin-500.css';
 @import '@fontsource/space-grotesk/latin-600.css';
 @import '@fontsource/space-grotesk/latin-700.css';
@@ -13,6 +24,11 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Single source of truth for the headline family. Referenced by the
+       Tailwind `font-headline` utility and by .hero-headline below. */
+    --font-headline: 'Sora', 'Space Grotesk', system-ui, sans-serif;
+  }
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 7rem;
@@ -57,6 +73,9 @@
 }
 
 @layer utilities {
+  .font-headline {
+    font-family: var(--font-headline);
+  }
   .font-display {
     font-family: 'Space Grotesk', system-ui, sans-serif;
   }
@@ -173,6 +192,76 @@
   }
 }
 
+@layer components {
+  /* Hero headline.
+   *
+   * Fluid rather than stepped, because the face change made the old
+   * breakpoint ladder unsafe: at the tracking below, the longest line
+   * ("AI-SaaS products") measures 8.59em in Sora against 7.70em in Space
+   * Grotesk - about 12% wider - and Sora also carries a taller cap-height,
+   * so it reads larger at an identical font-size. Sizing the sub-lg range
+   * off the viewport keeps that line inside the gutters at every width
+   * instead of only at the handful of breakpoints anyone thought to check.
+   *
+   * The 11.4vw coefficient is derived, not guessed: below lg the line has
+   * (100vw - 3rem) to live in, and 8.59em must fit inside it.
+   * From lg up the copy sits in a ~54% column of a capped container, so the
+   * relationship to the viewport breaks and fixed steps are correct again. */
+  .hero-headline {
+    font-family: var(--font-headline);
+    font-weight: 600;
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+    font-size: clamp(1.9rem, calc(11.4vw - 0.35rem), 3.2rem);
+  }
+  @media (min-width: 1024px) {
+    .hero-headline {
+      font-size: 3.05rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .hero-headline {
+      font-size: 3.4rem;
+    }
+  }
+  @media (min-width: 1536px) {
+    .hero-headline {
+      font-size: 3.7rem;
+    }
+  }
+
+  /* Footer closing quote.
+   *
+   * A slow gold pass across the words, reusing the same gold as the hero
+   * ticker rails and the footer seam - one "expensive" motif repeated, not
+   * three competing ones. background-clip:text is already the technique
+   * behind .text-gradient-crimson, so this adds no new browser surface. */
+  .quote-sheen {
+    background-image: linear-gradient(
+      100deg,
+      rgba(242, 236, 238, 0.58) 0%,
+      rgba(242, 236, 238, 0.58) 42%,
+      rgba(241, 223, 160, 0.95) 50%,
+      rgba(242, 236, 238, 0.58) 58%,
+      rgba(242, 236, 238, 0.58) 100%
+    );
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: quote-sheen 11s linear infinite;
+  }
+  @keyframes quote-sheen {
+    from {
+      background-position: 165% 0;
+    }
+    to {
+      background-position: -65% 0;
+    }
+  }
+}
+
 /* Very short viewports still have to hold the whole hero inside one fold. */
 @media (max-height: 700px) and (max-width: 1023px) {
   #hero {
@@ -216,5 +305,15 @@
   .marquee-mask {
     -webkit-mask-image: none;
     mask-image: none;
+  }
+
+  /* The blanket rule above would park the sheen mid-pass and leave the gold
+     band frozen across half the sentence. Drop the gradient outright and fall
+     back to a flat colour - the quote has to read first, shimmer second. */
+  .quote-sheen {
+    animation: none !important;
+    background-image: none;
+    color: rgba(242, 236, 238, 0.62);
+    -webkit-text-fill-color: rgba(242, 236, 238, 0.62);
   }
 }

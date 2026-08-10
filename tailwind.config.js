@@ -4,6 +4,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        // Headline voice - reserved for hero-scale type (the hero H1 and the
+        // oversized footer wordmark). Resolved through --font-headline in
+        // index.css so the family is swappable from one place rather than
+        // from every className that happens to use it.
+        headline: ['var(--font-headline)'],
         display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
         sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
         mono: ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
@@ -58,7 +63,10 @@ export default {
         },
       },
       maxWidth: { content: '75rem' },
-      letterSpacing: { tightest: '-0.045em' },
+      // -0.045em suits Space Grotesk at UI sizes. The wordmark sits at 15vw,
+      // where optical tracking has to go tighter still or the letters drift
+      // apart.
+      letterSpacing: { tightest: '-0.045em', wordmark: '-0.06em' },
       boxShadow: {
         card: '0 1px 0 rgba(0,0,0,0.4), 0 16px 34px -18px rgba(0,0,0,0.75)',
         'card-hover': '0 1px 0 rgba(0,0,0,0.5), 0 26px 46px -18px rgba(0,0,0,0.85)',

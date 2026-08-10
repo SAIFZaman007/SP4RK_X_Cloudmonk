@@ -13,7 +13,7 @@ export default function About() {
   return (
     <section id="about" className="relative py-20 sm:py-28">
       <div className="max-w-content mx-auto px-6">
-        <SectionHeading index="01" label="Profile" title="Who's behind the rack" accent="rack" />
+        <SectionHeading index="01" label="Profile" title="Who's behind the architecture" accent="architecture" />
 
         <div ref={ref} className="grid gap-12 md:grid-cols-[280px_1fr] md:gap-16">
           {/* Portrait */}
@@ -50,7 +50,7 @@ export default function About() {
             </div>
             <div className="mt-3 flex items-center gap-2 font-mono text-[11px] text-fg-45">
               <span className="h-1.5 w-1.5 rounded-full bg-crimson" />
-              <span className="font-display text-[13px] font-medium tracking-wide text-fg-70">
+              <span className="font-display text-[15px] font-bold tracking-wide text-fg-70">
                 {site.legalName}
               </span>
             </div>
