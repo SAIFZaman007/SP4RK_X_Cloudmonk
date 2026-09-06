@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useScroll, useTransform } from 'framer-motion';
 import { Mail, ArrowUpRight } from 'lucide-react';
 import { site } from '../data';
+import CloudField from './motion/CloudField';
 
 // lucide v1 dropped brand marks, so LinkedIn ships inline.
 function LinkedinMark({ className = 'h-4 w-4' }: { className?: string }) {
@@ -80,6 +81,16 @@ export default function Footer() {
       }}
       className="dark-panel relative isolate mt-8 overflow-hidden rounded-t-[2rem] sm:rounded-t-[3rem]"
     >
+      {/* Drifting haze, sitting under everything else in the footer.
+          `isolate` on the footer already creates a stacking context, and the
+          gold seam below carries z-10, so this stays behind the seam and the
+          content without needing a z-index of its own.
+
+          The footer is the one place on the page where slow ambient motion is
+          unambiguously right: there is nothing here to read closely, so drift
+          reads as atmosphere rather than as a distraction competing with copy. */}
+      <CloudField className="opacity-70" />
+
       {/* Gold seam capping the top edge - the same premium hairline used on
           the hero ticker, so the two "expensive" details in the page read as
           one deliberate motif rather than a one-off. */}
@@ -106,17 +117,18 @@ export default function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <div className="flex items-center gap-2.5">
-              <span className="grid h-9 w-9 flex-shrink-0 place-items-center overflow-hidden rounded-xl ring-1 ring-bone/15">
+              <span className="grid h-14 w-14 flex-shrink-0 place-items-center sm:h-16 sm:w-16">
                 <img
                   src="/logo-mark.png"
-                  alt="SZ logomark"
-                  className="h-full w-full object-cover"
-                  width={36}
-                  height={36}
+                  alt=""
+                  aria-hidden="true"
+                  className="h-full w-full object-contain"
+                  width={64}
+                  height={64}
                 />
               </span>
-              <span className="font-headline text-lg font-semibold tracking-wide text-bone">
-                {site.brand}
+              <span className="font-headline text-lg font-bold tracking-wide text-bone">
+                {site.name}
               </span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-bone/55">

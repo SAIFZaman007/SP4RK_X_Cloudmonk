@@ -41,8 +41,8 @@ function ServiceCard({
   return (
     <motion.div style={{ x, y, rotate, scale, opacity }} className="h-full">
       <TiltCard className="group h-full rounded-2xl border border-line bg-surface p-6 shadow-card transition-shadow duration-300 hover:shadow-card-hover">
-        <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-crimson to-crimson-dark text-bone shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-          <Icon name={svc.icon} className="h-5 w-5" />
+        <span className="grid h-12 w-12 place-items-center text-gold transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+          <Icon name={svc.icon} className="h-8 w-8" />
         </span>
         <h3 className="mt-5 font-display text-lg font-semibold leading-snug text-fg">
           {svc.title}
@@ -61,7 +61,7 @@ export default function Services() {
   });
 
   return (
-    <section id="services" className="relative py-20 sm:py-10">
+    <section id="services" className="section-y relative">
       <div className="max-w-content mx-auto px-6">
         <SectionHeading index="02" label="Services" title="What I can run for you" accent="run" />
         <p className="mb-10 max-w-2xl text-balance text-base leading-relaxed text-fg-70">
@@ -106,8 +106,8 @@ export default function Services() {
               transition={{ duration: 0.55, delay: idx * 0.06, ease: [0.22, 1, 0.36, 1] }}
               className="rounded-2xl border border-line bg-surface p-5 shadow-card"
             >
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-crimson to-crimson-dark text-bone shadow-sm">
-                <Icon name={svc.icon} className="h-5 w-5" />
+              <span className="grid h-12 w-12 place-items-center text-gold">
+                <Icon name={svc.icon} className="h-8 w-8" />
               </span>
               <h3 className="mt-4 font-display text-lg font-semibold leading-snug text-fg">
                 {svc.title}

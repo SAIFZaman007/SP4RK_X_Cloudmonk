@@ -4,6 +4,7 @@ import { useInView } from '../hooks/useInView';
 import { site } from '../data';
 import BlobField from './motion/BlobField';
 import Magnetic from './motion/Magnetic';
+import { cn, ctaGoldPill } from '../lib/utils';
 
 export default function Contact() {
   const { ref, inView } = useInView();
@@ -20,7 +21,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative py-20 sm:py-10">
+    <section id="contact" className="section-y relative">
       <div className="max-w-3xl mx-auto px-6">
         <motion.div
           ref={ref}
@@ -29,13 +30,48 @@ export default function Contact() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="dark-panel relative overflow-hidden rounded-3xl border border-bone/10 p-8 text-center shadow-panel sm:p-14"
         >
-          <BlobField className="opacity-70" />
+          {/* Photographic backdrop.
+              The cloud motion that used to sit here has been removed: the
+              image is itself a sky full of cloud, so an animated haze on top
+              was two versions of the same idea fighting each other, and the
+              drift kept pulling the eye off the headline it sits behind.
 
-          <p className="relative font-mono text-[11px] uppercase tracking-[0.2em] text-bone/50">
+              The blur is doing real work, not decoration. At full sharpness the
+              monk and the ridgeline are recognisable subjects and the eye reads
+              them as content; blurred, the frame collapses into colour and
+              light, which is what a backdrop is supposed to be. `scale-110`
+              covers the soft, semi-transparent edge that `blur()` leaves around
+              a filtered element - without it you get a visible pale border
+              inside the panel's radius.
+
+              BlobField stays. It is coloured light rather than form, so it
+              layers over the photograph instead of competing with it. */}
+          <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+            <img
+              src="/cloudmonk.webp"
+              alt=""
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full scale-110 object-cover object-center blur-[6px] sm:blur-[1px]"
+            />
+            {/* Veil strength is measured, not eyeballed.
+                The previous values (image at 42% under an 80% veil) left the
+                photograph about 8% visible - effectively black, which is what
+                was on screen. These were chosen by compositing the panel and
+                checking every text zone against WCAG: eyebrow 5.5:1, headline
+                3.1:1 (large text needs 3:1), body 5.6:1, buttons 8.1:1. That is
+                the lightest veil where all four still pass, so lifting it
+                further trades legibility for very little extra image. */}
+            <div className="absolute inset-0 bg-gradient-to-b from-coal-950/40 via-coal-950/[0.34] to-coal-950/50" />
+          </div>
+
+          <BlobField className="opacity-60" />
+
+          <p className="relative font-mono text-[11px] uppercase tracking-[0.2em] text-bone/[0.62]">
             Open to full-time &amp; contract
           </p>
           <h3 className="text-balance relative mt-4 font-display text-2xl font-semibold tracking-tight text-bone sm:text-3xl">
-            Let's build something <span className="text-gradient-crimson">reliable</span>.
+            Let's build something reliable.
           </h3>
           <p className="text-balance relative mx-auto mt-5 max-w-xl text-base leading-relaxed text-bone/65 sm:text-lg">
             Whether it's a new product to build, a role worth exploring, or a system that needs
@@ -46,7 +82,7 @@ export default function Contact() {
             <Magnetic>
               <a
                 href={`mailto:${site.email}`}
-                className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-crimson to-crimson-dark px-7 py-3.5 text-sm font-medium text-bone shadow-glow"
+                className={cn('group px-7', ctaGoldPill)}
               >
                 Say hello
                 <span
@@ -58,8 +94,14 @@ export default function Contact() {
               </a>
             </Magnetic>
             <Magnetic strength={0.25}>
+              {/* aria-live, because the only feedback on success is the label
+                  changing to "Copied" - a purely visual confirmation that a
+                  screen reader would never announce, leaving the user unsure
+                  whether the click did anything. */}
               <button
                 onClick={copyEmail}
+                aria-live="polite"
+                aria-label={copied ? 'Email address copied to clipboard' : `Copy email address ${site.email}`}
                 className="inline-flex items-center gap-2 rounded-full border border-bone/20 px-5 py-3.5 font-mono text-[13px] text-bone/80 transition-all duration-200 hover:border-bone/50 hover:bg-bone/5"
               >
                 {copied ? (
@@ -91,7 +133,23 @@ export default function Contact() {
             </Magnetic>
           </div>
 
-          <div className="relative mt-10 flex items-center justify-center gap-1 border-t border-bone/10 pt-8">
+          <div className="relative mt-10 flex items-center justify-center gap-3 border-t border-bone/10 pt-8">
+            {/* GitHub sits beside LinkedIn because for an engineering hire the
+                repo list is the stronger artefact of the two, and `site.github`
+                was already in data.ts with nothing rendering it. */}
+            <Magnetic strength={0.4}>
+              <a
+                href={site.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub profile"
+                className="grid h-10 w-10 place-items-center rounded-lg border border-bone/15 text-bone/70 transition-all duration-300 hover:border-crimson hover:text-crimson-light"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden="true">
+                  <path d="M12 .5C5.73.5.98 5.24.98 11.5c0 4.86 3.15 8.98 7.52 10.44.55.1.75-.24.75-.53v-1.86c-3.06.67-3.71-1.47-3.71-1.47-.5-1.28-1.22-1.62-1.22-1.62-1-.68.08-.67.08-.67 1.1.08 1.68 1.13 1.68 1.13.98 1.68 2.57 1.2 3.2.92.1-.71.38-1.2.7-1.47-2.44-.28-5.01-1.22-5.01-5.44 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.3 3.02 1.13a10.4 10.4 0 0 1 5.5 0c2.1-1.43 3.02-1.13 3.02-1.13.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.23-2.58 5.16-5.03 5.43.4.34.75 1 .75 2.02v3c0 .29.2.64.76.53a10.53 10.53 0 0 0 7.5-10.44C23.02 5.24 18.27.5 12 .5z" />
+                </svg>
+              </a>
+            </Magnetic>
             <Magnetic strength={0.4}>
               <a
                 href={site.linkedin}

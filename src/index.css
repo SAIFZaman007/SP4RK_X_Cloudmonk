@@ -1,17 +1,21 @@
-/* Headline face. Sora carries the hero H1 and the footer wordmark: it holds a
-   higher cap-height and a wider, more geometric frame than Space Grotesk, so
-   it reads as a deliberate display voice at 3rem+ instead of "the UI font,
-   enlarged". Swapping the whole headline voice is a two-line change - these
-   three imports and --font-headline below. Alternates that fit this palette:
-     @fontsource/unbounded     - wider, overtly futuristic (retune the clamp)
-     @fontsource/chakra-petch  - angular and cyber-leaning
-     @fontsource/bricolage-grotesque - editorial, more human */
-@import '@fontsource/sora/latin-500.css';
-@import '@fontsource/sora/latin-600.css';
-@import '@fontsource/sora/latin-700.css';
-@import '@fontsource/space-grotesk/latin-500.css';
-@import '@fontsource/space-grotesk/latin-600.css';
-@import '@fontsource/space-grotesk/latin-700.css';
+/* Display voice: Fraunces, carrying every headline, title and subtitle.
+ *
+ * This one import replaces six. Sora (3 static weights) and Space Grotesk
+ * (3 more) previously split the job between "hero voice" and "section voice";
+ * Fraunces now does both, so the page has one display family instead of two
+ * sans-serifs that most readers could not tell apart anyway.
+ *
+ * The `opsz` build rather than the lighter `wght`-only one, deliberately.
+ * Fraunces carries an optical-size axis from 9 to 144, and this design uses
+ * display type across an enormous range - a 10.5px byline up to the footer
+ * wordmark at 15vw. Without opsz a serif set that large keeps the thick stems
+ * and open counters meant for body copy and reads coarse; with it, the letter-
+ * forms sharpen and tighten as they grow, which is the whole reason to choose
+ * a variable serif over a static one.
+ *
+ * It costs nothing on balance: 65.7 KB of latin subset against the ~89 KB of
+ * Sora plus Space Grotesk it removes, and one file instead of six. */
+@import '@fontsource-variable/fraunces/opsz.css';
 @import '@fontsource/ibm-plex-sans/latin-400.css';
 @import '@fontsource/ibm-plex-sans/latin-500.css';
 @import '@fontsource/ibm-plex-sans/latin-600.css';
@@ -25,15 +29,31 @@
 
 @layer base {
   :root {
-    /* Single source of truth for the headline family. Referenced by the
-       Tailwind `font-headline` utility and by .hero-headline below. */
-    --font-headline: 'Sora', 'Space Grotesk', system-ui, sans-serif;
+    /* Single source of truth for the display families. Referenced by the
+       Tailwind `font-headline` / `font-display` utilities and by
+       .hero-headline below, so the whole typographic voice is swappable here.
+
+       Both point at Fraunces today. They stay as two variables rather than one
+       because they answer different questions - "what speaks at hero scale"
+       and "what speaks at section scale" - and collapsing them would mean
+       re-separating them the first time those answers diverge.
+
+       Georgia leads the fallback stack: it is a serif on effectively every
+       machine, so the swap-in when Fraunces loads shifts metrics slightly
+       rather than changing the page from sans to serif in front of the
+       reader. */
+    --font-headline: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+    --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
   }
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 7rem;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* Lets Fraunces' opsz axis track the rendered size automatically. Without
+       this the browser pins opsz to its 14pt default and the variable font
+       behaves like a static one. */
+    font-optical-sizing: auto;
     color-scheme: dark;
   }
   body {
@@ -73,11 +93,34 @@
 }
 
 @layer utilities {
+  /* Turns a transparent PNG into a colourable glyph.
+   *
+   * The element paints `currentColor` and the PNG's alpha channel decides
+   * where that paint lands, so a raster icon behaves like inline SVG: it takes
+   * `text-gold`, flips to `text-gold-light` on hover, and needs no per-state
+   * artwork. `--icon` is set per instance by the Icon component.
+   *
+   * Safari still needs the -webkit- longhands, and `mask-size: contain` (not
+   * `cover`) is what keeps a non-square glyph inside its box instead of
+   * cropping it. */
+  .icon-mask {
+    -webkit-mask-image: var(--icon);
+    mask-image: var(--icon);
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    background-color: currentColor;
+    display: inline-block;
+  }
+
   .font-headline {
     font-family: var(--font-headline);
   }
   .font-display {
-    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-family: var(--font-display);
   }
   .font-mono {
     font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
@@ -111,6 +154,78 @@
     pointer-events: none;
     opacity: 0.032;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Cloud / smoke layers (see components/motion/CloudField.tsx).
+   *
+   * Only `transform` is animated, so each layer is promoted to its own
+   * compositor layer and the drift never touches the main thread - which is
+   * what makes an always-on background animation affordable next to the
+   * magnetic cards.
+   *
+   * The layer is oversized via --cloud-scale so it can translate a long way
+   * without its edge ever entering the frame; a mask sliding into view would
+   * show a hard rectangular boundary and give the whole effect away.
+   *
+   * Each keyframe set moves on a different axis and period. Shared timing would
+   * make the three layers beat in and out together, which reads as a pulse
+   * rather than as drifting weather. */
+  .cloud-layer {
+    position: absolute;
+    inset: 0;
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    -webkit-mask-repeat: repeat;
+    mask-repeat: repeat;
+    transform: scale(var(--cloud-scale, 1.5));
+    will-change: transform;
+  }
+  .cloud-drift-1 {
+    animation: cloud-1 var(--cloud-duration) ease-in-out infinite alternate;
+  }
+  .cloud-drift-2 {
+    animation: cloud-2 var(--cloud-duration) ease-in-out infinite alternate;
+  }
+  .cloud-drift-3 {
+    animation: cloud-3 var(--cloud-duration) ease-in-out infinite alternate;
+  }
+  @keyframes cloud-1 {
+    from {
+      transform: scale(var(--cloud-scale)) translate3d(-4%, 2%, 0) rotate(0deg);
+    }
+    to {
+      transform: scale(var(--cloud-scale)) translate3d(5%, -3%, 0) rotate(4deg);
+    }
+  }
+  @keyframes cloud-2 {
+    from {
+      transform: scale(var(--cloud-scale)) translate3d(3%, -2%, 0) rotate(2deg);
+    }
+    to {
+      transform: scale(var(--cloud-scale)) translate3d(-5%, 4%, 0) rotate(-3deg);
+    }
+  }
+  @keyframes cloud-3 {
+    from {
+      transform: scale(var(--cloud-scale)) translate3d(-2%, -4%, 0) rotate(-2deg);
+    }
+    to {
+      transform: scale(var(--cloud-scale)) translate3d(4%, 3%, 0) rotate(3deg);
+    }
+  }
+
+  /* Hides the scrollbar on the industries track only. The element keeps its
+     scroll behaviour, keyboard focus and arrow-key handling - this removes the
+     chrome, not the capability, which is why it is safe here and would not be
+     on the page itself. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
   }
 
   .marquee-mask {
@@ -193,6 +308,38 @@
 }
 
 @layer components {
+  /* Section rhythm.
+   *
+   * One class instead of a per-section padding pair. The eight sections had
+   * drifted to four different ladders - `sm:py-28`, `sm:py-10`, a bespoke
+   * `py-12 md:py-16 lg:py-20`, and a `sm:py-12.5` that Tailwind never emitted
+   * because 12.5 is not on the spacing scale, so it silently fell back to
+   * py-20. On a wide screen the gaps between sections read 7rem, 2.5rem,
+   * 7rem, 2.5rem, 5rem, 7rem, 5rem, 2.5rem: the page visibly stutters, and
+   * three of those sections were tighter on a 27" display than on a phone.
+   *
+   * Vertical rhythm is the cheapest signal of a considered layout and the
+   * most obvious tell when it is missing, so it belongs in one place where it
+   * cannot drift again. Changing the page's breathing room is now one edit
+   * here rather than eight edits that have to agree.
+   *
+   * Tuned down from 5rem/7rem: because every section pads *both* edges, the
+   * gap a reader actually sees between two sections is the sum of the two - so
+   * 7rem top and bottom reads as a 14rem trough, not a 7rem one. That is the
+   * single most common way a spacing scale ends up feeling cavernous. The
+   * current values give a ~9rem visual gap on desktop, which separates sections
+   * without stranding them. Adjust here and nowhere else. */
+  .section-y {
+    padding-top: 3.25rem;
+    padding-bottom: 3.25rem;
+  }
+  @media (min-width: 640px) {
+    .section-y {
+      padding-top: 4.5rem;
+      padding-bottom: 4.5rem;
+    }
+  }
+
   /* Hero headline.
    *
    * Fluid rather than stepped, because the face change made the old
@@ -210,8 +357,11 @@
   .hero-headline {
     font-family: var(--font-headline);
     font-weight: 600;
-    line-height: 1.04;
-    letter-spacing: -0.03em;
+    line-height: 1.06;
+    /* -0.03em was tuned for Sora. A serif needs its sidebearings: pulled that
+       tight, Fraunces' serifs touch on pairs like "rl" and "ti". -0.012em keeps
+       the headline compact without letting the letterforms collide. */
+    letter-spacing: -0.012em;
     font-size: clamp(1.9rem, calc(11.4vw - 0.35rem), 3.2rem);
   }
   @media (min-width: 1024px) {

@@ -25,7 +25,7 @@ function EduRow({ edu, idx }: { edu: (typeof education)[0]; idx: number }) {
 
 export default function Education() {
   return (
-    <section id="education" className="relative py-20 sm:py-12.5">
+    <section id="education" className="section-y relative">
       <div className="max-w-3xl mx-auto px-6">
         <SectionHeading index="07" label="Education" title="Where I studied" accent="studied" />
         <div>

@@ -6,7 +6,9 @@ import { useCountUp } from '../hooks/useCountUp';
 import HeroDeck from './HeroDeck';
 import Magnetic from './motion/Magnetic';
 import BlobField from './motion/BlobField';
+import CloudField from './motion/CloudField';
 import Marquee from './motion/Marquee';
+import { cn, ctaGoldPill } from '../lib/utils';
 
 const headlineVariants = {
   hidden: {},
@@ -70,6 +72,7 @@ export default function Hero() {
       className="dark-panel relative flex min-h-[100svh] flex-col overflow-hidden pb-5 pt-24 sm:pt-28 lg:pt-24 lg:pb-6"
       aria-label="Intro"
     >
+      <CloudField />
       <BlobField />
       <motion.div
         className="pointer-events-none absolute left-0 top-0 hidden rounded-full opacity-25 mix-blend-screen md:block"
@@ -156,7 +159,7 @@ export default function Hero() {
               <Magnetic>
                 <a
                   href="#contact"
-                  className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-crimson to-crimson-dark px-6 py-3.5 text-sm font-medium text-bone shadow-glow transition-shadow duration-300 hover:shadow-[0_0_0_1px_rgba(201,124,74,0.4),0_28px_70px_-15px_rgba(201,124,74,0.55)]"
+                  className={cn('group', ctaGoldPill)}
                 >
                   Get in touch
                   <span
@@ -171,7 +174,7 @@ export default function Hero() {
                 <a
                   href={site.cvLink}
                   download
-                  className="inline-flex items-center gap-2 rounded-full border border-bone/20 px-6 py-3.5 text-sm font-medium text-bone/90 backdrop-blur-sm transition-colors duration-200 hover:border-bone/50 hover:bg-bone/5"
+                  className={ctaGoldPill}
                 >
                   Download resume
                 </a>

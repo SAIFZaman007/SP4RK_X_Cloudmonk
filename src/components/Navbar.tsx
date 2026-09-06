@@ -6,7 +6,7 @@ import { site } from '../data';
 
 // Wordmark is derived, never hardcoded - change site.url and it follows.
 const domain = site.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
-import { cn } from '../lib/utils';
+import { cn, ctaGoldPill, ctaGoldPillSm } from '../lib/utils';
 import Magnetic from './motion/Magnetic';
 
 const links = [
@@ -75,11 +75,12 @@ export default function Navbar() {
             href="#hero"
             className="group flex flex-shrink-0 items-center gap-2 rounded-full py-1 pl-1 pr-2 sm:pr-3"
           >
-            <span className="grid h-8 w-8 flex-shrink-0 place-items-center overflow-hidden rounded-full shadow-sm ring-1 ring-bone/15 transition-transform duration-300 group-hover:scale-90">
+            <span className="grid h-8 w-8 flex-shrink-0 place-items-center transition-transform duration-300 group-hover:scale-90">
               <img
                 src="/logo-mark.png"
-                alt="SZ logomark"
-                className="h-full w-full object-cover"
+                alt=""
+                aria-hidden="true"
+                className="h-full w-full object-contain"
                 width={32}
                 height={32}
               />
@@ -100,7 +101,7 @@ export default function Navbar() {
                 onMouseEnter={() => setHovered(id)}
                 className={cn(
                   'relative rounded-full px-3.5 py-2 font-mono text-[13px] transition-colors duration-200 lg:px-4',
-                  highlighted === id ? 'text-bone' : 'text-bone/55 hover:text-bone'
+                  highlighted === id ? 'text-gold-light' : 'text-bone/55 hover:text-gold-light'
                 )}
               >
                 {highlighted === id && (
@@ -110,8 +111,8 @@ export default function Navbar() {
                     className={cn(
                       'absolute inset-0 -z-10 rounded-full',
                       active === id && hovered === null
-                        ? 'bg-crimson/20 ring-1 ring-crimson/30'
-                        : 'bg-bone/10'
+                        ? 'bg-gold/10 ring-1 ring-gold/40'
+                        : 'bg-gold/5 ring-1 ring-gold/20'
                     )}
                   />
                 )}
@@ -125,7 +126,7 @@ export default function Navbar() {
             <a
               href={site.cvLink}
               download
-              className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-crimson to-crimson-dark px-4 py-2 font-mono text-[13px] text-bone shadow-sm transition-shadow duration-300 hover:shadow-glow"
+              className={cn('ml-1', ctaGoldPillSm)}
             >
               <Download className="h-3.5 w-3.5" />
               Resume
@@ -165,11 +166,12 @@ export default function Navbar() {
                       <Dialog.Title className="sr-only">Navigation</Dialog.Title>
                       <div className="mb-3 flex items-center justify-between">
                         <span className="flex items-center gap-2">
-                          <span className="grid h-8 w-8 flex-shrink-0 place-items-center overflow-hidden rounded-full ring-1 ring-line-strong">
+                          <span className="grid h-8 w-8 flex-shrink-0 place-items-center">
                             <img
                               src="/logo-mark.png"
-                              alt="SZ logomark"
-                              className="h-full w-full object-cover"
+                              alt=""
+                              aria-hidden="true"
+                              className="h-full w-full object-contain"
                               width={32}
                               height={32}
                             />
@@ -195,7 +197,7 @@ export default function Navbar() {
                             initial={{ opacity: 0, x: -14 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.06 + i * 0.05 }}
-                            className="rounded-2xl px-4 py-3 font-display text-lg font-medium text-bone transition-colors hover:bg-crimson/12 hover:text-crimson-light"
+                            className="rounded-2xl px-4 py-3 font-display text-lg font-medium text-bone transition-colors hover:bg-gold/10 hover:text-gold-light"
                           >
                             {label}
                           </motion.a>
@@ -206,7 +208,7 @@ export default function Navbar() {
                         href={site.cvLink}
                         download
                         onClick={() => setOpen(false)}
-                        className="mt-3 flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-crimson to-crimson-dark px-4 py-3.5 font-mono text-sm text-bone"
+                        className={cn('mt-3 justify-center py-3.5 text-sm', ctaGoldPill)}
                       >
                         <Download className="h-4 w-4" />
                         Download resume

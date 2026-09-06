@@ -67,9 +67,9 @@ export function DeckCard({ i, compact = false }: { i: number; compact?: boolean 
         <div className={compact ? 'relative p-3.5' : 'relative p-4'}>
           <div className="flex items-center gap-3">
             <span
-              className={`grid h-9 w-9 flex-shrink-0 place-items-center rounded-xl bg-gradient-to-br ${m.accent} text-bone shadow-lg`}
+              className="grid h-10 w-10 flex-shrink-0 place-items-center text-gold"
             >
-              <Icon name={svc.icon} className="h-[18px] w-[18px]" />
+              <Icon name={svc.icon} className="h-7 w-7" />
             </span>
             <h3 className="flex-1 font-display text-[13.5px] font-semibold leading-tight text-bone">
               {svc.title}

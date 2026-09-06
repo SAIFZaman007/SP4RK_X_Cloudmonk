@@ -45,7 +45,7 @@ export default function Experience() {
   const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
-    <section id="experience" className="relative py-20 sm:py-10 ">
+    <section id="experience" className="section-y relative">
       <div className="max-w-4xl mx-auto px-6">
         <SectionHeading index="04" label="Field Log" title="Where I've worked" accent="worked" />
         <div ref={containerRef} className="relative">

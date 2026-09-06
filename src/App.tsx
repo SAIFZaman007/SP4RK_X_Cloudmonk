@@ -4,6 +4,7 @@ import Hero from './components/Hero';
 import MobileDeckBand from './components/MobileDeckBand';
 import About from './components/About';
 import Services from './components/Services';
+import Industries from './components/Industries';
 import Projects from './components/Projects';
 import Experience from './components/Experience';
 import Skills from './components/Skills';
@@ -25,6 +26,7 @@ function App() {
           <MobileDeckBand />
           <About />
           <Services />
+          <Industries />
           <Projects />
           <Experience />
           <Skills />

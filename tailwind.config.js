@@ -9,7 +9,9 @@ export default {
         // index.css so the family is swappable from one place rather than
         // from every className that happens to use it.
         headline: ['var(--font-headline)'],
-        display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+        // Also resolved through a CSS variable now, so `font-display` and
+        // `font-headline` are retuned from index.css rather than from here.
+        display: ['var(--font-display)'],
         sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
         mono: ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
@@ -63,15 +65,27 @@ export default {
         },
       },
       maxWidth: { content: '75rem' },
-      // -0.045em suits Space Grotesk at UI sizes. The wordmark sits at 15vw,
-      // where optical tracking has to go tighter still or the letters drift
-      // apart.
-      letterSpacing: { tightest: '-0.045em', wordmark: '-0.06em' },
+      // Retuned for Fraunces. The old values (-0.045em / -0.06em) were measured
+      // against Space Grotesk, a geometric sans whose flat sidebearings tolerate
+      // being pulled hard. A serif does not: its serifs *are* the sidebearing,
+      // so the same negative tracking makes adjacent letters grow into each
+      // other rather than simply sit closer.
+      //
+      // The wordmark still tracks tighter than section headings, because at
+      // 15vw optical spacing genuinely does open up - just from a looser
+      // starting point than a sans would need.
+      letterSpacing: { tightest: '-0.015em', wordmark: '-0.03em' },
       boxShadow: {
         card: '0 1px 0 rgba(0,0,0,0.4), 0 16px 34px -18px rgba(0,0,0,0.75)',
         'card-hover': '0 1px 0 rgba(0,0,0,0.5), 0 26px 46px -18px rgba(0,0,0,0.85)',
         panel: '0 40px 80px -30px rgba(0,0,0,0.9)',
         glow: '0 0 0 1px rgba(223,54,64,0.30), 0 20px 60px -15px rgba(223,54,64,0.40)',
+        // Work-card hover. Keeps the neutral depth shadow underneath and adds a
+        // gold hairline plus a wide, low-opacity bloom, so the card reads as lit
+        // rather than outlined. Gold not crimson: crimson is reserved for CTAs,
+        // and a card that glows the same colour as the buttons implies it is one.
+        'card-glow':
+          '0 1px 0 rgba(0,0,0,0.5), 0 26px 46px -18px rgba(0,0,0,0.85), 0 0 0 1px rgba(212,175,55,0.30), 0 22px 70px -22px rgba(212,175,55,0.38)',
       },
       animation: {
         marquee: 'marquee 26s linear infinite',

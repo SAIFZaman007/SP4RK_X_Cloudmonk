@@ -43,7 +43,7 @@ export default function Testimonials() {
   if (testimonials.length < MIN_TESTIMONIALS || !current) return null;
 
   return (
-    <section id="testimonials" className="relative py-20 sm:py-28">
+    <section id="testimonials" className="section-y relative">
       <div className="max-w-content mx-auto px-6">
         <SectionHeading index="06" label="Client Notes" title="What people say" accent="say" />
 

@@ -4,6 +4,38 @@ import { useInView } from '../hooks/useInView';
 import { about, site } from '../data';
 import SectionHeading from './SectionHeading';
 
+/**
+ * Renders `**bold**` runs from the About copy as emphasised text.
+ *
+ * Replaces a `dangerouslySetInnerHTML` that was parsing raw HTML out of
+ * data.ts. Nothing malicious was ever going to be in that file - it is copy the
+ * author writes - but the pattern is worth removing on a site that otherwise
+ * ships a strict CSP and an `object-src 'none'` policy: it is the one place
+ * where editing a content file could inject markup, and the day that copy
+ * starts coming from a CMS, a form, or a translation service, the vulnerability
+ * arrives with it and nobody re-reads this component.
+ *
+ * Splitting on the delimiter and building real React nodes costs three lines
+ * and removes the class of bug entirely. React escapes every text node it
+ * renders, so the output cannot contain markup regardless of what the copy says.
+ */
+function Emphasised({ text }: { text: string }) {
+  // Odd indices are the runs that sat between a pair of delimiters.
+  return (
+    <>
+      {text.split('**').map((chunk, i) =>
+        i % 2 === 1 ? (
+          <strong key={i} className="font-semibold text-crimson-light">
+            {chunk}
+          </strong>
+        ) : (
+          <span key={i}>{chunk}</span>
+        )
+      )}
+    </>
+  );
+}
+
 export default function About() {
   const { ref, inView } = useInView();
   const frameRef = useRef<HTMLDivElement>(null);
@@ -11,7 +43,7 @@ export default function About() {
   const y = useTransform(scrollYProgress, [0, 1], [-18, 18]);
 
   return (
-    <section id="about" className="relative py-20 sm:py-28">
+    <section id="about" className="section-y relative">
       <div className="max-w-content mx-auto px-6">
         <SectionHeading index="01" label="Profile" title="Who's behind the architecture" accent="architecture" />
 
@@ -39,11 +71,11 @@ export default function About() {
                   <source srcSet={about.imageWebp} type="image/webp" />
                   <img
                     src={about.image}
-                    alt={`${site.name} - ${site.role}`}
+                    alt={`${site.legalName} (${site.name}, ${site.brand}) - ${site.role}`}
                     className="h-full w-full object-cover object-top"
                     loading="lazy"
-                    width={480}
-                    height={600}
+                    width={900}
+                    height={900}
                   />
                 </picture>
               </motion.div>
@@ -66,9 +98,10 @@ export default function About() {
               {about.paragraphs.map((p, i) => (
                 <p
                   key={i}
-                  className="text-base leading-relaxed text-fg-70 sm:text-[1.0625rem] [&_strong]:font-semibold [&_strong]:text-crimson-light"
-                  dangerouslySetInnerHTML={{ __html: p }}
-                />
+                  className="text-base leading-relaxed text-fg-70 sm:text-[1.0625rem]"
+                >
+                  <Emphasised text={p} />
+                </p>
               ))}
             </div>
 
