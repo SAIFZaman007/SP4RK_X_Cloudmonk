@@ -146,7 +146,7 @@ export default function Projects() {
           index="03"
           label="Selected Work"
           title="Systems I've shipped"
-          accent="shipped"
+          accent="Systems"
         />
         <div className="grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((proj, idx) => (

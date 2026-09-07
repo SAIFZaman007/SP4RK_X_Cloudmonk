@@ -15,8 +15,8 @@ export const site = {
   brand: 'SP4RK',
   // Closing line in the footer. It replaced an availability pill: the last
   // thing a visitor reads on the way out should be the thesis of the work,
-  // not a fourth call to action - `hero.status` already carries availability,
-  // and the Contact section carries the ask.
+  // not a fourth call to action - `about.quickFacts` carries availability and
+  // the Contact section carries the ask.
   quote: 'Code — that protects, learns, and evolves.',
   role: 'AI-SaaS Engineer',
   title: 'Saif Zaman | AI-SaaS Engineer - Full-Stack, ML & Secure Systems',
@@ -32,9 +32,23 @@ export const site = {
 export const hero = {
   eyebrow: 'AI-SaaS Engineer - Dhaka, BD',
   headline: ['AI-based products', 'shipped for the', 'real world...'],
+  // Single line directly under the headline. Deliberately shorter and higher
+  // contrast than `subtitle`: it is the promise, the subtitle is the proof.
+  tagline: 'Helping ambitious brands launch faster...',
   subtitle:
-    'I build and ship full-stack AI systems end to end - FastAPI and React, LLM and RAG pipelines, payments, auth, and the deployment around them. Currently leading AI-SaaS engineering at Maktech, and taking on select contract work.',
-  status: 'Available for collaborations',
+    'I build AI-powered, intelligent, industry-standard, enterprise leaning systems that move products from concept to market; with the engineering to scale beyond it.',
+
+  /* Availability pill.
+   *
+   * Structured rather than a single string because one word inside it is a
+   * link. Interpolating an <a> into flat copy means either dangerouslySet-
+   * InnerHTML (an XSS surface for a value that will one day come from a CMS)
+   * or parsing markup at render time. Splitting the parts here keeps the
+   * markup declarative and the data plain text - the safe default. */
+  status: {
+    lead: 'Orchestrating the future @',
+    link: { label: 'Maktech', href: 'https://maktechgroup.com/' },
+  },
   stats: [
     { number: 20, suffix: '+', label: 'products shipped live' },
     { number: 7, suffix: '+', label: 'yrs writing code' },
@@ -45,8 +59,8 @@ export const hero = {
 };
 
 export const about = {
-  image: '/portrait.jpg',
-  imageWebp: '/portrait.webp',
+  image: '/saif-zaman.jpg',
+  imageWebp: '/saif-zaman.webp',
   quickFacts: [
     { label: 'Based in', value: 'Dhaka, Bangladesh' },
     { label: 'Role', value: 'AI-SaaS Engineer, Maktech' },
@@ -54,9 +68,9 @@ export const about = {
     { label: 'Response time', value: 'Within 24 hours' },
   ],
   paragraphs: [
-    "I'm an AI-SaaS engineer in Dhaka. My work sits where machine learning, web engineering, and security overlap - I build systems that are precise, hold up under real load, and stay secure while doing it.",
-    'At **Maktech** I lead AI-SaaS engineering, taking products from a rough brief through architecture, build, and deployment. Alongside that I take on **select contract work** for clients internationally, mostly full-stack AI and SaaS builds.',
-    'My core stack is **Python and FastAPI on the backend, React and TypeScript on the front**, with PostgreSQL, Docker, and CI around it. Where a project needs models rather than APIs, I work in PyTorch and TensorFlow - and I care as much about the auth, payment, and deployment layers as the model itself, because that is where products actually break.',
+    "I'm an AI-SaaS engineer in Dhaka. My work sits where machine learning, software engineering, and security collide. I build systems that are precise, **hold up under real traffic**, and stay secure while doing it.",
+    'At **Maktech** I lead AI-SaaS engineering, taking products from a rough brief through architecture, build, and deployment. I work for clients internationally, mostly full-stack AI and SaaS builds.',
+    'My core stack is **Python and FastAPI on the backend, React/Next and TypeScript on the front**, with PostgreSQL, Docker, and CI around it. Where a project needs models rather than APIs, I work in PyTorch and TensorFlow - and I care as much about the auth, payment, and deployment layers as the model itself, because that is where products actually break.',
   ],
 };
 
@@ -122,28 +136,28 @@ export const projects: {
   },
   {
     icon: 'fitness',
-    title: 'Peak Physique', // [CONFIRM] renamed from "TrainPeak Physique" - keeping desc/tags/url, confirm they still apply
+    title: 'Peak Physique',
     desc: 'A fitness and coaching platform covering programme delivery and client management, built to keep coaches and clients in sync.',
     tags: ['Full-Stack', 'Web App'],
-    url: 'https://trainpeakphysique.com/', // [CONFIRM] update if the live domain also changed with the rename
+    url: 'https://trainpeakphysique.com/',
     image: '/projects/peak.jpg',
     imageWebp: '/projects/peak.webp',
   },
   {
     icon: 'mortgage-home',
-    title: 'Power Play Mortgage', // [CONFIRM] new entry - desc, tags, and url below are placeholders, please replace
+    title: 'Power Play Mortgage',
     desc: 'A mortgage services platform helping homebuyers compare financing options and move through the application process with less friction.',
     tags: ['Full-Stack', 'Web App'],
-    url: '', // [CONFIRM] add live URL
+    url: 'https://powerplaymortgage.net/',
     image: '/projects/mortgage.jpg',
     imageWebp: '/projects/mortgage.webp',
   },
   {
     icon: 'landmark',
-    title: '8888 Augusta', // [CONFIRM] renamed from "8888 Masters" - confirm desc/url still match the current site
-    desc: 'A dedicated product platform delivered under the Maktech group, covering portfolio, events, and local info end to end.',
+    title: '8888 Augusta',
+    desc: 'A single curated portfolio of homes near Augusta National. Booked direct, hosted in person, with access and proximity no marketplace can offer.',
     tags: ['Full-Stack', 'Deployment'],
-    url: 'https://8888masters.maktechgroups.com/', // [CONFIRM] update if the domain changed along with the rename
+    url: 'https://8888augusta.com/',
     image: '/projects/augusta.jpg',
     imageWebp: '/projects/augusta.webp',
   },
@@ -151,7 +165,7 @@ export const projects: {
 
 export const experience = [
   {
-    role: 'AI-SaaS Engineer · Team Lead', // [CONFIRM] title as you want it read
+    role: 'AI-SaaS Engineer',
     company: 'Maktech',
     period: 'Jan 2026 - Present',
     desc: 'Lead the AI-SaaS team, owning product architecture and delivery across FastAPI, React, and Postgres builds - from scoping through deployment, payments, and post-launch support.',
@@ -284,35 +298,35 @@ export const industries: {
   {
     no: '01',
     title: 'Finance SaaS Website',
-    desc: 'A premium Framer website designed for a modern fintech startup with a focus on trust, speed, and conversion.',
+    desc: 'Designing high-performance websites for modern fintech startups, engineered for absolute reliability, lightning speed, and effortless user control.',
     image: '/industries/finance-saas.webp',
     tint: 'linear-gradient(135deg, #3A3F47 0%, #14161A 100%)',
   },
   {
     no: '02',
     title: 'AI Automation Platform',
-    desc: 'A scalable product website built to simplify complex AI solutions through clear storytelling and intuitive design.',
+    desc: 'Building scalable, intuitive web platforms that demystify complex AI/ML technologies through clear messaging and seamless user flows.',
     image: '/industries/ai-automation.webp',
     tint: 'linear-gradient(135deg, #8A8F96 0%, #2A1512 100%)',
   },
   {
     no: '03',
     title: 'Logistics Company',
-    desc: 'A conversion-focused website helping logistics businesses build credibility and attract enterprise clients.',
+    desc: 'Creating conversion-focused digital experiences designed to position logistics brands for enterprise-level client acquisition.',
     image: '/industries/logistics.webp',
     tint: 'linear-gradient(135deg, #6B5750 0%, #1A1416 100%)',
   },
   {
     no: '04',
     title: 'Creative Agency',
-    desc: 'A bold agency website featuring immersive interactions, smooth animations, and premium visual storytelling.',
+    desc: 'Architecting bold, immersive agency websites featuring fluid animations, interactive storytelling, and high-impact visual design.',
     image: '/industries/creative-agency.webp',
     tint: 'linear-gradient(135deg, #55606A 0%, #16191C 100%)',
   },
   {
     no: '05',
     title: 'Fashion Ecommerce',
-    desc: 'An editorial shopping experience crafted to showcase premium products with a clean, modern aesthetic.',
+    desc: 'Structuring editorial-grade shopping experiences crafted to showcase luxury products through a refined, modern visual aesthetic.',
     image: '/industries/fashion-ecommerce.webp',
     tint: 'linear-gradient(135deg, #B4712B 0%, #2A1A0E 100%)',
   },
@@ -327,22 +341,106 @@ export const iconCredits: {
   provider: { name: 'Flaticon', url: 'https://www.flaticon.com/' },
   items: [
     // Services
-    { file: 'ai-product-engineering', id: '1693746', label: 'AI Product Engineering', url: 'https://www.flaticon.com/free-icon/ai_1693746', author: 'photo3idea_studio' },
-    { file: 'llm-rag-systems', id: '2152343', label: 'LLM & RAG Systems', url: 'https://www.flaticon.com/free-icon/ai_2152343', author: 'Good Ware' },
-    { file: 'backend-api-design', id: '8750798', label: 'Backend & API Design', url: 'https://www.flaticon.com/free-icon/web-development_8750798', author: 'Tanah Basah' },
-    { file: 'deployment-security', id: '743885', label: 'Deployment & Security', url: 'https://www.flaticon.com/free-icon/cloud-computing_743885', author: 'Freepik' },
+    {
+      file: 'ai-product-engineering',
+      id: '1693746',
+      label: 'AI Product Engineering',
+      url: 'https://www.flaticon.com/free-icon/ai_1693746',
+      author: 'photo3idea_studio',
+    },
+    {
+      file: 'llm-rag-systems',
+      id: '2152343',
+      label: 'LLM & RAG Systems',
+      url: 'https://www.flaticon.com/free-icon/ai_2152343',
+      author: 'Good Ware',
+    },
+    {
+      file: 'backend-api-design',
+      id: '8750798',
+      label: 'Backend & API Design',
+      url: 'https://www.flaticon.com/free-icon/web-development_8750798',
+      author: 'Tanah Basah',
+    },
+    {
+      file: 'deployment-security',
+      id: '743885',
+      label: 'Deployment & Security',
+      url: 'https://www.flaticon.com/free-icon/cloud-computing_743885',
+      author: 'Freepik',
+    },
     // Selected work
-    { file: 'work-trubbi', id: '4807598', label: 'Trubbi', url: 'https://www.flaticon.com/free-icon/diversity_4807598', author: 'Freepik' },
-    { file: 'work-addvanced-ai', id: '17772840', label: 'Addvanced AI', url: 'https://www.flaticon.com/free-icon/technological-advancement_17772840', author: 'Freepik' },
-    { file: 'work-elyxa-ai', id: '16209773', label: 'Elyxa AI', url: 'https://www.flaticon.com/free-icon/ai-powered-models_16209773', author: 'Freepik' },
-    { file: 'work-peak-physique', id: '15837400', label: 'Peak Physique', url: 'https://www.flaticon.com/free-icon/back_15837400', author: 'Freepik' },
-    { file: 'work-power-play-mortgage', id: '9651303', label: 'Power Play Mortgage', url: 'https://www.flaticon.com/free-icon/house-rental_9651303', author: 'Freepik' },
-    { file: 'work-8888-augusta', id: '3862921', label: '8888 Augusta', url: 'https://www.flaticon.com/free-icon/rua-augusta-arch_3862921', author: 'Freepik' },
+    {
+      file: 'work-trubbi',
+      id: '4807598',
+      label: 'Trubbi',
+      url: 'https://www.flaticon.com/free-icon/diversity_4807598',
+      author: 'Freepik',
+    },
+    {
+      file: 'work-addvanced-ai',
+      id: '17772840',
+      label: 'Addvanced AI',
+      url: 'https://www.flaticon.com/free-icon/technological-advancement_17772840',
+      author: 'Freepik',
+    },
+    {
+      file: 'work-elyxa-ai',
+      id: '16209773',
+      label: 'Elyxa AI',
+      url: 'https://www.flaticon.com/free-icon/ai-powered-models_16209773',
+      author: 'Freepik',
+    },
+    {
+      file: 'work-peak-physique',
+      id: '15837400',
+      label: 'Peak Physique',
+      url: 'https://www.flaticon.com/free-icon/back_15837400',
+      author: 'Freepik',
+    },
+    {
+      file: 'work-power-play-mortgage',
+      id: '9651303',
+      label: 'Power Play Mortgage',
+      url: 'https://www.flaticon.com/free-icon/house-rental_9651303',
+      author: 'Freepik',
+    },
+    {
+      file: 'work-8888-augusta',
+      id: '3862921',
+      label: '8888 Augusta',
+      url: 'https://www.flaticon.com/free-icon/rua-augusta-arch_3862921',
+      author: 'Freepik',
+    },
     // Toolkit
-    { file: 'toolkit-ai-ml', id: '13708311', label: 'AI & Machine Learning', url: 'https://www.flaticon.com/free-icon/technology_13708311', author: 'Freepik' },
-    { file: 'toolkit-backend', id: '17234310', label: 'Backend Engineering', url: 'https://www.flaticon.com/free-icon/software_17234310', author: 'Freepik' },
-    { file: 'toolkit-frontend', id: '11869427', label: 'Frontend Engineering', url: 'https://www.flaticon.com/free-icon/search-engine_11869427', author: 'Freepik' },
-    { file: 'toolkit-devops', id: '12219584', label: 'DevOps & Security', url: 'https://www.flaticon.com/free-icon/settings_12219584', author: 'Freepik' },
+    {
+      file: 'toolkit-ai-ml',
+      id: '13708311',
+      label: 'AI & Machine Learning',
+      url: 'https://www.flaticon.com/free-icon/technology_13708311',
+      author: 'Freepik',
+    },
+    {
+      file: 'toolkit-backend',
+      id: '17234310',
+      label: 'Backend Engineering',
+      url: 'https://www.flaticon.com/free-icon/software_17234310',
+      author: 'Freepik',
+    },
+    {
+      file: 'toolkit-frontend',
+      id: '11869427',
+      label: 'Frontend Engineering',
+      url: 'https://www.flaticon.com/free-icon/search-engine_11869427',
+      author: 'Freepik',
+    },
+    {
+      file: 'toolkit-devops',
+      id: '12219584',
+      label: 'DevOps & Security',
+      url: 'https://www.flaticon.com/free-icon/settings_12219584',
+      author: 'Freepik',
+    },
   ],
 };
 

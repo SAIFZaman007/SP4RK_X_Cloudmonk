@@ -46,10 +46,16 @@ type Layer = {
   blur: number;
 };
 
+/* Durations are prime-ish and mutually non-divisible on purpose: shared or
+   harmonically related periods make the three layers re-align on a fixed
+   schedule, and a background that visibly repeats stops reading as weather.
+   Halved from the previous 64/91/122s - at that length the drift was below the
+   threshold where the eye registers movement at all. Opacity, tint, blur and
+   scale are unchanged, so the colour grade and density are identical. */
 const LAYERS: Layer[] = [
-  { freq: 0.012, opacity: 0.3, duration: 64, scale: 1.55, tint: '#DF3640', blur: 26 },
-  { freq: 0.02, opacity: 0.22, duration: 91, scale: 1.4, tint: '#EDC0AE', blur: 34 },
-  { freq: 0.008, opacity: 0.16, duration: 122, scale: 1.7, tint: '#D4AF37', blur: 44 },
+  { freq: 0.012, opacity: 0.3, duration: 37, scale: 1.55, tint: '#DF3640', blur: 26 },
+  { freq: 0.02, opacity: 0.22, duration: 53, scale: 1.4, tint: '#EDC0AE', blur: 34 },
+  { freq: 0.008, opacity: 0.16, duration: 71, scale: 1.7, tint: '#D4AF37', blur: 44 },
 ];
 
 /**

@@ -1,16 +1,17 @@
 import { motion } from 'framer-motion';
 import { hero } from '../data';
-import Marquee from './motion/Marquee';
+import TickerBand from './motion/TickerBand';
 
 /**
  * Below lg the hero's "Runs daily on" band is hidden - there is no room for it
  * inside the fold alongside copy, CTAs and stats. This carries it over just
  * after the fold.
  *
- * It used to render the stack as a static wrapped list, which is why the
- * marquee appeared "broken on mobile": the animated component simply never
- * mounted below lg. It now uses the real Marquee, which also costs one line
- * instead of three and keeps the band inside a single row.
+ * It now renders the same `TickerBand` the hero does, rather than a hand-built
+ * lookalike. The previous copy had substituted a grey `border-t` for the gold
+ * seam and dropped the bottom rail entirely, which is why the gold lining
+ * "disappeared on mobile": it was never there. Parity is now structural - there
+ * is one band component, so the two cannot diverge again.
  */
 export default function MobileDeckBand() {
   return (
@@ -20,18 +21,15 @@ export default function MobileDeckBand() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 0.5 }}
-        className="mx-auto max-w-md border-t border-bone/10 pt-5"
+        className="mx-auto max-w-md pt-4"
       >
-        <span className="mb-2.5 block text-center font-mono text-[10px] uppercase tracking-[0.2em] text-gold-light/60">
-          Runs daily on
-        </span>
-        <Marquee speed={20}>
+        <TickerBand>
           {hero.stack.map((tool) => (
             <span key={tool} className="font-display text-[13px] font-medium text-bone/65">
               {tool}
             </span>
           ))}
-        </Marquee>
+        </TickerBand>
       </motion.div>
     </section>
   );

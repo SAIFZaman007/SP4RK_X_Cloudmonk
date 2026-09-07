@@ -180,37 +180,60 @@
     transform: scale(var(--cloud-scale, 1.5));
     will-change: transform;
   }
+  /* The drift used to run `alternate` between two keyframes about 8% apart over
+     64-122s. At that travel, under 26-44px of blur, the layers moved roughly a
+     pixel a second: technically animated, visually static - which is why the
+     clouds read as a painted-on texture rather than as weather. `alternate`
+     also meant every layer stalled at both ends of its own cycle, so the whole
+     field paused on a schedule.
+     
+     Now: three keyframes on a one-way loop, a wider excursion, and a small
+     scale breath so the billows change shape as they travel rather than sliding
+     as a rigid sheet. Opacity, tint and blur are untouched, so the ambience and
+     colour grade are exactly as before - only the motion changed.
+     
+     The layer is oversized by --cloud-scale, and the largest excursion below is
+     ~11%, so even the tightest layer (scale 1.4) never exposes its own edge. */
   .cloud-drift-1 {
-    animation: cloud-1 var(--cloud-duration) ease-in-out infinite alternate;
+    animation: cloud-1 var(--cloud-duration) linear infinite;
   }
   .cloud-drift-2 {
-    animation: cloud-2 var(--cloud-duration) ease-in-out infinite alternate;
+    animation: cloud-2 var(--cloud-duration) linear infinite;
   }
   .cloud-drift-3 {
-    animation: cloud-3 var(--cloud-duration) ease-in-out infinite alternate;
+    animation: cloud-3 var(--cloud-duration) linear infinite;
   }
   @keyframes cloud-1 {
-    from {
-      transform: scale(var(--cloud-scale)) translate3d(-4%, 2%, 0) rotate(0deg);
+    0% {
+      transform: scale(var(--cloud-scale)) translate3d(-7%, 3%, 0) rotate(0deg);
     }
-    to {
-      transform: scale(var(--cloud-scale)) translate3d(5%, -3%, 0) rotate(4deg);
+    50% {
+      transform: scale(calc(var(--cloud-scale) * 1.06)) translate3d(6%, -4%, 0) rotate(3deg);
+    }
+    100% {
+      transform: scale(var(--cloud-scale)) translate3d(-7%, 3%, 0) rotate(0deg);
     }
   }
   @keyframes cloud-2 {
-    from {
-      transform: scale(var(--cloud-scale)) translate3d(3%, -2%, 0) rotate(2deg);
+    0% {
+      transform: scale(var(--cloud-scale)) translate3d(5%, -3%, 0) rotate(2deg);
     }
-    to {
-      transform: scale(var(--cloud-scale)) translate3d(-5%, 4%, 0) rotate(-3deg);
+    50% {
+      transform: scale(calc(var(--cloud-scale) * 1.05)) translate3d(-8%, 5%, 0) rotate(-2deg);
+    }
+    100% {
+      transform: scale(var(--cloud-scale)) translate3d(5%, -3%, 0) rotate(2deg);
     }
   }
   @keyframes cloud-3 {
-    from {
-      transform: scale(var(--cloud-scale)) translate3d(-2%, -4%, 0) rotate(-2deg);
+    0% {
+      transform: scale(var(--cloud-scale)) translate3d(-4%, -5%, 0) rotate(-2deg);
     }
-    to {
-      transform: scale(var(--cloud-scale)) translate3d(4%, 3%, 0) rotate(3deg);
+    50% {
+      transform: scale(calc(var(--cloud-scale) * 1.07)) translate3d(7%, 6%, 0) rotate(2deg);
+    }
+    100% {
+      transform: scale(var(--cloud-scale)) translate3d(-4%, -5%, 0) rotate(-2deg);
     }
   }
 
@@ -228,6 +251,33 @@
     height: 0;
   }
 
+  /* --stack-top: where the industries stack pins, measured from the top of the
+   * viewport. The floating navbar sits at top-3 (top-5 from sm) and its pill is
+   * about 2.75rem tall, so its bottom edge lands near 3.5rem / 4rem. These
+   * values clear it with a little air and nothing more.
+   *
+   * padding-bottom is the stack's tail: the scroll distance for which the
+   * finished pile stays pinned before it releases. It has to live inside the
+   * container, because the container is what bounds `sticky` - move it outside
+   * and the last card lands and leaves in the same frame.
+   *
+   * It is exactly `--section-y`, and the section itself contributes no bottom
+   * padding (see .section-y--stacked). That is the whole fix for the gap before
+   * "Selected Work": the tail used to be *added* to the section's own padding,
+   * so this one boundary measured 6.5 + 4.5 + 4.5 = 15.5rem against every other
+   * boundary's 9rem. Spending the section's bottom padding as dwell instead of
+   * adding to it makes the tail free - the stack gets its hold and the gap
+   * matches the rest of the page. */
+  .industries-stack {
+    --stack-top: 4.75rem;
+    padding-bottom: var(--section-y);
+  }
+  @media (min-width: 640px) {
+    .industries-stack {
+      --stack-top: 5.5rem;
+    }
+  }
+
   .marquee-mask {
     -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
     mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
@@ -237,8 +287,10 @@
     display: flex;
     width: max-content;
     will-change: transform;
-    /* duration comes from the component via an inline animation-duration */
-    animation: marquee 26s linear infinite;
+    /* Duration is overridden inline by the component once it has measured the
+       content, so that velocity - not cycle time - is what stays constant
+       across breakpoints. This value only covers the first paint. */
+    animation: marquee 22s linear infinite;
   }
   /* Pause on hover only where hovering is a real input. On touch, :hover can
      latch after a tap and freeze the marquee until the user taps elsewhere -
@@ -256,13 +308,23 @@
      silently dropped from the production bundle and `.marquee-track`
      referenced an animation that did not exist - it rendered static. Kept
      here as plain CSS so it always ships regardless of what utilities are
-     scanned. */
+     scanned.
+
+     The distance is one copy width, expressed as a fraction of the track: the
+     track holds `--marquee-copies` identical copies, so 100%/copies is exactly
+     one of them. Hard-coding -50% is what made the loop visibly restart once
+     the window grew wider than a single copy (see Marquee.tsx). Percentages
+     also survive fractional layout widths, where a pixel distance would round
+     and twitch at the seam.
+
+     translate3d rather than translateX so the track is promoted to its own
+     compositor layer and the loop never touches the main thread. */
   @keyframes marquee {
     from {
-      transform: translateX(0);
+      transform: translate3d(0, 0, 0);
     }
     to {
-      transform: translateX(-50%);
+      transform: translate3d(calc(-100% / var(--marquee-copies, 2)), 0, 0);
     }
   }
 
@@ -305,6 +367,25 @@
     background-clip: text;
     color: transparent;
   }
+
+  /* Gold counterpart, for the one line under the hero headline.
+   *
+   * The stops are the same three golds already used by .gradient-divider-gold,
+   * in the same order, so the tagline and the hairline that precedes it are
+   * visibly the same material rather than two nearby yellows. It runs light in
+   * the middle rather than dark, because on the near-black hero the midpoint of
+   * a line is where the eye lands and the brighter stop is what makes it read
+   * as metal rather than as mustard.
+   *
+   * Contrast: #F1DFA0 on the hero's #0B080C is about 13:1 and the darkest stop
+   * #D4AF37 about 8.5:1, so every part of the line clears WCAG AA for body text
+   * with room to spare - which crimson at this size would not have. */
+  .text-gradient-gold {
+    background: linear-gradient(100deg, #d4af37 0%, #f1dfa0 48%, #d4af37 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 }
 
 @layer components {
@@ -328,16 +409,30 @@
    * 7rem top and bottom reads as a 14rem trough, not a 7rem one. That is the
    * single most common way a spacing scale ends up feeling cavernous. The
    * current values give a ~9rem visual gap on desktop, which separates sections
-   * without stranding them. Adjust here and nowhere else. */
+   * without stranding them. Adjust here and nowhere else.
+   *
+   * The value is a custom property rather than a literal so that a section
+   * which has to spend its own padding on something else can still reference
+   * the same number - see .section-y--stacked below. A literal would mean the
+   * rhythm existed in two places, which is how the Industries boundary ended up
+   * measuring 15.5rem against everyone else's 9rem. */
   .section-y {
-    padding-top: 3.25rem;
-    padding-bottom: 3.25rem;
+    --section-y: 3.25rem;
+    padding-top: var(--section-y);
+    padding-bottom: var(--section-y);
   }
   @media (min-width: 640px) {
     .section-y {
-      padding-top: 4.5rem;
-      padding-bottom: 4.5rem;
+      --section-y: 4.5rem;
     }
+  }
+
+  /* For a section whose own content already supplies the trailing space - today
+     only Industries, whose sticky tail has to sit inside the scroll container.
+     The section contributes nothing at the bottom and the child spends exactly
+     `--section-y`, so the boundary measures the same as every other one. */
+  .section-y--stacked {
+    padding-bottom: 0;
   }
 
   /* Hero headline.
@@ -449,8 +544,17 @@
     justify-content: center;
     gap: 0.5rem 1.5rem;
   }
-  .marquee-track > [aria-hidden='true'] {
+  /* Copy count is dynamic now, so target every duplicate rather than the
+     single one the old two-copy markup produced. */
+  .marquee-track > .marquee-copy[aria-hidden='true'] {
     display: none;
+  }
+  .marquee-track > .marquee-copy {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.5rem;
+    padding-right: 0;
   }
   .marquee-mask {
     -webkit-mask-image: none;

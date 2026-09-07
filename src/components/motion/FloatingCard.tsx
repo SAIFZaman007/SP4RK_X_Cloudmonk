@@ -40,6 +40,15 @@ export default function FloatingCard({
   strength = 0.12,
   /** Peak tilt in degrees at full pull. */
   tilt = 8,
+  /**
+   * Corner radius of the spotlight overlay. It has to match the wrapped
+   * element's own radius or the glow is clipped to a different silhouette and
+   * shows as bright wedges in the corners - visible on anything larger than a
+   * grid card, where the mismatch is small enough to miss.
+   */
+  spotlightClassName = 'rounded-2xl',
+  /** Peak idle drift in px. Large panels want less travel than small cards. */
+  floatAmplitude = 9,
 }: {
   children: ReactNode;
   index?: number;
@@ -47,6 +56,8 @@ export default function FloatingCard({
   radius?: number;
   strength?: number;
   tilt?: number;
+  spotlightClassName?: string;
+  floatAmplitude?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
@@ -111,8 +122,7 @@ export default function FloatingCard({
 
     lift.set(eased * 14);
 
-    const inside =
-      px >= r.left && px <= r.right && py >= r.top && py <= r.bottom;
+    const inside = px >= r.left && px <= r.right && py >= r.top && py <= r.bottom;
     if (inside) {
       glowX.set(((px - r.left) / r.width) * 100);
       glowY.set(((py - r.top) / r.height) * 100);
@@ -130,7 +140,9 @@ export default function FloatingCard({
   const float = reduce
     ? { animate: { y: 0 }, transition: { duration: 0 } }
     : {
-        animate: { y: [0, -9, 0, 7, 0] },
+        animate: {
+          y: [0, -floatAmplitude, 0, floatAmplitude * 0.78, 0],
+        },
         transition: {
           duration: 9 + index * 1.3,
           repeat: Infinity,
@@ -140,11 +152,7 @@ export default function FloatingCard({
       };
 
   return (
-    <motion.div
-      {...float}
-      style={{ perspective: 1000 }}
-      className="h-full"
-    >
+    <motion.div {...float} style={{ perspective: 1000 }} className="h-full">
       <motion.div
         ref={ref}
         onPointerEnter={() => setHovered(true)}
@@ -159,12 +167,20 @@ export default function FloatingCard({
         }}
         className={`group relative h-full ${className}`}
       >
-        {/* Spotlight. pointer-events-none so it never intercepts the hover it
-            is reacting to, and inset-0 rounded to match the card's own radius
-            so the glow is clipped by the same silhouette. */}
+        <div className="relative h-full">{children}</div>
+
+        {/* Overlays are rendered AFTER the content, not before it.
+            
+            They used to come first, which meant that for any card with an
+            opaque fill - which is every card that uses this component, since
+            they all sit on `bg-surface` or `dark-panel` - the card covered the
+            spotlight completely and neither effect was ever visible. Same
+            box, later in DOM order, so they now paint on top; both are
+            pointer-events-none, so they never intercept the hover they are
+            reacting to. */}
         <motion.span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 rounded-2xl"
+          className={`pointer-events-none absolute inset-0 ${spotlightClassName}`}
           style={{ backgroundImage: spotlight, opacity: glowOpacity }}
         />
 
@@ -176,8 +192,6 @@ export default function FloatingCard({
             hovered ? 'opacity-100' : 'opacity-0'
           }`}
         />
-
-        <div className="relative h-full">{children}</div>
       </motion.div>
     </motion.div>
   );

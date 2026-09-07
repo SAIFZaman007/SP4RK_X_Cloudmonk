@@ -7,7 +7,7 @@ import HeroDeck from './HeroDeck';
 import Magnetic from './motion/Magnetic';
 import BlobField from './motion/BlobField';
 import CloudField from './motion/CloudField';
-import Marquee from './motion/Marquee';
+import TickerBand from './motion/TickerBand';
 import { cn, ctaGoldPill } from '../lib/utils';
 
 const headlineVariants = {
@@ -101,8 +101,21 @@ export default function Hero() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-crimson opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-crimson" />
               </span>
+              {/* The company name is a real anchor inside the pill, not styled
+                  text - so it is keyboard reachable and announced as a link.
+                  `noopener noreferrer` is not optional on a target=_blank
+                  outbound link: without it the opened tab gets a live
+                  `window.opener` handle back into this document. */}
               <span className="font-mono text-[11px] tracking-wide text-bone/80">
-                {hero.status}
+                {hero.status.lead}{' '}
+                <a
+                  href={hero.status.link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-sm font-medium text-crimson-light underline-offset-4 transition-colors duration-200 hover:text-crimson hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-coal-900"
+                >
+                  {hero.status.link.label}
+                </a>
               </span>
             </motion.div>
 
@@ -141,10 +154,31 @@ export default function Hero() {
               ))}
             </motion.h1>
 
+            {/* One-line promise, set between the headline and the proof
+                paragraph. The leading rule replaces the literal dashes in the
+                copy: a drawn hairline scales with the type and reuses the gold
+                seam already used by the ticker and the footer, where a run of
+                hyphens would be read aloud by a screen reader as punctuation
+                and would not survive a font change. */}
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.55 }}
+              transition={{ duration: 0.6, delay: 0.48 }}
+              className="mt-3.5 flex items-center gap-3 sm:mt-4"
+            >
+              <span
+                className="gradient-divider-gold h-px w-8 flex-shrink-0 sm:w-11"
+                aria-hidden="true"
+              />
+              <span className="text-gradient-gold font-mono text-[12px] font-medium leading-relaxed tracking-[0.02em] sm:text-[13.5px]">
+                {hero.tagline}
+              </span>
+            </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.58 }}
               className="text-balance mt-4 max-w-lg text-[15px] leading-relaxed text-bone/65 sm:mt-5 sm:text-[17px]"
             >
               {hero.subtitle}
@@ -157,10 +191,7 @@ export default function Hero() {
               className="mt-6 flex flex-wrap gap-3 sm:mt-7 sm:gap-4"
             >
               <Magnetic>
-                <a
-                  href="#contact"
-                  className={cn('group', ctaGoldPill)}
-                >
+                <a href="#contact" className={cn('group', ctaGoldPill)}>
                   Get in touch
                   <span
                     aria-hidden="true"
@@ -171,11 +202,7 @@ export default function Hero() {
                 </a>
               </Magnetic>
               <Magnetic strength={0.25}>
-                <a
-                  href={site.cvLink}
-                  download
-                  className={ctaGoldPill}
-                >
+                <a href={site.cvLink} download className={ctaGoldPill}>
                   Download resume
                 </a>
               </Magnetic>
@@ -218,20 +245,13 @@ export default function Hero() {
         transition={{ duration: 0.8, delay: 0.9 }}
         className="relative mx-auto mt-6 hidden w-full max-w-content px-6 lg:block"
       >
-        <span className="gradient-divider-gold block h-px w-full" aria-hidden="true" />
-        <div className="flex items-center gap-6 bg-gradient-to-b from-gold/[0.05] to-transparent py-4">
-          <span className="flex-shrink-0 font-mono text-[11px] uppercase tracking-[0.2em] text-gold-light/70">
-            Runs daily on
-          </span>
-          <Marquee>
-            {hero.stack.map((tool) => (
-              <span key={tool} className="font-display text-sm font-medium text-bone/70">
-                {tool}
-              </span>
-            ))}
-          </Marquee>
-        </div>
-        <span className="gradient-divider-gold block h-px w-full" aria-hidden="true" />
+        <TickerBand>
+          {hero.stack.map((tool) => (
+            <span key={tool} className="font-display text-sm font-medium text-bone/70">
+              {tool}
+            </span>
+          ))}
+        </TickerBand>
       </motion.div>
     </section>
   );

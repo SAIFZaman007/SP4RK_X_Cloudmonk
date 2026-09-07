@@ -30,7 +30,25 @@
     <meta property="og:locale" content="en_US" />
     <meta property="og:url" content="https://cloudmonk.cc/" />
     <meta property="og:image" content="https://cloudmonk.cc/preview.webp" />
-    <meta property="og:image:alt" content="Saif Zaman - AI-SaaS Engineer" />
+    <meta property="og:image:secure_url" content="https://cloudmonk.cc/preview.webp" />
+    <meta property="og:image:type" content="image/webp" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Saif Zaman (Md. Saifuzzaman Naim, SP4RK) - AI-SaaS Engineer, Dhaka, Bangladesh"
+    />
+    <!-- Secondary image: the portrait itself. Crawlers use the first og:image
+         for the link card, but Google Images indexes both, and a face is what
+         a person-name search is actually looking for. -->
+    <meta property="og:image" content="https://cloudmonk.cc/saif-zaman.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="900" />
+    <meta property="og:image:height" content="900" />
+    <meta
+      property="og:image:alt"
+      content="Portrait of Md. Saifuzzaman Naim, known as Saif Zaman and SP4RK"
+    />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -40,66 +58,205 @@
       content="AI-SaaS engineer in Dhaka, Bangladesh. Full-stack AI products, shipped end to end."
     />
     <meta name="twitter:image" content="https://cloudmonk.cc/preview.webp" />
+    <meta
+      name="twitter:image:alt"
+      content="Saif Zaman (Md. Saifuzzaman Naim, SP4RK) - AI-SaaS Engineer, Dhaka, Bangladesh"
+    />
 
-    <!-- Schema.org JSON-LD. NOTE: if you edit this block you MUST regenerate
-         its CSP hash - run `npm run csp:hash` and paste the result into
-         public/_headers. -->
+    <!-- Schema.org JSON-LD.
+
+         A single @graph rather than one bare Person node. The nodes carry
+         @ids and reference each other, which is what lets a search engine
+         resolve "this page is about this person, who works for this
+         organisation, and this is his photograph" as one connected entity
+         instead of four unrelated facts. `alternateName` plus
+         `disambiguatingDescription` is the specific mechanism that ties
+         every spelling of the name to the same entity.
+
+         The CSP hash for this block is recomputed from the BUILT html by
+         `npm run build` (scripts/csp-hash.mjs), so editing it here is safe
+         as long as the site is deployed from a fresh build. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Md. Saifuzzaman Naim",
-        "alternateName": [
-          "Saif Zaman",
-          "SAIF ZAMAN",
-          "Saif",
-          "Zaman",
-          "Saifuzzaman Naim",
-          "Naim",
-          "SPARK",
-          "SP4RK"
-        ],
-        "jobTitle": "AI-SaaS Engineer",
-        "description": "AI-SaaS Engineer (also known as Saif Zaman, SP4RK) based in Dhaka, Bangladesh, specializing in full-stack AI product engineering, LLM and RAG systems, backend API design, and secure deployment.",
-        "url": "https://cloudmonk.cc",
-        "email": "spark@cloudmonk.cc",
-        "image": {
-          "@type": "ImageObject",
-          "url": "https://cloudmonk.cc/portrait.jpg",
-          "contentUrl": "https://cloudmonk.cc/portrait.jpg",
-          "caption": "Md. Saifuzzaman Naim (Saif Zaman / SP4RK), AI-SaaS Engineer",
-          "creditText": "Md. Saifuzzaman Naim"
-        },
-        "worksFor": { "@type": "Organization", "name": "Maktech" },
-        "alumniOf": { "@type": "CollegeOrUniversity", "name": "North South University" },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Dhaka",
-          "addressCountry": "BD"
-        },
-        "knowsAbout": [
-          "Artificial Intelligence",
-          "Machine Learning",
-          "Full-Stack Development",
-          "FastAPI",
-          "React",
-          "Retrieval-Augmented Generation",
-          "PostgreSQL",
-          "Docker",
-          "Network Security"
-        ],
-        "sameAs": [
-          "https://www.linkedin.com/in/saifzaman",
-          "https://github.com/SAIFZaman007"
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://cloudmonk.cc/#person",
+            "name": "Md. Saifuzzaman Naim",
+            "alternateName": [
+              "Saif Zaman",
+              "SAIF ZAMAN",
+              "Saif",
+              "Zaman",
+              "Saifuzzaman Naim",
+              "Md Saifuzzaman Naim",
+              "Naim",
+              "SPARK",
+              "SP4RK",
+              "cloudmonk"
+            ],
+            "givenName": "Saifuzzaman",
+            "familyName": "Naim",
+            "jobTitle": "AI-SaaS Engineer",
+            "description": "AI-SaaS Engineer and team lead (also known as Saif Zaman and SP4RK) based in Dhaka, Bangladesh, specializing in full-stack AI product engineering, LLM and RAG systems, backend API design, and secure deployment.",
+            "disambiguatingDescription": "Md. Saifuzzaman Naim, Saif Zaman, Saifuzzaman Naim, Naim, SPARK and SP4RK all refer to the same person: the AI-SaaS Engineer at Maktech whose portfolio is cloudmonk.cc.",
+            "url": "https://cloudmonk.cc",
+            "mainEntityOfPage": {
+              "@id": "https://cloudmonk.cc/#webpage"
+            },
+            "email": "spark@cloudmonk.cc",
+            "image": [
+              {
+                "@id": "https://cloudmonk.cc/#primaryimage"
+              },
+              {
+                "@id": "https://cloudmonk.cc/#logo"
+              }
+            ],
+            "worksFor": {
+              "@id": "https://maktechgroup.com/#organization"
+            },
+            "alumniOf": {
+              "@type": "CollegeOrUniversity",
+              "name": "North South University"
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Dhaka",
+              "addressCountry": "BD"
+            },
+            "nationality": {
+              "@type": "Country",
+              "name": "Bangladesh"
+            },
+            "knowsLanguage": [
+              {
+                "@type": "Language",
+                "name": "English"
+              },
+              {
+                "@type": "Language",
+                "name": "Bengali"
+              }
+            ],
+            "hasOccupation": {
+              "@type": "Occupation",
+              "name": "AI-SaaS Engineer",
+              "occupationLocation": {
+                "@type": "City",
+                "name": "Dhaka"
+              },
+              "skills": "FastAPI, React, TypeScript, Python, PostgreSQL, Docker, PyTorch, LLM and RAG pipelines, payments and auth integration, secure deployment"
+            },
+            "knowsAbout": [
+              "Artificial Intelligence",
+              "Machine Learning",
+              "Full-Stack Development",
+              "FastAPI",
+              "React",
+              "Retrieval-Augmented Generation",
+              "PostgreSQL",
+              "Docker",
+              "Network Security",
+              "SaaS Product Engineering"
+            ],
+            "sameAs": [
+              "https://www.linkedin.com/in/saifzaman",
+              "https://github.com/SAIFZaman007"
+            ]
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://maktechgroup.com/#organization",
+            "name": "Maktech",
+            "url": "https://maktechgroup.com/",
+            "employee": {
+              "@id": "https://cloudmonk.cc/#person"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://cloudmonk.cc/#website",
+            "url": "https://cloudmonk.cc/",
+            "name": "Saif Zaman - AI-SaaS Engineer",
+            "alternateName": [
+              "cloudmonk.cc",
+              "SP4RK",
+              "Md. Saifuzzaman Naim portfolio"
+            ],
+            "description": "Portfolio of Md. Saifuzzaman Naim (Saif Zaman / SP4RK), AI-SaaS Engineer in Dhaka, Bangladesh.",
+            "inLanguage": "en",
+            "publisher": {
+              "@id": "https://cloudmonk.cc/#person"
+            },
+            "copyrightHolder": {
+              "@id": "https://cloudmonk.cc/#person"
+            }
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": "https://cloudmonk.cc/#webpage",
+            "url": "https://cloudmonk.cc/",
+            "name": "Saif Zaman | AI-SaaS Engineer - Full-Stack, ML & Secure Systems",
+            "isPartOf": {
+              "@id": "https://cloudmonk.cc/#website"
+            },
+            "about": {
+              "@id": "https://cloudmonk.cc/#person"
+            },
+            "mainEntity": {
+              "@id": "https://cloudmonk.cc/#person"
+            },
+            "primaryImageOfPage": {
+              "@id": "https://cloudmonk.cc/#primaryimage"
+            },
+            "inLanguage": "en"
+          },
+          {
+            "@type": "ImageObject",
+            "@id": "https://cloudmonk.cc/#primaryimage",
+            "url": "https://cloudmonk.cc/saif-zaman.jpg",
+            "contentUrl": "https://cloudmonk.cc/saif-zaman.jpg",
+            "width": 900,
+            "height": 900,
+            "caption": "Md. Saifuzzaman Naim (Saif Zaman / SP4RK), AI-SaaS Engineer in Dhaka, Bangladesh",
+            "creditText": "Md. Saifuzzaman Naim",
+            "creator": {
+              "@id": "https://cloudmonk.cc/#person"
+            },
+            "representativeOfPage": true
+          },
+          {
+            "@type": "ImageObject",
+            "@id": "https://cloudmonk.cc/#logo",
+            "url": "https://cloudmonk.cc/logo-mark-512.png",
+            "contentUrl": "https://cloudmonk.cc/logo-mark-512.png",
+            "width": 512,
+            "height": 512,
+            "caption": "SZ dragon monogram - the SP4RK / Saif Zaman brand mark"
+          }
         ]
       }
     </script>
 
-    <!-- Favicons -->
+    <!-- rel="me" is the oldest and still the most reliable way to tell a
+         crawler that these off-site profiles are the same person as this page.
+         It reinforces the sameAs list above through a second, independent
+         channel, which matters when the goal is name disambiguation. -->
+    <link rel="me" href="https://www.linkedin.com/in/saifzaman" />
+    <link rel="me" href="https://github.com/SAIFZaman007" />
+    <link rel="author" href="https://cloudmonk.cc/" />
+
+    <!-- Favicons. All generated from the SZ dragon monogram; the apple-touch
+         icon is matted on the theme colour because iOS composites transparent
+         icons over white. -->
     <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/logo-mark-512.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
   </head>
   <body>
     <div id="root"></div>

@@ -1,18 +1,81 @@
+# Two different kinds of bot are listed below, and the distinction is the whole
+# policy:
+#
+#   ALLOWED  - retrieval / citation agents. These fetch a page at the moment a
+#              user asks a question and cite it in the answer. Blocking them is
+#              what makes a site invisible inside ChatGPT, Claude, Perplexity
+#              and AI Overviews, so every one of them is allowed here.
+#   BLOCKED  - bulk training-corpus and scraper crawlers with no citation path
+#              back. They take the content and return no visibility for it.
+
 User-agent: *
+Allow: /
+
+# --- Search + AI answer engines (allowed) ---------------------------------
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
 Allow: /
 
 User-agent: Google-Extended
 Allow: /
 
+User-agent: Google-CloudVertexBot
+Allow: /
+
 User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
 Allow: /
 
 User-agent: ClaudeBot
 Allow: /
 
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
 User-agent: PerplexityBot
 Allow: /
 
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+# --- Bulk scrapers with no citation path (blocked) ------------------------
 User-agent: CCBot
 Disallow: /
 
@@ -20,6 +83,15 @@ User-agent: Bytespider
 Disallow: /
 
 User-agent: Amazonbot
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+User-agent: ImagesiftBot
 Disallow: /
 
 Sitemap: https://cloudmonk.cc/sitemap.xml
