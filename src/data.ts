@@ -10,13 +10,7 @@ import type { IconName } from './components/icons';
 export const site = {
   name: 'Saif Zaman',
   legalName: 'Md. Saifuzzaman Naim',
-  // Short brand handle - used only where the mark, not the full name, should
-  // carry (footer wordmark). Everywhere else uses `name` or `legalName`.
   brand: 'SP4RK',
-  // Closing line in the footer. It replaced an availability pill: the last
-  // thing a visitor reads on the way out should be the thesis of the work,
-  // not a fourth call to action - `about.quickFacts` carries availability and
-  // the Contact section carries the ask.
   quote: 'Code — that protects, learns, and evolves.',
   role: 'AI-SaaS Engineer',
   title: 'Saif Zaman | AI-SaaS Engineer - Full-Stack, ML & Secure Systems',
@@ -32,19 +26,10 @@ export const site = {
 export const hero = {
   eyebrow: 'AI-SaaS Engineer - Dhaka, BD',
   headline: ['AI-based products', 'shipped for the', 'real world...'],
-  // Single line directly under the headline. Deliberately shorter and higher
-  // contrast than `subtitle`: it is the promise, the subtitle is the proof.
   tagline: 'Helping ambitious brands launch faster...',
   subtitle:
     'I build AI-powered, intelligent, industry-standard, enterprise leaning systems that move products from concept to market; with the engineering to scale beyond it.',
 
-  /* Availability pill.
-   *
-   * Structured rather than a single string because one word inside it is a
-   * link. Interpolating an <a> into flat copy means either dangerouslySet-
-   * InnerHTML (an XSS surface for a value that will one day come from a CMS)
-   * or parsing markup at render time. Splitting the parts here keeps the
-   * markup declarative and the data plain text - the safe default. */
   status: {
     lead: 'Orchestrating the future @',
     link: { label: 'Maktech', href: 'https://maktechgroup.com/' },
@@ -54,8 +39,8 @@ export const hero = {
     { number: 7, suffix: '+', label: 'yrs writing code' },
     { number: 24, suffix: 'h', label: 'response time' },
   ],
-  // An honest stand-in for a client-logo row: what the work actually runs on.
-  stack: ['Python', 'FastAPI', 'React', 'PostgreSQL', 'Docker', 'PyTorch', 'Redis', 'Stripe'],
+
+  stack: ['Python', 'FastAPI', 'React', 'Next.JS', 'PostgreSQL', 'Docker', 'PyTorch', 'Redis', 'Stripe'],
 };
 
 export const about = {
@@ -229,15 +214,7 @@ export const skills = [
   },
 ];
 
-/* Testimonials.
- *
- * IMPORTANT: `quote` is intentionally empty. These are real, named people -
- * nothing goes in their mouths that they did not write. The section
- * self-hides until at least MIN_TESTIMONIALS entries have a non-empty quote
- * (see components/Testimonials.tsx), so a half-filled list can never ship.
- *
- * Ask each person for 2-3 sentences on what it was like working with you.
- * [CONFIRM] role + company for each. */
+
 export const testimonials: {
   quote: string;
   name: string;
@@ -274,20 +251,7 @@ export const education = [
     graduated: 'Jun 2016',
   },
 ];
-/* ---------------------------------------------------------------------------
- * Industries.
- *
- * The horizontal slider under Services. Each card is one kind of product this
- * practice takes on, not a case study - there is deliberately no link, because
- * a card that looks clickable and is not is worse than one that plainly is not.
- *
- * `image` points at /public/industries/. If the file is absent the card falls
- * back to `tint` and still reads as a designed panel rather than a broken
- * image, which keeps the section shippable while artwork is being sourced.
- *
- * `tint` is a two-stop gradient sampled to sit inside the site palette, so even
- * the fallback state does not look like a placeholder.
- * ------------------------------------------------------------------------- */
+
 export const industries: {
   no: string;
   title: string;
@@ -346,28 +310,28 @@ export const iconCredits: {
       id: '1693746',
       label: 'AI Product Engineering',
       url: 'https://www.flaticon.com/free-icon/ai_1693746',
-      author: 'photo3idea_studio',
+      author: 'photo3idea_studio'
     },
     {
       file: 'llm-rag-systems',
       id: '2152343',
       label: 'LLM & RAG Systems',
       url: 'https://www.flaticon.com/free-icon/ai_2152343',
-      author: 'Good Ware',
+      author: 'Good Ware'
     },
     {
       file: 'backend-api-design',
       id: '8750798',
       label: 'Backend & API Design',
       url: 'https://www.flaticon.com/free-icon/web-development_8750798',
-      author: 'Tanah Basah',
+      author: 'Tanah Basah'
     },
     {
       file: 'deployment-security',
       id: '743885',
       label: 'Deployment & Security',
       url: 'https://www.flaticon.com/free-icon/cloud-computing_743885',
-      author: 'Freepik',
+      author: 'Freepik'
     },
     // Selected work
     {
@@ -375,42 +339,42 @@ export const iconCredits: {
       id: '4807598',
       label: 'Trubbi',
       url: 'https://www.flaticon.com/free-icon/diversity_4807598',
-      author: 'Freepik',
+      author: 'Freepik'
     },
     {
       file: 'work-addvanced-ai',
       id: '17772840',
       label: 'Addvanced AI',
       url: 'https://www.flaticon.com/free-icon/technological-advancement_17772840',
-      author: 'Freepik',
+      author: 'Freepik'
     },
     {
       file: 'work-elyxa-ai',
       id: '16209773',
       label: 'Elyxa AI',
       url: 'https://www.flaticon.com/free-icon/ai-powered-models_16209773',
-      author: 'Freepik',
+      author: 'Freepik'
     },
     {
       file: 'work-peak-physique',
       id: '15837400',
       label: 'Peak Physique',
       url: 'https://www.flaticon.com/free-icon/back_15837400',
-      author: 'Freepik',
+      author: 'Freepik'
     },
     {
       file: 'work-power-play-mortgage',
       id: '9651303',
       label: 'Power Play Mortgage',
       url: 'https://www.flaticon.com/free-icon/house-rental_9651303',
-      author: 'Freepik',
+      author: 'Freepik'
     },
     {
       file: 'work-8888-augusta',
       id: '3862921',
       label: '8888 Augusta',
       url: 'https://www.flaticon.com/free-icon/rua-augusta-arch_3862921',
-      author: 'Freepik',
+      author: 'Freepik'
     },
     // Toolkit
     {
@@ -418,28 +382,28 @@ export const iconCredits: {
       id: '13708311',
       label: 'AI & Machine Learning',
       url: 'https://www.flaticon.com/free-icon/technology_13708311',
-      author: 'Freepik',
+      author: 'Freepik'
     },
     {
       file: 'toolkit-backend',
       id: '17234310',
       label: 'Backend Engineering',
       url: 'https://www.flaticon.com/free-icon/software_17234310',
-      author: 'Freepik',
+      author: 'Freepik'
     },
     {
       file: 'toolkit-frontend',
       id: '11869427',
       label: 'Frontend Engineering',
       url: 'https://www.flaticon.com/free-icon/search-engine_11869427',
-      author: 'Freepik',
+      author: 'Freepik'
     },
     {
       file: 'toolkit-devops',
       id: '12219584',
       label: 'DevOps & Security',
       url: 'https://www.flaticon.com/free-icon/settings_12219584',
-      author: 'Freepik',
+      author: 'Freepik'
     },
   ],
 };

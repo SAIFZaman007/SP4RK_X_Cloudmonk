@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+>
+  <url>
+    <loc>https://cloudmonk.cc/</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://cloudmonk.cc/saif-zaman.jpg</image:loc>
+      <image:title>Saif Zaman (Md. Saifuzzaman Naim) - AI-SaaS Engineer</image:title>
+      <image:caption>Portrait of Md. Saifuzzaman Naim, known as Saif Zaman and SP4RK, AI-SaaS Engineer in Dhaka, Bangladesh.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmonk.cc/preview.webp</image:loc>
+      <image:title>Saif Zaman | AI-SaaS Engineer - portfolio preview</image:title>
+      <image:caption>Social preview for cloudmonk.cc, the portfolio of Md. Saifuzzaman Naim (Saif Zaman / SP4RK).</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmonk.cc/logo-mark-512.png</image:loc>
+      <image:title>SP4RK / SZ brand mark</image:title>
+      <image:caption>The SZ dragon monogram used as the SP4RK and Saif Zaman brand mark.</image:caption>
+    </image:image>
+  </url>
+</urlset>
