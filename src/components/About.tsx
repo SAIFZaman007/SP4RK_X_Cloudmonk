@@ -59,7 +59,12 @@ export default function About() {
   return (
     <section id="about" className="section-y relative">
       <div className="max-w-content mx-auto px-6">
-        <SectionHeading index="01" label="Profile" title="Who's behind the architecture" accent="architecture" />
+        <SectionHeading
+          index="01"
+          label="Profile"
+          title="Who's behind the architecture"
+          accent="architecture"
+        />
 
         <div ref={ref} className="grid gap-12 md:grid-cols-[280px_1fr] md:gap-16">
           {/* Portrait */}
@@ -110,10 +115,7 @@ export default function About() {
           >
             <div className="space-y-5">
               {about.paragraphs.map((p, i) => (
-                <p
-                  key={i}
-                  className="text-base leading-relaxed text-fg-70 sm:text-[1.0625rem]"
-                >
+                <p key={i} className="text-base leading-relaxed text-fg-70 sm:text-[1.0625rem]">
                   <Emphasised text={p} />
                 </p>
               ))}

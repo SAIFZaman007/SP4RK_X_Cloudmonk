@@ -39,7 +39,9 @@ const creditsBlock = data.slice(
 );
 const required = /required:\s*true/.test(creditsBlock);
 const credits = [
-  ...creditsBlock.matchAll(/\{\s*file: '([^']+)'[^}]*?label: '([^']*)'[^}]*?author: '([^']*)'\s*\}/g),
+  ...creditsBlock.matchAll(
+    /\{\s*file: '([^']+)'[^}]*?label: '([^']*)'[^}]*?author: '([^']*)'\s*,?\s*\}/g
+  ),
 ].map(([, file, label, author]) => ({ file, label, author }));
 
 /* Which PNGs the registry actually imports - read from the import statements

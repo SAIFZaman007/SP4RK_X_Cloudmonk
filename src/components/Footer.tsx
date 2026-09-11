@@ -132,7 +132,8 @@ export default function Footer() {
               </span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-bone/55">
-              AI-SaaS engineer shipping full-stack AI products end to end. Full-time Software Professional at{' '}
+              AI-SaaS engineer shipping full-stack AI products end to end. Full-time Software
+              Professional at{' '}
               <a
                 href="https://www.maktechgroup.com"
                 target="_blank"

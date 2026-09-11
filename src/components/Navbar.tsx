@@ -123,11 +123,7 @@ export default function Navbar() {
 
           {/* Resume CTA */}
           <Magnetic strength={0.3} className="hidden md:inline-block">
-            <a
-              href={site.cvLink}
-              download
-              className={cn('ml-1', ctaGoldPillSm)}
-            >
+            <a href={site.cvLink} download className={cn('ml-1', ctaGoldPillSm)}>
               <Download className="h-3.5 w-3.5" />
               Resume
             </a>

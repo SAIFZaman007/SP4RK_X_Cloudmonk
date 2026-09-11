@@ -49,9 +49,11 @@ function parseItems(source) {
     source.indexOf('/* Name variants.')
   );
 
-  return [...block.matchAll(/\{\s*file: '([^']+)'[^}]*?url: '([^']+)'[^}]*?author: '([^']*)'\s*\}/g)].map(
-    ([, file, url, author]) => ({ file, url, author })
-  );
+  return [
+    ...block.matchAll(
+      /\{\s*file: '([^']+)'[^}]*?url: '([^']+)'[^}]*?author: '([^']*)'\s*,?\s*\}/g
+    ),
+  ].map(([, file, url, author]) => ({ file, url, author }));
 }
 
 /** "AI free icons designed by Good Ware" -> "Good Ware" */

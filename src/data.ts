@@ -40,7 +40,17 @@ export const hero = {
     { number: 24, suffix: 'h', label: 'response time' },
   ],
 
-  stack: ['Python', 'FastAPI', 'React', 'Next.JS', 'PostgreSQL', 'Docker', 'PyTorch', 'Redis', 'Stripe'],
+  stack: [
+    'Python',
+    'FastAPI',
+    'React',
+    'Next.JS',
+    'PostgreSQL',
+    'Docker',
+    'PyTorch',
+    'Redis',
+    'Stripe',
+  ],
 };
 
 export const about = {
@@ -211,7 +221,6 @@ export const skills = [
   },
 ];
 
-
 export const testimonials: {
   quote: string;
   name: string;
@@ -307,28 +316,28 @@ export const iconCredits: {
       id: '1693746',
       label: 'AI Product Engineering',
       url: 'https://www.flaticon.com/free-icon/ai_1693746',
-      author: 'photo3idea_studio'
+      author: 'photo3idea_studio',
     },
     {
       file: 'llm-rag-systems',
       id: '2152343',
       label: 'LLM & RAG Systems',
       url: 'https://www.flaticon.com/free-icon/ai_2152343',
-      author: 'Good Ware'
+      author: 'Good Ware',
     },
     {
       file: 'backend-api-design',
       id: '8750798',
       label: 'Backend & API Design',
       url: 'https://www.flaticon.com/free-icon/web-development_8750798',
-      author: 'Tanah Basah'
+      author: 'Tanah Basah',
     },
     {
       file: 'deployment-security',
       id: '743885',
       label: 'Deployment & Security',
       url: 'https://www.flaticon.com/free-icon/cloud-computing_743885',
-      author: 'Freepik'
+      author: 'Freepik',
     },
     // Selected work
     {
@@ -336,42 +345,42 @@ export const iconCredits: {
       id: '4807598',
       label: 'Trubbi',
       url: 'https://www.flaticon.com/free-icon/diversity_4807598',
-      author: 'Freepik'
+      author: 'Freepik',
     },
     {
       file: 'work-addvanced-ai',
       id: '17772840',
       label: 'Addvanced AI',
       url: 'https://www.flaticon.com/free-icon/technological-advancement_17772840',
-      author: 'Freepik'
+      author: 'Freepik',
     },
     {
       file: 'work-elyxa-ai',
       id: '16209773',
       label: 'Elyxa AI',
       url: 'https://www.flaticon.com/free-icon/ai-powered-models_16209773',
-      author: 'Freepik'
+      author: 'Freepik',
     },
     {
       file: 'work-peak-physique',
       id: '15837400',
       label: 'Peak Physique',
       url: 'https://www.flaticon.com/free-icon/back_15837400',
-      author: 'Freepik'
+      author: 'Freepik',
     },
     {
       file: 'work-power-play-mortgage',
       id: '9651303',
       label: 'Power Play Mortgage',
       url: 'https://www.flaticon.com/free-icon/house-rental_9651303',
-      author: 'Freepik'
+      author: 'Freepik',
     },
     {
       file: 'work-8888-augusta',
       id: '3862921',
       label: '8888 Augusta',
       url: 'https://www.flaticon.com/free-icon/rua-augusta-arch_3862921',
-      author: 'Freepik'
+      author: 'Freepik',
     },
     // Toolkit
     {
@@ -379,28 +388,28 @@ export const iconCredits: {
       id: '13708311',
       label: 'AI & Machine Learning',
       url: 'https://www.flaticon.com/free-icon/technology_13708311',
-      author: 'Freepik'
+      author: 'Freepik',
     },
     {
       file: 'toolkit-backend',
       id: '17234310',
       label: 'Backend Engineering',
       url: 'https://www.flaticon.com/free-icon/software_17234310',
-      author: 'Freepik'
+      author: 'Freepik',
     },
     {
       file: 'toolkit-frontend',
       id: '11869427',
       label: 'Frontend Engineering',
       url: 'https://www.flaticon.com/free-icon/search-engine_11869427',
-      author: 'Freepik'
+      author: 'Freepik',
     },
     {
       file: 'toolkit-devops',
       id: '12219584',
       label: 'DevOps & Security',
       url: 'https://www.flaticon.com/free-icon/settings_12219584',
-      author: 'Freepik'
+      author: 'Freepik',
     },
   ],
 };
