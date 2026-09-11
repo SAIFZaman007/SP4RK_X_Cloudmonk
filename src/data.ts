@@ -15,7 +15,7 @@ export const site = {
   role: 'AI-SaaS Engineer',
   title: 'Saif Zaman | AI-SaaS Engineer - Full-Stack, ML & Secure Systems',
   description:
-    'AI-SaaS engineer in Dhaka, Bangladesh. I ship production AI products end to end - FastAPI and React systems, LLM and RAG pipelines, payments, and the infrastructure they run on. Available for contract work and full-time roles.',
+    'AI-SaaS engineer in Dhaka, Bangladesh. I ship production AI products end to end - FastAPI and React systems, LLM and RAG pipelines, payments, and the infrastructure they run on. Currently working full-time at Maktech, dedicated to building scalable solutions that solve real product needs.',
   url: 'https://cloudmonk.cc',
   email: 'spark@cloudmonk.cc',
   cvLink: '/media/Saif_Zaman_CV.pdf',
@@ -48,13 +48,16 @@ export const about = {
   imageWebp: '/saif-zaman.webp',
   quickFacts: [
     { label: 'Based in', value: 'Dhaka, Bangladesh' },
-    { label: 'Role', value: 'AI-SaaS Engineer, Maktech' },
-    { label: 'Available for', value: 'Contract · Full-time' },
+    { label: 'Role', value: 'AI-SaaS Engineer' },
+    {
+      label: 'Current focus',
+      value: { text: 'Maktech', href: 'https://www.maktechgroup.com' },
+    },
     { label: 'Response time', value: 'Within 24 hours' },
   ],
   paragraphs: [
     "I'm an AI-SaaS engineer in Dhaka. My work sits where machine learning, software engineering, and security collide. I build systems that are precise, **hold up under real traffic**, and stay secure while doing it.",
-    'At **Maktech** I lead AI-SaaS engineering, taking products from a rough brief through architecture, build, and deployment. I work for clients internationally, mostly full-stack AI and SaaS builds.',
+    'At [Maktech](https://www.maktechgroup.com) I lead AI-SaaS engineering, taking products from a rough brief through architecture, build, and deployment. I work for clients internationally, mostly full-stack AI and SaaS builds.',
     'My core stack is **Python and FastAPI on the backend, React/Next and TypeScript on the front**, with PostgreSQL, Docker, and CI around it. Where a project needs models rather than APIs, I work in PyTorch and TensorFlow - and I care as much about the auth, payment, and deployment layers as the model itself, because that is where products actually break.',
   ],
 };
@@ -166,12 +169,6 @@ export const experience = [
     company: 'Summit Towers Limited',
     period: 'Aug 2025 - Oct 2025',
     desc: 'Quality & Service Assurance department - snag analysis, data backup, and ad-hoc project management across telecommunications engineering and vendor management.',
-  },
-  {
-    role: 'Freelance Engineer',
-    company: 'Independent',
-    period: '2024 - Present',
-    desc: 'Contract full-stack, AI, and SaaS delivery for international clients - scoping, architecture, build, and handover, working asynchronously across time zones.',
   },
 ];
 

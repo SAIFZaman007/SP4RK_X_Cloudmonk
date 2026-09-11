@@ -65,8 +65,7 @@ export default function Services() {
       <div className="max-w-content mx-auto px-6">
         <SectionHeading index="02" label="Services" title="What I can run for you" accent="run" />
         <p className="mb-10 max-w-2xl text-balance text-base leading-relaxed text-fg-70">
-          Available for full-time roles and standalone contract engagements - scoped to what your
-          product actually needs, not a fixed package.
+          Currently working full-time at <a href="https://www.maktechgroup.com" target="_blank" rel="noopener noreferrer" className="font-medium text-crimson-light underline-offset-4 transition-colors duration-200 hover:text-crimson hover:underline">Maktech</a>, dedicated to building scalable solutions that solve real product needs.
         </p>
 
         {/* Desktop: 4-up, cards deal out from a stack */}

@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from '../hooks/useInView';
 import { about, site } from '../data';
+import MaktechLink from './MaktechLink';
 import SectionHeading from './SectionHeading';
 
 /**
@@ -20,18 +21,31 @@ import SectionHeading from './SectionHeading';
  * renders, so the output cannot contain markup regardless of what the copy says.
  */
 function Emphasised({ text }: { text: string }) {
-  // Odd indices are the runs that sat between a pair of delimiters.
+  const tokens = text.split(/(\*\*.*?\*\*|\[[^\]]+\]\([^\)]+\))/g);
+
   return (
     <>
-      {text.split('**').map((chunk, i) =>
-        i % 2 === 1 ? (
-          <strong key={i} className="font-semibold text-crimson-light">
-            {chunk}
-          </strong>
-        ) : (
-          <span key={i}>{chunk}</span>
-        )
-      )}
+      {tokens.map((token, i) => {
+        if (token.startsWith('**') && token.endsWith('**')) {
+          return (
+            <strong key={i} className="font-semibold text-crimson-light">
+              {token.slice(2, -2)}
+            </strong>
+          );
+        }
+
+        const match = token.match(/^\[([^\]]+)\]\(([^\)]+)\)$/);
+        if (match) {
+          const [, label, href] = match;
+          return (
+            <MaktechLink key={i} href={href} className="font-medium">
+              {label}
+            </MaktechLink>
+          );
+        }
+
+        return <span key={i}>{token}</span>;
+      })}
     </>
   );
 }
@@ -112,7 +126,17 @@ export default function About() {
                   <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-fg-45">
                     {f.label}
                   </dt>
-                  <dd className="mt-1 text-sm font-medium text-fg">{f.value}</dd>
+                  <dd className="mt-1 text-sm font-medium text-fg">
+                    {typeof f.value === 'string' ? (
+                      f.value
+                    ) : f.value.href ? (
+                      <MaktechLink href={f.value.href} className="text-sm">
+                        {f.value.text}
+                      </MaktechLink>
+                    ) : (
+                      f.value.text
+                    )}
+                  </dd>
                 </div>
               ))}
             </dl>

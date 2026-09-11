@@ -94,7 +94,15 @@ export default function Contact() {
             <BlobField className="opacity-60" />
 
             <p className="relative font-mono text-[11px] uppercase tracking-[0.2em] text-bone/[0.62]">
-              Open to full-time &amp; contract
+              Currently working at{' '}
+              <a
+                href="https://www.maktechgroup.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-crimson-light underline-offset-4 transition-colors duration-200 hover:text-crimson hover:underline"
+              >
+                Maktech
+              </a>
             </p>
             <h3 className="text-balance relative mt-4 font-display text-2xl font-semibold tracking-tight text-bone sm:text-3xl">
               Let's build something reliable.

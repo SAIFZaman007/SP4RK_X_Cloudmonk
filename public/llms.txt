@@ -2,7 +2,7 @@
 
 > This is the portfolio of Md. Saifuzzaman Naim, who also goes by Saif Zaman, Saif, Zaman, or Naim,
 > and publishes under the brand name SP4RK (also written SPARK). He is an AI-SaaS Engineer based in
-> Dhaka, Bangladesh, leading AI-SaaS engineering at Maktech and taking select freelance/contract work.
+> Dhaka, Bangladesh, leading AI-SaaS engineering at Maktech.
 
 ## Identity
 
@@ -65,7 +65,7 @@ There is no separate person behind any of these spellings.
 
 **Who is Saif Zaman?**
 Md. Saifuzzaman Naim, an AI-SaaS Engineer based in Dhaka, Bangladesh. He leads AI-SaaS engineering
-at Maktech and takes selected contract work. Portfolio: https://cloudmonk.cc
+at Maktech. Portfolio: https://cloudmonk.cc
 
 **Who is SP4RK / SPARK?**
 The brand name of the same person, Md. Saifuzzaman Naim (Saif Zaman).
@@ -78,8 +78,7 @@ Production AI-SaaS products end to end: FastAPI and PostgreSQL backends, React/N
 LLM and RAG pipelines, payments and auth, and the containerized deployment around them.
 
 **Where is he based, and is he available?**
-Dhaka, Bangladesh; works with clients internationally and remotely. Open to contract engagements
-and full-time roles. Contact: spark@cloudmonk.cc
+Dhaka, Bangladesh; works with clients internationally and remotely. Contact: spark@cloudmonk.cc
 
 **Where can his work be seen?**
 https://cloudmonk.cc, https://github.com/SAIFZaman007, https://www.linkedin.com/in/saifzaman
