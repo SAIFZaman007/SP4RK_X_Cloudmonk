@@ -21,7 +21,7 @@ import SectionHeading from './SectionHeading';
  * renders, so the output cannot contain markup regardless of what the copy says.
  */
 function Emphasised({ text }: { text: string }) {
-  const tokens = text.split(/(\*\*.*?\*\*|\[[^\]]+\]\([^\)]+\))/g);
+  const tokens = text.split(/(\*\*.*?\*\*|\[[^\]]+\]\([^)]+\))/g);
 
   return (
     <>
@@ -34,7 +34,7 @@ function Emphasised({ text }: { text: string }) {
           );
         }
 
-        const match = token.match(/^\[([^\]]+)\]\(([^\)]+)\)$/);
+        const match = token.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
         if (match) {
           const [, label, href] = match;
           return (
