@@ -1,27 +1,3 @@
-/* Fonts live in their own stylesheet, imported from main.tsx, on purpose.
- * Tailwind v4 inlines every CSS @import itself and does not rebase url()s in
- * the files it inlines, so the fontsource @font-face rules ended up pointing
- * at ./files/*.woff2 (which does not exist in dist) and every web font
- * silently fell back to system-ui. Imported here, Vite resolves and hashes
- * each font file normally. */
-
-/* Display voice: Fraunces, carrying every headline, title and subtitle.
- *
- * This one import replaces six. Sora (3 static weights) and Space Grotesk
- * (3 more) previously split the job between "hero voice" and "section voice";
- * Fraunces now does both, so the page has one display family instead of two
- * sans-serifs that most readers could not tell apart anyway.
- *
- * The `opsz` build rather than the lighter `wght`-only one, deliberately.
- * Fraunces carries an optical-size axis from 9 to 144, and this design uses
- * display type across an enormous range - a 10.5px byline up to the footer
- * wordmark at 15vw. Without opsz a serif set that large keeps the thick stems
- * and open counters meant for body copy and reads coarse; with it, the letter-
- * forms sharpen and tighten as they grow, which is the whole reason to choose
- * a variable serif over a static one.
- *
- * It costs nothing on balance: 65.7 KB of latin subset against the ~89 KB of
- * Sora plus Space Grotesk it removes, and one file instead of six. */
 @import '@fontsource-variable/fraunces/opsz.css';
 @import '@fontsource/ibm-plex-sans/latin-400.css';
 @import '@fontsource/ibm-plex-sans/latin-500.css';

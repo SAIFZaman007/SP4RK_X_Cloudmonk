@@ -18,8 +18,6 @@ import BackToTop from './components/BackToTop';
 import ScrollProgress from './components/motion/ScrollProgress';
 
 function App() {
-  // Keeps the address bar free of "#section" routes, even for hashes that
-  // arrive from outside (bookmarks, shared links). See lib/scroll.ts.
   useEffect(() => installHashCleanup(), []);
 
   return (

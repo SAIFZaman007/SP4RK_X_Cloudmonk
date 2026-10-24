@@ -1,12 +1,5 @@
 import type { IconName } from './components/icons';
 
-/* ---------------------------------------------------------------------------
- * ALL editable content lives in this file. Components never hardcode copy.
- *
- * Items marked [CONFIRM] are values I inferred and you should verify before
- * going live. Grep for "[CONFIRM]" to find them all.
- * ------------------------------------------------------------------------- */
-
 export const site = {
   name: 'Saif Zaman',
   legalName: 'Md. Saifuzzaman Naim',
@@ -56,11 +49,6 @@ export const hero = {
 export const about = {
   image: '/saif-zaman.jpg',
   imageWebp: '/saif-zaman.webp',
-  /* The swinging 3D ID badge that replaced the framed portrait.
-     To change the artwork, overwrite the file at the same path (keep the
-     filename) - no code change needed. `front` and `back` are painted onto a
-     1.6 : 2.25 portrait card, so 1024 x 1440 is the ideal export size. The
-     strap is deliberately plain black: there is no strap image. */
   badge: {
     front: '/lanyard/my_ID.png',
     back: '/lanyard/card-back.webp',
