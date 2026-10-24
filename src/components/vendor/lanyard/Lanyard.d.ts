@@ -1,17 +1,5 @@
 import type { CSSProperties, ReactElement } from 'react';
 
-/**
- * Type surface for the vendored React Bits <Lanyard /> (JS-CSS variant).
- *
- * `Lanyard.jsx` is kept byte-for-byte as published by React Bits so a future
- * `npx shadcn add @react-bits/Lanyard-JS-CSS` diffs cleanly against it. The
- * project does not enable `allowJs`, so without this declaration the import
- * would be an implicit `any` and fail `strict`. Props mirror the "Props" table
- * on https://reactbits.dev/components/lanyard.
- *
- * Every optional prop admits `undefined` explicitly because the project runs
- * with `exactOptionalPropertyTypes`.
- */
 export interface LanyardProps {
   /** Image printed on the front of the card. Any size or aspect works. */
   frontImage?: string | undefined;

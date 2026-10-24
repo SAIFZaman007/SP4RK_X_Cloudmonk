@@ -1,9 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-/**
- * Reveal-on-scroll hook. Generic over the element type so consumers
- * can attach `ref` to a div/section without `as any` casts.
- */
 export function useInView<T extends HTMLElement = HTMLDivElement>(threshold = 0.12) {
   const ref = useRef<T>(null);
   const [inView, setInView] = useState(false);
