@@ -9,27 +9,6 @@ import {
 } from 'framer-motion';
 import { usePointer } from '../../hooks/usePointer';
 
-/**
- * A card that idles with a slow float and leans toward the cursor as it
- * approaches - magnetic, not merely hover-reactive.
- *
- * Four effects are layered, and they are deliberately split across two DOM
- * nodes rather than fought over on one:
- *
- *   outer  - the idle float. A slow, looping vertical drift on its own phase
- *            per card, so a row breathes instead of pulsing in lockstep.
- *   inner  - everything driven by the pointer: magnetic translate, 3D tilt,
- *            lift, and the spotlight that tracks the cursor across the face.
- *
- * They are separate because both want `y`. Composing them on one element means
- * one transform overwriting the other every frame; nesting lets the browser
- * compose them for free.
- *
- * Attraction falls off with distance and is squared, so a card is inert until
- * the cursor is genuinely near it and then commits over the last ~40% of the
- * radius. A linear falloff makes the whole grid twitch constantly, which reads
- * as noise rather than response.
- */
 export default function FloatingCard({
   children,
   index = 0,
@@ -40,12 +19,6 @@ export default function FloatingCard({
   strength = 0.12,
   /** Peak tilt in degrees at full pull. */
   tilt = 8,
-  /**
-   * Corner radius of the spotlight overlay. It has to match the wrapped
-   * element's own radius or the glow is clipped to a different silhouette and
-   * shows as bright wedges in the corners - visible on anything larger than a
-   * grid card, where the mismatch is small enough to miss.
-   */
   spotlightClassName = 'rounded-2xl',
   /** Peak idle drift in px. Large panels want less travel than small cards. */
   floatAmplitude = 9,
@@ -66,9 +39,6 @@ export default function FloatingCard({
 
   const active = enabled && !reduce;
 
-  // Targets written every frame, then smoothed by springs. Writing the spring
-  // target rather than the rendered value is what gives the card weight: it
-  // trails the cursor and overshoots slightly on release.
   const tx = useMotionValue(0);
   const ty = useMotionValue(0);
   const rx = useMotionValue(0);
@@ -94,10 +64,6 @@ export default function FloatingCard({
     const px = pointerX.get();
     const py = pointerY.get();
 
-    // getBoundingClientRect is read once per frame per card. It is a layout
-    // read, but it is the only way to stay correct through scroll, resize and
-    // the reveal animation that moves these cards on entry - caching it and
-    // invalidating on scroll costs more code and still drifts mid-animation.
     const r = el.getBoundingClientRect();
 
     // Offscreen cards do no work at all.
@@ -115,8 +81,6 @@ export default function FloatingCard({
     tx.set(dx * eased * strength);
     ty.set(dy * eased * strength);
 
-    // Inverted on X: the card leans *into* the cursor, as a physical panel
-    // pressed at one corner would. Leaning away reads as repulsion.
     ry.set((dx / (r.width / 2)) * tilt * eased);
     rx.set((-dy / (r.height / 2)) * tilt * eased);
 
@@ -132,11 +96,6 @@ export default function FloatingCard({
 
   const spotlight = useMotionTemplate`radial-gradient(340px circle at ${glowX}% ${glowY}%, rgba(212,175,55,0.16), rgba(223,54,64,0.06) 42%, transparent 70%)`;
 
-  // The idle float, as one object rather than two conditional props. Under
-  // `exactOptionalPropertyTypes` an inline `transition={reduce ? undefined :
-  // {...}}` is a type error, and building the pair together also keeps the
-  // reduced-motion branch honest: it cannot end up with a looping transition
-  // attached to a static animate.
   const float = reduce
     ? { animate: { y: 0 }, transition: { duration: 0 } }
     : {
@@ -169,23 +128,11 @@ export default function FloatingCard({
       >
         <div className="relative h-full">{children}</div>
 
-        {/* Overlays are rendered AFTER the content, not before it.
-            
-            They used to come first, which meant that for any card with an
-            opaque fill - which is every card that uses this component, since
-            they all sit on `bg-surface` or `dark-panel` - the card covered the
-            spotlight completely and neither effect was ever visible. Same
-            box, later in DOM order, so they now paint on top; both are
-            pointer-events-none, so they never intercept the hover they are
-            reacting to. */}
         <motion.span
           aria-hidden="true"
           className={`pointer-events-none absolute inset-0 ${spotlightClassName}`}
           style={{ backgroundImage: spotlight, opacity: glowOpacity }}
         />
-
-        {/* Rim light. A single hairline that brightens on approach - the
-            cheapest way to make a flat panel read as a physical object. */}
         <span
           aria-hidden="true"
           className={`pointer-events-none absolute inset-x-6 -top-px h-px bg-linear-to-r/srgb from-transparent via-gold/60 to-transparent transition-opacity duration-500 ${

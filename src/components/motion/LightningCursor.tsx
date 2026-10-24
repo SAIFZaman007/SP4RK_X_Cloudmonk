@@ -2,61 +2,8 @@ import { useEffect, useRef } from 'react';
 import { useReducedMotion } from 'framer-motion';
 import { cn } from '../../lib/utils';
 
-/**
- * Lightning cursor for the hero and the footer.
- *
- * WHAT IT REPLACES
- * ----------------
- * Both sections used to follow the pointer with a blurred radial gradient at
- * 18-25% opacity. It was easy to miss, and a 20-30px CSS blur on a 460-520px
- * element is re-rasterised every frame it moves. This draws the same ambient
- * pool of light on a canvas - no filter, one cheap gradient fill - and adds the
- * part that was missing: actual lightning.
- *
- * WHAT YOU SEE
- * ------------
- *   - TRAIL    Moving the pointer lays down jagged bolts along its path. Each
- *              flashes at full brightness, then decays over ~0.3s, so a fast
- *              sweep leaves a streak of arcs behind it.
- *   - CRACKLE  Even held still, short arcs spit out of the cursor a few times a
- *              second - the effect reads as live rather than as a mouse trail.
- *   - STRIKE   Every few seconds a longer, forked bolt fires from the cursor
- *              and the surrounding glow flares with it.
- *   - GLOW     A soft pool of crimson light that trails the pointer slightly,
- *              with a small white-hot spark at the pointer itself.
- *
- * Each bolt is drawn in three additive passes - wide crimson halo, crimson-light
- * body, near-white core - which is what makes a 1px line look like it is giving
- * off light. Colours come from the site palette, so it belongs to the page
- * rather than looking like a stock "electric" effect.
- *
- * COST
- * ----
- * One requestAnimationFrame loop, running only while the pointer is over the
- * section (plus the ~0.2s fade-out and any bolts still decaying), and paused
- * when the section scrolls off screen. Bolt geometry is built once as a Path2D
- * at spawn and re-stroked each frame, so the loop allocates nothing but a few
- * short strings. The backing store is capped at 1.5x device pixels: the halo is
- * a soft glow, so the extra resolution would cost fill-rate and show nothing.
- *
- * WHERE IT RUNS
- * -------------
- * Desktop with a real mouse only (>= md, hover + fine pointer) - the same
- * audience the old spotlight had. On touch there is no hover, so nothing is
- * attached and the canvas is never sized. With `prefers-reduced-motion` the
- * flashing bolts are dropped entirely and only the steady, non-flickering glow
- * remains.
- *
- * USAGE
- * -----
- * Render as a child of a `position: relative` section. It sizes itself to its
- * parent, listens on the parent, and is `pointer-events: none`, so it never
- * intercepts a click on the content beneath it.
- */
-
 type Pt = readonly [number, number];
 
-/** RGB triplets from the site palette (tailwind.config.js). */
 const RGB = {
   /** White-hot bolt core, warmed a touch toward `steel`. */
   core: '255, 246, 240',
@@ -95,12 +42,6 @@ interface BoltOptions {
 const rand = (min: number, max: number) => min + Math.random() * (max - min);
 const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
 
-/**
- * Midpoint displacement: split the segment, push the midpoint sideways by a
- * random amount, recurse with a smaller amount. Endpoints stay pinned. This is
- * the classic cheap lightning shape - large lazy bends with finer kinks inside
- * them - and it is why the bolt looks like it was struck, not scribbled.
- */
 function jagged(a: Pt, b: Pt, levels: number, spread: number): Pt[] {
   let points: Pt[] = [a, b];
   let offset = Math.hypot(b[0] - a[0], b[1] - a[1]) * spread;
@@ -141,8 +82,6 @@ function createBolt(a: Pt, b: Pt, now: number, opts: BoltOptions): Bolt {
   const main = new Path2D();
   trace(main, trunk);
 
-  // Forks leave the trunk at a shallow angle and are shorter, thinner and
-  // fainter. They are what separate "lightning" from "a wobbly line".
   const forks = new Path2D();
   const heading = Math.atan2(b[1] - a[1], b[0] - a[0]);
   for (let i = 0; i < opts.forks; i++) {
@@ -189,10 +128,6 @@ function fillGlow(
   ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
 }
 
-/**
- * The effect proper. Returns its own teardown, so the component can attach and
- * detach it as the "is this a desktop mouse?" media query changes.
- */
 function run(
   canvas: HTMLCanvasElement,
   host: HTMLElement,
@@ -211,10 +146,6 @@ function run(
   let nextCrackle = 0;
   let nextStrike = 0;
 
-  // Client coordinates are the source of truth; they are converted to
-  // host-local space at the moment they are used, against a fresh rect. That
-  // keeps the glow glued to the pointer while the page scrolls under a
-  // stationary mouse, where no pointermove fires to correct it.
   const client = { x: 0, y: 0 };
   const lastTrail = { x: 0, y: 0 };
   const pointer = { x: 0, y: 0 };
@@ -311,9 +242,7 @@ function run(
         bolts.splice(i, 1);
         continue;
       }
-      // Full brightness for the opening flash, then a convex decay. The random
-      // factor is the flicker - it is re-rolled every frame, which is what makes
-      // the bolt shimmer instead of fading like a CSS opacity transition.
+
       const fade = t < 0.12 ? 1 : Math.pow(1 - (t - 0.12) / 0.88, 1.8);
       const alpha = fade * rand(0.7, 1);
       strokeBolt(ctx, bolt.main, bolt.weight, alpha);
@@ -376,9 +305,6 @@ function run(
   const resizeObserver = new ResizeObserver(resize);
   resizeObserver.observe(host);
 
-  // Off-screen sections must not keep a rAF loop alive. Dropping the live
-  // state (rather than just pausing) means nothing stale is on the canvas the
-  // next time the section comes back into view.
   const intersectionObserver = new IntersectionObserver(([entry]) => {
     visible = entry?.isIntersecting ?? false;
     if (!visible) {
