@@ -1,8 +1,10 @@
 import { useRef, useState, useEffect } from 'react';
-import { motion, useMotionValue, useSpring, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Mail, ArrowUpRight } from 'lucide-react';
 import { site } from '../data';
 import CloudField from './motion/CloudField';
+import LightningCursor from './motion/LightningCursor';
+import { onSectionClick, type SectionId } from '../lib/scroll';
 
 // lucide v1 dropped brand marks, so LinkedIn ships inline.
 function LinkedinMark({ className = 'h-4 w-4' }: { className?: string }) {
@@ -21,15 +23,13 @@ function GithubMark({ className = 'h-4 w-4' }: { className?: string }) {
   );
 }
 
-const nav = [
-  { label: 'About', href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Work', href: '#work' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Contact', href: '#contact' },
+const nav: { label: string; href: string; id: SectionId }[] = [
+  { label: 'About', href: '#about', id: 'about' },
+  { label: 'Services', href: '#services', id: 'services' },
+  { label: 'Work', href: '#work', id: 'work' },
+  { label: 'Experience', href: '#experience', id: 'experience' },
+  { label: 'Contact', href: '#contact', id: 'contact' },
 ];
-
-const SPOT = 520;
 
 function DhakaClock() {
   const [time, setTime] = useState('');
@@ -53,33 +53,13 @@ export default function Footer() {
   const ref = useRef<HTMLElement>(null);
   const year = new Date().getFullYear();
 
-  // Cursor spotlight. framer's x/y occupy the same transform slot as
-  // translateX/Y, so centring has to happen in the value, not in CSS.
-  const sx = useMotionValue(-SPOT);
-  const sy = useMotionValue(-SPOT);
-  const springX = useSpring(sx, { stiffness: 90, damping: 20 });
-  const springY = useSpring(sy, { stiffness: 90, damping: 20 });
-
-  const onMove = (e: React.MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    sx.set(e.clientX - r.left - SPOT / 2);
-    sy.set(e.clientY - r.top - SPOT / 2);
-  };
-
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end end'] });
   const markY = useTransform(scrollYProgress, [0, 1], [70, 0]);
 
   return (
     <footer
       ref={ref}
-      onMouseMove={onMove}
-      onMouseLeave={() => {
-        sx.set(-SPOT);
-        sy.set(-SPOT);
-      }}
-      className="dark-panel relative isolate mt-8 overflow-hidden rounded-t-[2rem] sm:rounded-t-[3rem]"
+      className="dark-panel relative isolate mt-8 overflow-hidden rounded-t-4xl sm:rounded-t-[3rem]"
     >
       {/* Drifting haze, sitting under everything else in the footer.
           `isolate` on the footer already creates a stacking context, and the
@@ -99,25 +79,21 @@ export default function Footer() {
         aria-hidden="true"
       />
 
-      <motion.div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-0 top-0 -z-10 hidden rounded-full opacity-[0.18] mix-blend-screen md:block"
-        style={{
-          width: SPOT,
-          height: SPOT,
-          x: springX,
-          y: springY,
-          background: 'radial-gradient(circle, #DF3640 0%, transparent 70%)',
-          filter: 'blur(30px)',
-        }}
-      />
+      {/* Cursor lightning - the same layer as the hero, so the two "live"
+          sections of the page respond to the pointer identically. */}
+      <LightningCursor className="z-20" />
 
       <div className="max-w-content mx-auto px-6 pt-16 sm:pt-20">
         {/* Top row */}
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <div className="flex items-center gap-2.5">
-              <span className="grid h-14 w-14 flex-shrink-0 place-items-center sm:h-16 sm:w-16">
+            <a
+              href="/"
+              onClick={(e) => onSectionClick(e, 'hero')}
+              aria-label={`${site.name} - back to top`}
+              className="flex w-fit items-center gap-2.5"
+            >
+              <span className="grid h-14 w-14 shrink-0 place-items-center sm:h-16 sm:w-16">
                 <img
                   src="/logo-mark.png"
                   alt=""
@@ -130,7 +106,7 @@ export default function Footer() {
               <span className="font-headline text-lg font-bold tracking-wide text-bone">
                 {site.name}
               </span>
-            </div>
+            </a>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-bone/55">
               AI-SaaS engineer shipping full-stack AI products end to end. Full-time Software
               Professional at{' '}
@@ -142,6 +118,7 @@ export default function Footer() {
               >
                 Maktech
               </a>
+              .
             </p>
             <div className="mt-5 flex items-center gap-2.5">
               <a
@@ -149,7 +126,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="grid h-10 w-10 place-items-center rounded-xl border border-bone/12 text-bone/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-crimson hover:text-crimson-light"
+                className="grid h-10 w-10 place-items-center rounded-xl border border-[#e5e7eb] text-bone/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-crimson hover:text-crimson-light"
               >
                 <LinkedinMark />
               </a>
@@ -158,14 +135,14 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
-                className="grid h-10 w-10 place-items-center rounded-xl border border-bone/12 text-bone/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-crimson hover:text-crimson-light"
+                className="grid h-10 w-10 place-items-center rounded-xl border border-[#e5e7eb] text-bone/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-crimson hover:text-crimson-light"
               >
                 <GithubMark />
               </a>
               <a
                 href={`mailto:${site.email}`}
                 aria-label="Email"
-                className="grid h-10 w-10 place-items-center rounded-xl border border-bone/12 text-bone/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-crimson hover:text-crimson-light"
+                className="grid h-10 w-10 place-items-center rounded-xl border border-[#e5e7eb] text-bone/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-crimson hover:text-crimson-light"
               >
                 <Mail className="h-4 w-4" />
               </a>
@@ -176,11 +153,12 @@ export default function Footer() {
             <h4 className="font-mono text-[11px] uppercase tracking-[0.2em] text-bone/35">
               Navigate
             </h4>
-            <ul className="mt-4 space-y-2.5">
+            <ul className="mt-4 [&>:not([hidden])~:not([hidden])]:mt-2.5">
               {nav.map((n) => (
                 <li key={n.href}>
                   <a
                     href={n.href}
+                    onClick={(e) => onSectionClick(e, n.id)}
                     className="group inline-flex items-center gap-1 text-sm text-bone/60 transition-colors hover:text-bone"
                   >
                     <span className="relative">
@@ -226,10 +204,10 @@ export default function Footer() {
           aria-hidden="true"
         >
           <span
-            className="absolute inset-0 bg-gradient-to-t from-gold/[0.10] via-transparent to-transparent blur-2xl"
+            className="absolute inset-0 bg-linear-to-t/srgb from-gold/10 via-transparent to-transparent blur-2xl"
             aria-hidden="true"
           />
-          <span className="relative block bg-gradient-to-b from-bone/35 to-bone/[0.05] bg-clip-text text-center font-headline text-[15vw] font-bold leading-[0.85] tracking-wordmark text-transparent">
+          <span className="relative block bg-linear-to-b/srgb from-bone/35 to-bone/5 bg-clip-text text-center font-headline text-[15vw] font-bold leading-[0.85] tracking-wordmark text-transparent">
             {site.brand}
           </span>
         </motion.div>

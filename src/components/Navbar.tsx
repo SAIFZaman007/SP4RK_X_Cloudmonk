@@ -8,8 +8,9 @@ import { site } from '../data';
 const domain = site.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
 import { cn, ctaGoldPill, ctaGoldPillSm } from '../lib/utils';
 import Magnetic from './motion/Magnetic';
+import { onSectionClick, type SectionId } from '../lib/scroll';
 
-const links = [
+const links: { href: string; label: string; id: SectionId }[] = [
   { href: '#about', label: 'About', id: 'about' },
   { href: '#services', label: 'Services', id: 'services' },
   { href: '#work', label: 'Work', id: 'work' },
@@ -31,8 +32,10 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const sections = links
-      .map((l) => document.getElementById(l.id))
+    // The hero is observed too (it has no nav link), so that being back at the
+    // top clears the highlight instead of leaving the last section lit.
+    const sections = ['hero', ...links.map((l) => l.id)]
+      .map((id) => document.getElementById(id))
       .filter(Boolean) as HTMLElement[];
     const io = new IntersectionObserver(
       (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
@@ -72,10 +75,12 @@ export default function Navbar() {
         >
           {/* Wordmark */}
           <a
-            href="#hero"
-            className="group flex flex-shrink-0 items-center gap-2 rounded-full py-1 pl-1 pr-2 sm:pr-3"
+            href="/"
+            onClick={(e) => onSectionClick(e, 'hero')}
+            aria-label={`${domain} - back to top`}
+            className="group flex shrink-0 items-center gap-2 rounded-full py-1 pl-1 pr-2 sm:pr-3"
           >
-            <span className="grid h-8 w-8 flex-shrink-0 place-items-center transition-transform duration-300 group-hover:scale-90">
+            <span className="grid h-8 w-8 shrink-0 place-items-center transition-transform duration-300 group-hover:scale-90">
               <img
                 src="/logo-mark.png"
                 alt=""
@@ -98,6 +103,7 @@ export default function Navbar() {
               <a
                 key={id}
                 href={href}
+                onClick={(e) => onSectionClick(e, id)}
                 onMouseEnter={() => setHovered(id)}
                 className={cn(
                   'relative rounded-full px-3.5 py-2 font-mono text-[13px] transition-colors duration-200 lg:px-4',
@@ -122,7 +128,7 @@ export default function Navbar() {
           </div>
 
           {/* Resume CTA */}
-          <Magnetic strength={0.3} className="hidden md:inline-block">
+          <Magnetic strength={0.3} className="max-md:hidden">
             <a href={site.cvLink} download className={cn('ml-1', ctaGoldPillSm)}>
               <Download className="h-3.5 w-3.5" />
               Resume
@@ -148,7 +154,7 @@ export default function Navbar() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="fixed inset-0 z-[60] bg-coal-950/60 backdrop-blur-sm"
+                      className="fixed inset-0 z-60 bg-coal-950/60 backdrop-blur-xs"
                     />
                   </Dialog.Overlay>
                   <Dialog.Content asChild>
@@ -157,12 +163,12 @@ export default function Navbar() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -16, scale: 0.97 }}
                       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                      className="fixed inset-x-4 top-3 z-[70] rounded-3xl border border-line-strong bg-coal-900/95 p-5 shadow-panel backdrop-blur-xl sm:top-5"
+                      className="fixed inset-x-4 top-3 z-70 rounded-3xl border border-line-strong bg-coal-900/95 p-5 shadow-panel backdrop-blur-xl sm:top-5"
                     >
                       <Dialog.Title className="sr-only">Navigation</Dialog.Title>
                       <div className="mb-3 flex items-center justify-between">
                         <span className="flex items-center gap-2">
-                          <span className="grid h-8 w-8 flex-shrink-0 place-items-center">
+                          <span className="grid h-8 w-8 shrink-0 place-items-center">
                             <img
                               src="/logo-mark.png"
                               alt=""
@@ -185,11 +191,14 @@ export default function Navbar() {
                       </div>
 
                       <div className="flex flex-col">
-                        {links.map(({ href, label }, i) => (
+                        {links.map(({ href, label, id }, i) => (
                           <motion.a
                             key={href}
                             href={href}
-                            onClick={() => setOpen(false)}
+                            onClick={(e) => {
+                              onSectionClick(e, id);
+                              setOpen(false);
+                            }}
                             initial={{ opacity: 0, x: -14 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.06 + i * 0.05 }}

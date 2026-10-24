@@ -27,14 +27,14 @@ function ExperienceItem({ exp, idx }: { exp: (typeof experience)[0]; idx: number
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
         <h3 className="text-lg font-semibold text-fg">{exp.role}</h3>
         {isCurrent && (
-          <span className="rounded-full bg-gradient-to-r from-crimson to-crimson-dark px-2 py-0.5 font-mono text-[10px] uppercase tracking-wide text-bone">
+          <span className="rounded-full bg-linear-to-r/srgb from-crimson to-crimson-dark px-2 py-0.5 font-mono text-[10px] uppercase tracking-wide text-bone">
             current
           </span>
         )}
         <span className="font-mono text-xs text-fg-45">{exp.period}</span>
       </div>
       <div className="mt-1 font-mono text-sm text-crimson-light">{exp.company}</div>
-      <p className="mt-2.5 max-w-2xl text-sm leading-relaxed text-fg-70 sm:text-base">{exp.desc}</p>
+      <p className="mt-2.5 max-w-2xl text-sm leading-relaxed text-fg-70 sm:text-base sm:leading-6">{exp.desc}</p>
     </motion.div>
   );
 }
@@ -52,7 +52,7 @@ export default function Experience() {
           <span className="absolute left-[7px] top-2 bottom-2 w-px bg-line" aria-hidden="true" />
           <motion.span
             style={{ scaleY }}
-            className="absolute left-[7px] top-2 bottom-2 w-px origin-top bg-gradient-to-b from-crimson via-crimson to-steel"
+            className="absolute left-[7px] top-2 bottom-2 w-px origin-top bg-linear-to-b/srgb from-crimson via-crimson to-steel"
             aria-hidden="true"
           />
           {experience.map((exp, idx) => (

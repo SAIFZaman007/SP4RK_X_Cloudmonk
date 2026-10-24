@@ -188,7 +188,7 @@ export default function FloatingCard({
             cheapest way to make a flat panel read as a physical object. */}
         <span
           aria-hidden="true"
-          className={`pointer-events-none absolute inset-x-6 -top-px h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent transition-opacity duration-500 ${
+          className={`pointer-events-none absolute inset-x-6 -top-px h-px bg-linear-to-r/srgb from-transparent via-gold/60 to-transparent transition-opacity duration-500 ${
             hovered ? 'opacity-100' : 'opacity-0'
           }`}
         />

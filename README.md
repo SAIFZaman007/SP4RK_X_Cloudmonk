@@ -3,14 +3,15 @@
 Personal portfolio for **Md. Saifuzzaman Naim** (Saif Zaman), AI-SaaS Engineer.
 Static single-page site, deployed to **Cloudflare Pages** at `cloudmonk.cc`.
 
-React 19 · TypeScript · Tailwind 3 · Vite 8 · Framer Motion · zero backend
+React 19 · TypeScript · Tailwind 4 · Vite 8 · Framer Motion · zero backend
 
 ---
 
 ## Quick start
 
 ```bash
-npm install     # Node >= 20.19
+npm ci          # Node >= 20.19 - installs exactly what package-lock.json pins
+npm audit       # 0 vulnerabilities
 npm run dev     # http://localhost:5173
 ```
 
@@ -34,7 +35,7 @@ No component hardcodes copy. Change the data, the page follows.
 ```
 site         name, role, domain, email, CV path, social links
 hero         headline, subtitle, the three stat counters, tool marquee
-about        portrait paths, quick facts, bio paragraphs
+about        badge artwork paths (front/back/band), quick facts, bio paragraphs
 services     the four cards that drive the hero deck animation
 projects     selected work — add `url` to render a "Live ↗" link
 experience   roles, in reverse-chronological order
@@ -107,8 +108,10 @@ cursor) · `TiltCard` (3D hover tilt) · `Marquee` (seamless tool strip) ·
 ### The hero must fit one fold
 
 `#hero` is `min-h-[100svh]` and a flex column. `svh` not `vh` — deliberate, it
-accounts for iOS Safari's collapsing toolbar. Below `lg` the deck moves to
-`MobileDeckBand`; a phone viewport cannot hold copy + CTAs + stats + deck. A
+accounts for iOS Safari's collapsing toolbar. The deck sits beside the copy
+from `md` (768px) up - it used to start at `lg`, which hid it at 100% zoom on a
+~1000px window. Below `md` there is no deck (a phone cannot hold copy + CTAs +
+stats + deck), and below `lg` the "runs daily on" ticker moves to `MobileDeckBand`. A
 `max-height: 700px` query sheds the status badge and steps type down.
 Verified at 375×600, 402×700, 402×874, 1366×768, 1440×900, 1920×1080.
 **If you add anything to the hero, re-check those sizes.**
@@ -155,10 +158,55 @@ and `img-src 'self' data:` already permits it.
 
 ### Gotchas
 
-- Framer's `x`/`y` occupy the same transform slot as CSS `translateX/Y`, so the
-  usual `translate(-50%)` centring trick is silently overwritten. Both cursor
-  spotlights (hero + footer) centre by subtracting half their size in the
-  motion value. **Don't "fix" this back to CSS centring.**
+- The hero and footer cursor effect is one canvas component,
+  `motion/LightningCursor.tsx`. It attaches to its parent section, is
+  `pointer-events: none`, and only runs on desktop with a real mouse (>= md,
+  `hover: hover`, `pointer: fine`); `prefers-reduced-motion` keeps just the
+  steady glow. Tune it through the constants at the top of the file.
+- The About badge (`LanyardBadge.tsx`, wrapping the vendored React Bits
+  `vendor/lanyard/Lanyard.jsx`) pulls in three.js, so it is lazy-loaded and
+  only mounts when scrolled near. **Never import `Lanyard` statically** - it
+  would put ~130 KB gzip of three.js into the entry chunk. Replace the artwork
+  by overwriting `public/lanyard/my_ID.png` (front) and `card-back.webp`
+  (keep the filenames); both are painted on a 1.6 : 2.25 card, so 1024 x 1440
+  is the ideal size. The strap is plain black on purpose - there is no strap
+  image. The canvas edges are feathered by `.lanyard-fade` in `index.css`.
+- Nav links keep a real `href="#section"` (no-JS, crawlers, a11y) but a click is
+  handled by `lib/scroll.ts`, so the address bar never shows `#about`,
+  `#services` etc. The navbar and footer logos scroll to the top. Hashes that
+  arrive from outside are scrolled to, then stripped.
+- **Tailwind 4, and why.** Tailwind 3 depends on `fast-glob -> micromatch -> braces`,
+  and `braces` has no patched release, so `npm audit` could never reach zero on it.
+  Tailwind 4 has no such tree. The theme (colours, fonts, shadows) lives in
+  `@theme` at the top of `src/index.css`; there is no `tailwind.config.js`, and
+  `postcss.config.js` only loads `@tailwindcss/postcss`. Always install with
+  `npm ci`, never a bare `npm install` over an old `node_modules` - a leftover
+  Tailwind 3 there is what causes "use `@tailwindcss/postcss`" errors.
+- Moving to v4 was verified element by element against the v3 build (layout,
+  computed styles, screenshots, hover and focus states). Where v4 behaves
+  differently, the old behaviour was put back on purpose - do not "tidy" these:
+  - **Fonts are imported in `src/fonts.css` (from `main.tsx`), not with CSS
+    `@import` inside `index.css`.** Tailwind 4 inlines CSS imports without
+    rebasing `url()`s, so the fontsource files 404 in production and every font
+    silently falls back to system-ui.
+  - `@source` in `index.css` limits scanning to `index.html` and `src/**`, as v3
+    did; otherwise v4 also emits classes for words found in this README.
+  - `hover`, `group-hover` and `peer-hover` are redefined as plain `:hover`
+    (v4 wraps them in `@media (hover: hover)`, which removes tap-to-hover on
+    phones); buttons keep `cursor: pointer`.
+  - Gradients use `bg-linear-to-*/srgb` (v4 defaults to oklab, which shifts the
+    crimson/gold blends).
+  - Transitions that list a transform must name `scale` / `translate` /
+    `rotate` (`transition-[opacity,scale]`), because v4 no longer uses one
+    `transform` property for them.
+  - A responsive `sm:text-*` no longer overrides `leading-*` as it did in v3,
+    so those spots carry an explicit `sm:leading-*`. `space-y-*` is written as
+    `[&>:not([hidden])~:not([hidden])]:mt-*` (margin on the later siblings, as
+    in v3) because the Industries stack is `position: sticky`.
+  - Footer social icons use `border-[#e5e7eb]`. They were written `border-bone/12`,
+    which v3 silently ignored (12 is not on its opacity scale) and so rendered
+    the default light border; v4 would have made them faint. Switch back to
+    `border-bone/12` if the faint border was the intent.
 - `<MotionConfig reducedMotion="user">` in `App.tsx` disables transform
   animation app-wide when the OS preference is set.
 - Copy uses plain hyphens, never em/en dashes — a deliberate style choice.

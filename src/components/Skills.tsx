@@ -25,7 +25,7 @@ function SkillCard({ skill, idx }: { skill: (typeof skills)[0]; idx: number }) {
       <FloatingCard index={idx}>
         <div className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface p-6 shadow-card transition-[border-color,box-shadow] duration-500 group-hover:border-gold/25 group-hover:shadow-card-hover">
           <div className="mb-4">
-            <span className="mb-3 grid h-12 w-12 place-items-center text-gold transition-[transform,color] duration-500 group-hover:scale-110 group-hover:text-gold-light">
+            <span className="mb-3 grid h-12 w-12 place-items-center text-gold transition-[scale,color] duration-500 group-hover:scale-110 group-hover:text-gold-light">
               <Icon
                 name={categoryIcons[idx % categoryIcons.length] ?? 'ai-ml'}
                 className="h-9 w-9"
@@ -36,10 +36,10 @@ function SkillCard({ skill, idx }: { skill: (typeof skills)[0]; idx: number }) {
             </h3>
           </div>
 
-          <ul className="flex-1 space-y-2.5 border-t border-line pt-4">
+          <ul className="flex-1 [&>:not([hidden])~:not([hidden])]:mt-2.5 border-t border-line pt-4">
             {skill.items.map((item) => (
               <li key={item} className="flex items-start gap-2.5 text-sm leading-snug text-fg-70">
-                <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-crimson transition-colors duration-500 group-hover:bg-gold" />
+                <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-crimson transition-colors duration-500 group-hover:bg-gold" />
                 <span>{item}</span>
               </li>
             ))}

@@ -88,12 +88,12 @@ export default function Contact() {
                 3.1:1 (large text needs 3:1), body 5.6:1, buttons 8.1:1. That is
                 the lightest veil where all four still pass, so lifting it
                 further trades legibility for very little extra image. */}
-              <div className="absolute inset-0 bg-gradient-to-b from-coal-950/40 via-coal-950/[0.34] to-coal-950/50" />
+              <div className="absolute inset-0 bg-linear-to-b/srgb from-coal-950/40 via-coal-950/34 to-coal-950/50" />
             </div>
 
             <BlobField className="opacity-60" />
 
-            <p className="relative font-mono text-[11px] uppercase tracking-[0.2em] text-bone/[0.62]">
+            <p className="relative font-mono text-[11px] uppercase tracking-[0.2em] text-bone/62">
               Currently working at{' '}
               <a
                 href="https://www.maktechgroup.com"
@@ -107,7 +107,7 @@ export default function Contact() {
             <h3 className="text-balance relative mt-4 font-display text-2xl font-semibold tracking-tight text-bone sm:text-3xl">
               Let's build something reliable.
             </h3>
-            <p className="text-balance relative mx-auto mt-5 max-w-xl text-base leading-relaxed text-bone/65 sm:text-lg">
+            <p className="text-balance relative mx-auto mt-5 max-w-xl text-base leading-relaxed text-bone/65 sm:text-lg sm:leading-7">
               Whether it's a new product to build, a role worth exploring, or a system that needs
               someone reliable on call - I'd be glad to hear from you.
             </p>

@@ -14,9 +14,9 @@ function EduRow({ edu, idx }: { edu: (typeof education)[0]; idx: number }) {
       className="group relative flex flex-col gap-1 border-b border-line py-5 pl-6 last:border-b-0 sm:flex-row sm:items-center sm:gap-6"
     >
       <span className="absolute left-0 top-7 h-2 w-2 rounded-full bg-line-strong transition-colors duration-300 group-hover:bg-crimson sm:top-1/2 sm:-translate-y-1/2" />
-      <span className="w-24 flex-shrink-0 font-mono text-xs text-fg-45">{edu.graduated}</span>
+      <span className="w-24 shrink-0 font-mono text-xs text-fg-45">{edu.graduated}</span>
       <div className="flex-1">
-        <h3 className="text-base font-semibold leading-snug text-fg sm:text-lg">{edu.degree}</h3>
+        <h3 className="text-base font-semibold leading-snug text-fg sm:text-lg sm:leading-7">{edu.degree}</h3>
         <p className="mt-0.5 text-sm text-fg-70">{edu.school}</p>
       </div>
     </motion.div>

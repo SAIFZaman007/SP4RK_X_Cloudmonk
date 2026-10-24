@@ -119,7 +119,7 @@ export default function Marquee({
             // and must not be announced or placed in the focus order.
             ref={i === 0 ? copyRef : undefined}
             aria-hidden={i === 0 ? undefined : 'true'}
-            className="marquee-copy flex flex-shrink-0 items-center gap-10 pr-10"
+            className="marquee-copy flex shrink-0 items-center gap-10 pr-10"
           >
             {children}
           </div>

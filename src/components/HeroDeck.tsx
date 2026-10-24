@@ -50,23 +50,23 @@ export function DeckCard({ i, compact = false }: { i: number; compact?: boolean 
     <div className="group relative">
       {/* glow halo */}
       <div
-        className={`absolute -inset-px rounded-2xl bg-gradient-to-br ${m.accent} opacity-25 blur-[10px] transition-opacity duration-500 group-hover:opacity-45`}
+        className={`absolute -inset-px rounded-2xl bg-linear-to-br/srgb ${m.accent} opacity-25 blur-[10px] transition-opacity duration-500 group-hover:opacity-45`}
         aria-hidden="true"
       />
-      <div className="relative overflow-hidden rounded-2xl border border-bone/15 bg-coal-800/95 shadow-panel ring-1 ring-inset ring-white/[0.06]">
+      <div className="relative overflow-hidden rounded-2xl border border-bone/15 bg-coal-800/95 shadow-panel ring-1 ring-inset ring-white/6">
         {/* top sheen */}
         <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-bone/40 to-transparent"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r/srgb from-transparent via-bone/40 to-transparent"
           aria-hidden="true"
         />
         <div
-          className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${m.accent} opacity-[0.07]`}
+          className={`pointer-events-none absolute inset-0 bg-linear-to-br/srgb ${m.accent} opacity-[0.07]`}
           aria-hidden="true"
         />
 
         <div className={compact ? 'relative p-3.5' : 'relative p-4'}>
           <div className="flex items-center gap-3">
-            <span className="grid h-10 w-10 flex-shrink-0 place-items-center text-gold">
+            <span className="grid h-10 w-10 shrink-0 place-items-center text-gold">
               <Icon name={svc.icon} className="h-7 w-7" />
             </span>
             <h3 className="flex-1 font-display text-[13.5px] font-semibold leading-tight text-bone">
@@ -76,7 +76,7 @@ export function DeckCard({ i, compact = false }: { i: number; compact?: boolean 
           </div>
 
           <div className="mt-3 flex items-center gap-2">
-            <span className="h-px flex-1 bg-gradient-to-r from-bone/25 to-transparent" />
+            <span className="h-px flex-1 bg-linear-to-r/srgb from-bone/25 to-transparent" />
             <span className="font-mono text-[9.5px] uppercase tracking-[0.12em] text-bone/40">
               {m.tag}
             </span>

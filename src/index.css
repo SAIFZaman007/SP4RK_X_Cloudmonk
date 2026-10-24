@@ -1,31 +1,527 @@
-/* Display voice: Fraunces, carrying every headline, title and subtitle.
- *
- * This one import replaces six. Sora (3 static weights) and Space Grotesk
- * (3 more) previously split the job between "hero voice" and "section voice";
- * Fraunces now does both, so the page has one display family instead of two
- * sans-serifs that most readers could not tell apart anyway.
- *
- * The `opsz` build rather than the lighter `wght`-only one, deliberately.
- * Fraunces carries an optical-size axis from 9 to 144, and this design uses
- * display type across an enormous range - a 10.5px byline up to the footer
- * wordmark at 15vw. Without opsz a serif set that large keeps the thick stems
- * and open counters meant for body copy and reads coarse; with it, the letter-
- * forms sharpen and tighten as they grow, which is the whole reason to choose
- * a variable serif over a static one.
- *
- * It costs nothing on balance: 65.7 KB of latin subset against the ~89 KB of
- * Sora plus Space Grotesk it removes, and one file instead of six. */
-@import '@fontsource-variable/fraunces/opsz.css';
-@import '@fontsource/ibm-plex-sans/latin-400.css';
-@import '@fontsource/ibm-plex-sans/latin-500.css';
-@import '@fontsource/ibm-plex-sans/latin-600.css';
-@import '@fontsource/ibm-plex-sans/latin-700.css';
-@import '@fontsource/ibm-plex-mono/latin-400.css';
-@import '@fontsource/ibm-plex-mono/latin-500.css';
+@import 'tailwindcss' source(none);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Scan exactly what Tailwind 3 scanned (index.html + src/**). v4 otherwise
+ * auto-detects every file in the repo, README and comments included, and emits
+ * utilities for stray words in prose. */
+@source '../index.html';
+@source './**/*.{js,ts,jsx,tsx}';
+
+@theme {
+  --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --color-fg: #f2ecee;
+  --color-fg-70: rgba(242, 236, 238, 0.72);
+  --color-fg-45: rgba(242, 236, 238, 0.5);
+  --color-fg-25: rgba(242, 236, 238, 0.3);
+  --color-bone: #f5f0f2;
+  --color-surface: #18121a;
+  --color-surface-warm: #120e14;
+  --color-line: rgba(242, 236, 238, 0.1);
+  --color-line-strong: rgba(242, 236, 238, 0.2);
+
+  --color-coal-600: #332a38;
+  --color-coal-700: #241c27;
+  --color-coal-800: #18121a;
+  --color-coal-900: #0b080c;
+  --color-coal-950: #08060a;
+
+  --color-crimson-light: #f4737b;
+  --color-crimson: #df3640;
+  --color-crimson-dark: #96202b;
+
+  --color-steel-light: #f3d4c6;
+  --color-steel: #edc0ae;
+  --color-steel-dark: #b98974;
+
+  --color-gold-light: #f1dfa0;
+  --color-gold: #d4af37;
+  --color-gold-dark: #9c7a22;
+
+  --container-content: 75rem;
+
+  --tracking-tightest: -0.015em;
+  --tracking-wordmark: -0.03em;
+
+  --shadow-card:
+    0 1px 0 rgba(0, 0, 0, 0.4), 0 16px 34px -18px rgba(0, 0, 0, 0.75);
+  --shadow-card-hover:
+    0 1px 0 rgba(0, 0, 0, 0.5), 0 26px 46px -18px rgba(0, 0, 0, 0.85);
+  --shadow-panel: 0 40px 80px -30px rgba(0, 0, 0, 0.9);
+  --shadow-glow:
+    0 0 0 1px rgba(223, 54, 64, 0.3), 0 20px 60px -15px rgba(223, 54, 64, 0.4);
+  --shadow-card-glow:
+    0 1px 0 rgba(0, 0, 0, 0.5), 0 26px 46px -18px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(212, 175, 55, 0.3),
+    0 22px 70px -22px rgba(212, 175, 55, 0.38);
+
+  --animate-marquee: marquee 26s linear infinite;
+  --animate-blink: blink 1.1s step-end infinite;
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+/*
+  Tailwind v4 changed two more defaults. Both are put back so the site behaves
+  exactly as it did on v3:
+
+  1. Buttons used to show the pointer cursor (v3 preflight); v4 leaves them on
+     the default arrow.
+  2. `hover:` used to apply on every device; v4 wraps it in
+     @media (hover: hover), which silently drops all hover styles on touch
+     screens. The site was designed and tested with the old behaviour (tap =
+     hover), so the plain :hover variants are restored.
+*/
+@layer base {
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@custom-variant hover (&:hover);
+@custom-variant group-hover (&:is(:where(.group):hover *));
+@custom-variant peer-hover (&:is(:where(.peer):hover ~ *));
+
+@utility icon-mask {
+  /* Turns a transparent PNG into a colourable glyph.
+   *
+   * The element paints `currentColor` and the PNG's alpha channel decides
+   * where that paint lands, so a raster icon behaves like inline SVG: it takes
+   * `text-gold`, flips to `text-gold-light` on hover, and needs no per-state
+   * artwork. `--icon` is set per instance by the Icon component.
+   *
+   * Safari still needs the -webkit- longhands, and `mask-size: contain` (not
+   * `cover`) is what keeps a non-square glyph inside its box instead of
+   * cropping it. */
+  -webkit-mask-image: var(--icon);
+  mask-image: var(--icon);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  background-color: currentColor;
+  display: inline-block;
+}
+
+@utility font-headline {
+  font-family: var(--font-headline);
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+}
+
+@utility font-mono {
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility dark-panel {
+  /* Elevated panels (hero, contact, footer) - lifted a step off the page
+     black so the section edges read without a border. */
+  background: radial-gradient(
+    ellipse 120% 100% at 50% -10%,
+    #1e1620 0%,
+    #120d15 55%,
+    #08060a 100%
+  );
+  color: #f5f0f2;
+}
+
+@utility grain {
+  /* Film grain. On near-black backgrounds, wide radial gradients band into
+     visible steps on 8-bit displays; a faint noise layer dithers those steps
+     away and is the cheapest large gain in perceived quality here. Generated
+     inline via feTurbulence - no image request, and `img-src 'self' data:`
+     already covers it in the CSP. */
+  &::after {
+    content: '';
+    position: fixed;
+    inset: -50%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.032;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@utility cloud-layer {
+  /* Cloud / smoke layers (see components/motion/CloudField.tsx).
+   *
+   * Only `transform` is animated, so each layer is promoted to its own
+   * compositor layer and the drift never touches the main thread - which is
+   * what makes an always-on background animation affordable next to the
+   * magnetic cards.
+   *
+   * The layer is oversized via --cloud-scale so it can translate a long way
+   * without its edge ever entering the frame; a mask sliding into view would
+   * show a hard rectangular boundary and give the whole effect away.
+   *
+   * Each keyframe set moves on a different axis and period. Shared timing would
+   * make the three layers beat in and out together, which reads as a pulse
+   * rather than as drifting weather. */
+  position: absolute;
+  inset: 0;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+  transform: scale(var(--cloud-scale, 1.5));
+  will-change: transform;
+}
+
+@utility cloud-drift-1 {
+  /* The drift used to run `alternate` between two keyframes about 8% apart over
+     64-122s. At that travel, under 26-44px of blur, the layers moved roughly a
+     pixel a second: technically animated, visually static - which is why the
+     clouds read as a painted-on texture rather than as weather. `alternate`
+     also meant every layer stalled at both ends of its own cycle, so the whole
+     field paused on a schedule.
+     
+     Now: three keyframes on a one-way loop, a wider excursion, and a small
+     scale breath so the billows change shape as they travel rather than sliding
+     as a rigid sheet. Opacity, tint and blur are untouched, so the ambience and
+     colour grade are exactly as before - only the motion changed.
+     
+     The layer is oversized by --cloud-scale, and the largest excursion below is
+     ~11%, so even the tightest layer (scale 1.4) never exposes its own edge. */
+  animation: cloud-1 var(--cloud-duration) linear infinite;
+}
+
+@utility cloud-drift-2 {
+  animation: cloud-2 var(--cloud-duration) linear infinite;
+}
+
+@utility cloud-drift-3 {
+  animation: cloud-3 var(--cloud-duration) linear infinite;
+}
+
+@utility no-scrollbar {
+  /* Hides the scrollbar on the industries track only. The element keeps its
+     scroll behaviour, keyboard focus and arrow-key handling - this removes the
+     chrome, not the capability, which is why it is safe here and would not be
+     on the page itself. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
+@utility industries-stack {
+  /* --stack-top: where the industries stack pins, measured from the top of the
+   * viewport. The floating navbar sits at top-3 (top-5 from sm) and its pill is
+   * about 2.75rem tall, so its bottom edge lands near 3.5rem / 4rem. These
+   * values clear it with a little air and nothing more.
+   *
+   * padding-bottom is the stack's tail: the scroll distance for which the
+   * finished pile stays pinned before it releases. It has to live inside the
+   * container, because the container is what bounds `sticky` - move it outside
+   * and the last card lands and leaves in the same frame.
+   *
+   * It is exactly `--section-y`, and the section itself contributes no bottom
+   * padding (see .section-y--stacked). That is the whole fix for the gap before
+   * "Selected Work": the tail used to be *added* to the section's own padding,
+   * so this one boundary measured 6.5 + 4.5 + 4.5 = 15.5rem against every other
+   * boundary's 9rem. Spending the section's bottom padding as dwell instead of
+   * adding to it makes the tail free - the stack gets its hold and the gap
+   * matches the rest of the page. */
+  --stack-top: 4.75rem;
+  padding-bottom: var(--section-y);
+  @media (min-width: 640px) {
+    --stack-top: 5.5rem;
+  }
+}
+
+@utility marquee-mask {
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+}
+
+@utility marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  /* Duration is overridden inline by the component once it has measured the
+       content, so that velocity - not cycle time - is what stays constant
+       across breakpoints. This value only covers the first paint. */
+  animation: marquee 22s linear infinite;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      animation-play-state: paused;
+    }
+  }
+}
+
+@utility gradient-divider {
+  /* Pause on hover only where hovering is a real input. On touch, :hover can
+     latch after a tap and freeze the marquee until the user taps elsewhere -
+     which reads as "the animation is broken". */
+
+  /* Defined by hand rather than left to Tailwind's `theme.extend.animation`:
+     Tailwind's JIT only emits a `@keyframes` block for animations reachable
+     through a scanned `animate-*` utility class. Nothing in the codebase
+     used `animate-marquee` as a literal class name, so the keyframes were
+     silently dropped from the production bundle and `.marquee-track`
+     referenced an animation that did not exist - it rendered static. Kept
+     here as plain CSS so it always ships regardless of what utilities are
+     scanned.
+
+     The distance is one copy width, expressed as a fraction of the track: the
+     track holds `--marquee-copies` identical copies, so 100%/copies is exactly
+     one of them. Hard-coding -50% is what made the loop visibly restart once
+     the window grew wider than a single copy (see Marquee.tsx). Percentages
+     also survive fractional layout widths, where a pixel distance would round
+     and twitch at the seam.
+
+     translate3d rather than translateX so the track is promoted to its own
+     compositor layer and the loop never touches the main thread. */
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(242, 236, 238, 0.14) 15%,
+    rgba(242, 236, 238, 0.14) 85%,
+    transparent
+  );
+}
+
+@utility gradient-divider-dark {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(242, 236, 238, 0.18) 15%,
+    rgba(242, 236, 238, 0.18) 85%,
+    transparent
+  );
+}
+
+@utility gradient-divider-gold {
+  /* Premium hairline - the "expensive" gold seam used to cap the hero ticker
+     and the footer's top edge. Kept to a thin gradient, never a solid fill,
+     so it reads as a detail rather than a decoration. */
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 175, 55, 0.75) 20%,
+    rgba(241, 223, 160, 0.9) 50%,
+    rgba(212, 175, 55, 0.75) 80%,
+    transparent
+  );
+}
+
+@utility text-gradient-crimson {
+  background: linear-gradient(100deg, #f4737b 0%, #df3640 55%, #96202b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility text-gradient-gold {
+  /* Gold counterpart, for the one line under the hero headline.
+   *
+   * The stops are the same three golds already used by .gradient-divider-gold,
+   * in the same order, so the tagline and the hairline that precedes it are
+   * visibly the same material rather than two nearby yellows. It runs light in
+   * the middle rather than dark, because on the near-black hero the midpoint of
+   * a line is where the eye lands and the brighter stop is what makes it read
+   * as metal rather than as mustard.
+   *
+   * Contrast: #F1DFA0 on the hero's #0B080C is about 13:1 and the darkest stop
+   * #D4AF37 about 8.5:1, so every part of the line clears WCAG AA for body text
+   * with room to spare - which crimson at this size would not have. */
+  background: linear-gradient(100deg, #d4af37 0%, #f1dfa0 48%, #d4af37 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility lanyard-fade {
+  /* Soft edge on all four sides of the About badge's 3D canvas.
+   *
+   * The scene is clipped hard at the canvas boundary. Fading the top already
+   * let the strap emerge from the page; the same fade on the left, right and
+   * bottom lets a thrown card dissolve into the background instead of being
+   * sliced off at an invisible line. The two gradients are intersected, so the
+   * corners fade on both axes at once. Vertical fade is 9% (what the top has
+   * always used); horizontal is a fixed 44px, because the canvas is far
+   * narrower than it is tall and a percentage would be too thin to read.
+   * The resting card sits well inside both zones, so it is never dimmed. */
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent),
+    linear-gradient(
+      to right,
+      transparent,
+      #000 44px,
+      #000 calc(100% - 44px),
+      transparent
+    );
+  mask-image:
+    linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent),
+    linear-gradient(
+      to right,
+      transparent,
+      #000 44px,
+      #000 calc(100% - 44px),
+      transparent
+    );
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+@utility section-y {
+  /* Section rhythm.
+   *
+   * One class instead of a per-section padding pair. The eight sections had
+   * drifted to four different ladders - `sm:py-28`, `sm:py-10`, a bespoke
+   * `py-12 md:py-16 lg:py-20`, and a `sm:py-12.5` that Tailwind never emitted
+   * because 12.5 is not on the spacing scale, so it silently fell back to
+   * py-20. On a wide screen the gaps between sections read 7rem, 2.5rem,
+   * 7rem, 2.5rem, 5rem, 7rem, 5rem, 2.5rem: the page visibly stutters, and
+   * three of those sections were tighter on a 27" display than on a phone.
+   *
+   * Vertical rhythm is the cheapest signal of a considered layout and the
+   * most obvious tell when it is missing, so it belongs in one place where it
+   * cannot drift again. Changing the page's breathing room is now one edit
+   * here rather than eight edits that have to agree.
+   *
+   * Tuned down from 5rem/7rem: because every section pads *both* edges, the
+   * gap a reader actually sees between two sections is the sum of the two - so
+   * 7rem top and bottom reads as a 14rem trough, not a 7rem one. That is the
+   * single most common way a spacing scale ends up feeling cavernous. The
+   * current values give a ~9rem visual gap on desktop, which separates sections
+   * without stranding them. Adjust here and nowhere else.
+   *
+   * The value is a custom property rather than a literal so that a section
+   * which has to spend its own padding on something else can still reference
+   * the same number - see .section-y--stacked below. A literal would mean the
+   * rhythm existed in two places, which is how the Industries boundary ended up
+   * measuring 15.5rem against everyone else's 9rem. */
+  --section-y: 3.25rem;
+  padding-top: var(--section-y);
+  padding-bottom: var(--section-y);
+  @media (min-width: 640px) {
+    --section-y: 4.5rem;
+  }
+}
+
+@utility section-y--stacked {
+  /* For a section whose own content already supplies the trailing space - today
+     only Industries, whose sticky tail has to sit inside the scroll container.
+     The section contributes nothing at the bottom and the child spends exactly
+     `--section-y`, so the boundary measures the same as every other one. */
+  padding-bottom: 0;
+}
+
+@utility hero-headline {
+  /* Hero headline.
+   *
+   * Fluid rather than stepped, because the face change made the old
+   * breakpoint ladder unsafe: at the tracking below, the longest line
+   * ("AI-SaaS products") measures 8.59em in Sora against 7.70em in Space
+   * Grotesk - about 12% wider - and Sora also carries a taller cap-height,
+   * so it reads larger at an identical font-size. Sizing the sub-lg range
+   * off the viewport keeps that line inside the gutters at every width
+   * instead of only at the handful of breakpoints anyone thought to check.
+   *
+   * The 11.4vw coefficient is derived, not guessed: below lg the line has
+   * (100vw - 3rem) to live in, and 8.59em must fit inside it.
+   * From lg up the copy sits in a ~54% column of a capped container, so the
+   * relationship to the viewport breaks and fixed steps are correct again. */
+  font-family: var(--font-headline);
+  font-weight: 600;
+  line-height: 1.06;
+  /* -0.03em was tuned for Sora. A serif needs its sidebearings: pulled that
+       tight, Fraunces' serifs touch on pairs like "rl" and "ti". -0.012em keeps
+       the headline compact without letting the letterforms collide. */
+  letter-spacing: -0.012em;
+  font-size: clamp(1.9rem, calc(11.4vw - 0.35rem), 3.2rem);
+  @media (min-width: 1024px) {
+    font-size: 3.05rem;
+  }
+  @media (min-width: 1280px) {
+    font-size: 3.4rem;
+  }
+  @media (min-width: 1536px) {
+    font-size: 3.7rem;
+  }
+}
+
+@utility quote-sheen {
+  /* Footer closing quote.
+   *
+   * A slow gold pass across the words, reusing the same gold as the hero
+   * ticker rails and the footer seam - one "expensive" motif repeated, not
+   * three competing ones. background-clip:text is already the technique
+   * behind .text-gradient-crimson, so this adds no new browser surface. */
+  background-image: linear-gradient(
+    100deg,
+    rgba(242, 236, 238, 0.58) 0%,
+    rgba(242, 236, 238, 0.58) 42%,
+    rgba(241, 223, 160, 0.95) 50%,
+    rgba(242, 236, 238, 0.58) 58%,
+    rgba(242, 236, 238, 0.58) 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: quote-sheen 11s linear infinite;
+}
 
 @layer base {
   :root {
@@ -93,116 +589,6 @@
 }
 
 @layer utilities {
-  /* Turns a transparent PNG into a colourable glyph.
-   *
-   * The element paints `currentColor` and the PNG's alpha channel decides
-   * where that paint lands, so a raster icon behaves like inline SVG: it takes
-   * `text-gold`, flips to `text-gold-light` on hover, and needs no per-state
-   * artwork. `--icon` is set per instance by the Icon component.
-   *
-   * Safari still needs the -webkit- longhands, and `mask-size: contain` (not
-   * `cover`) is what keeps a non-square glyph inside its box instead of
-   * cropping it. */
-  .icon-mask {
-    -webkit-mask-image: var(--icon);
-    mask-image: var(--icon);
-    -webkit-mask-size: contain;
-    mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    mask-position: center;
-    background-color: currentColor;
-    display: inline-block;
-  }
-
-  .font-headline {
-    font-family: var(--font-headline);
-  }
-  .font-display {
-    font-family: var(--font-display);
-  }
-  .font-mono {
-    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
-  }
-  .text-balance {
-    text-wrap: balance;
-  }
-
-  /* Elevated panels (hero, contact, footer) - lifted a step off the page
-     black so the section edges read without a border. */
-  .dark-panel {
-    background: radial-gradient(
-      ellipse 120% 100% at 50% -10%,
-      #1e1620 0%,
-      #120d15 55%,
-      #08060a 100%
-    );
-    color: #f5f0f2;
-  }
-
-  /* Film grain. On near-black backgrounds, wide radial gradients band into
-     visible steps on 8-bit displays; a faint noise layer dithers those steps
-     away and is the cheapest large gain in perceived quality here. Generated
-     inline via feTurbulence - no image request, and `img-src 'self' data:`
-     already covers it in the CSP. */
-  .grain::after {
-    content: '';
-    position: fixed;
-    inset: -50%;
-    z-index: 1;
-    pointer-events: none;
-    opacity: 0.032;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  /* Cloud / smoke layers (see components/motion/CloudField.tsx).
-   *
-   * Only `transform` is animated, so each layer is promoted to its own
-   * compositor layer and the drift never touches the main thread - which is
-   * what makes an always-on background animation affordable next to the
-   * magnetic cards.
-   *
-   * The layer is oversized via --cloud-scale so it can translate a long way
-   * without its edge ever entering the frame; a mask sliding into view would
-   * show a hard rectangular boundary and give the whole effect away.
-   *
-   * Each keyframe set moves on a different axis and period. Shared timing would
-   * make the three layers beat in and out together, which reads as a pulse
-   * rather than as drifting weather. */
-  .cloud-layer {
-    position: absolute;
-    inset: 0;
-    -webkit-mask-size: cover;
-    mask-size: cover;
-    -webkit-mask-repeat: repeat;
-    mask-repeat: repeat;
-    transform: scale(var(--cloud-scale, 1.5));
-    will-change: transform;
-  }
-  /* The drift used to run `alternate` between two keyframes about 8% apart over
-     64-122s. At that travel, under 26-44px of blur, the layers moved roughly a
-     pixel a second: technically animated, visually static - which is why the
-     clouds read as a painted-on texture rather than as weather. `alternate`
-     also meant every layer stalled at both ends of its own cycle, so the whole
-     field paused on a schedule.
-     
-     Now: three keyframes on a one-way loop, a wider excursion, and a small
-     scale breath so the billows change shape as they travel rather than sliding
-     as a rigid sheet. Opacity, tint and blur are untouched, so the ambience and
-     colour grade are exactly as before - only the motion changed.
-     
-     The layer is oversized by --cloud-scale, and the largest excursion below is
-     ~11%, so even the tightest layer (scale 1.4) never exposes its own edge. */
-  .cloud-drift-1 {
-    animation: cloud-1 var(--cloud-duration) linear infinite;
-  }
-  .cloud-drift-2 {
-    animation: cloud-2 var(--cloud-duration) linear infinite;
-  }
-  .cloud-drift-3 {
-    animation: cloud-3 var(--cloud-duration) linear infinite;
-  }
   @keyframes cloud-1 {
     0% {
       transform: scale(var(--cloud-scale)) translate3d(-7%, 3%, 0) rotate(0deg);
@@ -236,89 +622,6 @@
       transform: scale(var(--cloud-scale)) translate3d(-4%, -5%, 0) rotate(-2deg);
     }
   }
-
-  /* Hides the scrollbar on the industries track only. The element keeps its
-     scroll behaviour, keyboard focus and arrow-key handling - this removes the
-     chrome, not the capability, which is why it is safe here and would not be
-     on the page itself. */
-  .no-scrollbar {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-    width: 0;
-    height: 0;
-  }
-
-  /* --stack-top: where the industries stack pins, measured from the top of the
-   * viewport. The floating navbar sits at top-3 (top-5 from sm) and its pill is
-   * about 2.75rem tall, so its bottom edge lands near 3.5rem / 4rem. These
-   * values clear it with a little air and nothing more.
-   *
-   * padding-bottom is the stack's tail: the scroll distance for which the
-   * finished pile stays pinned before it releases. It has to live inside the
-   * container, because the container is what bounds `sticky` - move it outside
-   * and the last card lands and leaves in the same frame.
-   *
-   * It is exactly `--section-y`, and the section itself contributes no bottom
-   * padding (see .section-y--stacked). That is the whole fix for the gap before
-   * "Selected Work": the tail used to be *added* to the section's own padding,
-   * so this one boundary measured 6.5 + 4.5 + 4.5 = 15.5rem against every other
-   * boundary's 9rem. Spending the section's bottom padding as dwell instead of
-   * adding to it makes the tail free - the stack gets its hold and the gap
-   * matches the rest of the page. */
-  .industries-stack {
-    --stack-top: 4.75rem;
-    padding-bottom: var(--section-y);
-  }
-  @media (min-width: 640px) {
-    .industries-stack {
-      --stack-top: 5.5rem;
-    }
-  }
-
-  .marquee-mask {
-    -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
-    mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
-  }
-
-  .marquee-track {
-    display: flex;
-    width: max-content;
-    will-change: transform;
-    /* Duration is overridden inline by the component once it has measured the
-       content, so that velocity - not cycle time - is what stays constant
-       across breakpoints. This value only covers the first paint. */
-    animation: marquee 22s linear infinite;
-  }
-  /* Pause on hover only where hovering is a real input. On touch, :hover can
-     latch after a tap and freeze the marquee until the user taps elsewhere -
-     which reads as "the animation is broken". */
-  @media (hover: hover) and (pointer: fine) {
-    .marquee-track:hover {
-      animation-play-state: paused;
-    }
-  }
-
-  /* Defined by hand rather than left to Tailwind's `theme.extend.animation`:
-     Tailwind's JIT only emits a `@keyframes` block for animations reachable
-     through a scanned `animate-*` utility class. Nothing in the codebase
-     used `animate-marquee` as a literal class name, so the keyframes were
-     silently dropped from the production bundle and `.marquee-track`
-     referenced an animation that did not exist - it rendered static. Kept
-     here as plain CSS so it always ships regardless of what utilities are
-     scanned.
-
-     The distance is one copy width, expressed as a fraction of the track: the
-     track holds `--marquee-copies` identical copies, so 100%/copies is exactly
-     one of them. Hard-coding -50% is what made the loop visibly restart once
-     the window grew wider than a single copy (see Marquee.tsx). Percentages
-     also survive fractional layout widths, where a pixel distance would round
-     and twitch at the seam.
-
-     translate3d rather than translateX so the track is promoted to its own
-     compositor layer and the loop never touches the main thread. */
   @keyframes marquee {
     from {
       transform: translate3d(0, 0, 0);
@@ -327,176 +630,9 @@
       transform: translate3d(calc(-100% / var(--marquee-copies, 2)), 0, 0);
     }
   }
-
-  .gradient-divider {
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(242, 236, 238, 0.14) 15%,
-      rgba(242, 236, 238, 0.14) 85%,
-      transparent
-    );
-  }
-  .gradient-divider-dark {
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(242, 236, 238, 0.18) 15%,
-      rgba(242, 236, 238, 0.18) 85%,
-      transparent
-    );
-  }
-
-  /* Premium hairline - the "expensive" gold seam used to cap the hero ticker
-     and the footer's top edge. Kept to a thin gradient, never a solid fill,
-     so it reads as a detail rather than a decoration. */
-  .gradient-divider-gold {
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(212, 175, 55, 0.75) 20%,
-      rgba(241, 223, 160, 0.9) 50%,
-      rgba(212, 175, 55, 0.75) 80%,
-      transparent
-    );
-  }
-
-  .text-gradient-crimson {
-    background: linear-gradient(100deg, #f4737b 0%, #df3640 55%, #96202b 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  /* Gold counterpart, for the one line under the hero headline.
-   *
-   * The stops are the same three golds already used by .gradient-divider-gold,
-   * in the same order, so the tagline and the hairline that precedes it are
-   * visibly the same material rather than two nearby yellows. It runs light in
-   * the middle rather than dark, because on the near-black hero the midpoint of
-   * a line is where the eye lands and the brighter stop is what makes it read
-   * as metal rather than as mustard.
-   *
-   * Contrast: #F1DFA0 on the hero's #0B080C is about 13:1 and the darkest stop
-   * #D4AF37 about 8.5:1, so every part of the line clears WCAG AA for body text
-   * with room to spare - which crimson at this size would not have. */
-  .text-gradient-gold {
-    background: linear-gradient(100deg, #d4af37 0%, #f1dfa0 48%, #d4af37 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
 }
 
 @layer components {
-  /* Section rhythm.
-   *
-   * One class instead of a per-section padding pair. The eight sections had
-   * drifted to four different ladders - `sm:py-28`, `sm:py-10`, a bespoke
-   * `py-12 md:py-16 lg:py-20`, and a `sm:py-12.5` that Tailwind never emitted
-   * because 12.5 is not on the spacing scale, so it silently fell back to
-   * py-20. On a wide screen the gaps between sections read 7rem, 2.5rem,
-   * 7rem, 2.5rem, 5rem, 7rem, 5rem, 2.5rem: the page visibly stutters, and
-   * three of those sections were tighter on a 27" display than on a phone.
-   *
-   * Vertical rhythm is the cheapest signal of a considered layout and the
-   * most obvious tell when it is missing, so it belongs in one place where it
-   * cannot drift again. Changing the page's breathing room is now one edit
-   * here rather than eight edits that have to agree.
-   *
-   * Tuned down from 5rem/7rem: because every section pads *both* edges, the
-   * gap a reader actually sees between two sections is the sum of the two - so
-   * 7rem top and bottom reads as a 14rem trough, not a 7rem one. That is the
-   * single most common way a spacing scale ends up feeling cavernous. The
-   * current values give a ~9rem visual gap on desktop, which separates sections
-   * without stranding them. Adjust here and nowhere else.
-   *
-   * The value is a custom property rather than a literal so that a section
-   * which has to spend its own padding on something else can still reference
-   * the same number - see .section-y--stacked below. A literal would mean the
-   * rhythm existed in two places, which is how the Industries boundary ended up
-   * measuring 15.5rem against everyone else's 9rem. */
-  .section-y {
-    --section-y: 3.25rem;
-    padding-top: var(--section-y);
-    padding-bottom: var(--section-y);
-  }
-  @media (min-width: 640px) {
-    .section-y {
-      --section-y: 4.5rem;
-    }
-  }
-
-  /* For a section whose own content already supplies the trailing space - today
-     only Industries, whose sticky tail has to sit inside the scroll container.
-     The section contributes nothing at the bottom and the child spends exactly
-     `--section-y`, so the boundary measures the same as every other one. */
-  .section-y--stacked {
-    padding-bottom: 0;
-  }
-
-  /* Hero headline.
-   *
-   * Fluid rather than stepped, because the face change made the old
-   * breakpoint ladder unsafe: at the tracking below, the longest line
-   * ("AI-SaaS products") measures 8.59em in Sora against 7.70em in Space
-   * Grotesk - about 12% wider - and Sora also carries a taller cap-height,
-   * so it reads larger at an identical font-size. Sizing the sub-lg range
-   * off the viewport keeps that line inside the gutters at every width
-   * instead of only at the handful of breakpoints anyone thought to check.
-   *
-   * The 11.4vw coefficient is derived, not guessed: below lg the line has
-   * (100vw - 3rem) to live in, and 8.59em must fit inside it.
-   * From lg up the copy sits in a ~54% column of a capped container, so the
-   * relationship to the viewport breaks and fixed steps are correct again. */
-  .hero-headline {
-    font-family: var(--font-headline);
-    font-weight: 600;
-    line-height: 1.06;
-    /* -0.03em was tuned for Sora. A serif needs its sidebearings: pulled that
-       tight, Fraunces' serifs touch on pairs like "rl" and "ti". -0.012em keeps
-       the headline compact without letting the letterforms collide. */
-    letter-spacing: -0.012em;
-    font-size: clamp(1.9rem, calc(11.4vw - 0.35rem), 3.2rem);
-  }
-  @media (min-width: 1024px) {
-    .hero-headline {
-      font-size: 3.05rem;
-    }
-  }
-  @media (min-width: 1280px) {
-    .hero-headline {
-      font-size: 3.4rem;
-    }
-  }
-  @media (min-width: 1536px) {
-    .hero-headline {
-      font-size: 3.7rem;
-    }
-  }
-
-  /* Footer closing quote.
-   *
-   * A slow gold pass across the words, reusing the same gold as the hero
-   * ticker rails and the footer seam - one "expensive" motif repeated, not
-   * three competing ones. background-clip:text is already the technique
-   * behind .text-gradient-crimson, so this adds no new browser surface. */
-  .quote-sheen {
-    background-image: linear-gradient(
-      100deg,
-      rgba(242, 236, 238, 0.58) 0%,
-      rgba(242, 236, 238, 0.58) 42%,
-      rgba(241, 223, 160, 0.95) 50%,
-      rgba(242, 236, 238, 0.58) 58%,
-      rgba(242, 236, 238, 0.58) 100%
-    );
-    background-size: 250% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    animation: quote-sheen 11s linear infinite;
-  }
   @keyframes quote-sheen {
     from {
       background-position: 165% 0;

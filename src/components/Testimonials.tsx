@@ -78,7 +78,7 @@ export default function Testimonials() {
                   {current.quote}
                 </p>
                 <div className="mt-6 flex items-center gap-3 border-t border-line pt-5">
-                  <span className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-crimson to-crimson-dark font-mono text-xs font-medium text-bone">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-linear-to-br/srgb from-crimson to-crimson-dark font-mono text-xs font-medium text-bone">
                     {initials(current.name)}
                   </span>
                   <div>
@@ -145,7 +145,7 @@ export default function Testimonials() {
             {/* Invisible spacer, mobile only: the fixed back-to-top button sits
                 bottom-right, and this row is otherwise perfectly centered - which
                 can put the next-arrow directly under it. Biases the group left. */}
-            <span className="w-9 flex-shrink-0 sm:hidden" aria-hidden="true" />
+            <span className="w-9 shrink-0 sm:hidden" aria-hidden="true" />
           </div>
         </div>
       </div>

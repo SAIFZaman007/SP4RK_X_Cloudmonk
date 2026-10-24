@@ -67,7 +67,7 @@ function ProjectCard({ proj, idx }: { proj: (typeof projects)[0]; idx: number })
                 alt=""
                 loading="lazy"
                 decoding="async"
-                className="h-full w-full scale-[1.02] object-cover opacity-[0.55] grayscale-[0.35] transition-[opacity,filter,transform] duration-[650ms] ease-out will-change-[opacity,transform] group-hover:scale-[1.08] group-hover:opacity-[0.92] group-hover:grayscale-0 group-hover:saturate-[1.15] group-hover:brightness-110 group-hover:contrast-105"
+                className="h-full w-full scale-[1.02] object-cover opacity-[0.55] grayscale-[0.35] transition-[opacity,filter,scale] duration-650 ease-out will-change-[opacity,scale] group-hover:scale-[1.08] group-hover:opacity-[0.92] group-hover:grayscale-0 group-hover:saturate-[1.15] group-hover:brightness-110"
               />
             </picture>
 
@@ -75,7 +75,7 @@ function ProjectCard({ proj, idx }: { proj: (typeof projects)[0]; idx: number })
                 through, and is masked out under the cursor for the local
                 brightening. */}
             <motion.div
-              className="absolute inset-0 bg-surface/[0.55] transition-colors duration-[650ms] group-hover:bg-surface/[0.22]"
+              className="absolute inset-0 bg-surface/[0.55] transition-colors duration-650 group-hover:bg-surface/22"
               style={{ WebkitMaskImage: scrimMask, maskImage: scrimMask }}
             />
 
@@ -85,12 +85,12 @@ function ProjectCard({ proj, idx }: { proj: (typeof projects)[0]; idx: number })
                 artwork lives and stays put where the words are, so the copy
                 holds its contrast ratio at every point of the transition
                 instead of washing out at the peak of it. */}
-            <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/70 to-transparent transition-opacity duration-[650ms] group-hover:from-surface group-hover:via-surface/80" />
+            <div className="absolute inset-0 bg-linear-to-t/srgb from-surface via-surface/70 to-transparent transition-opacity duration-650 group-hover:from-surface group-hover:via-surface/80" />
           </div>
 
           <div className="relative flex h-full flex-col p-6">
             <div className="flex items-start justify-between gap-3">
-              <span className="grid h-11 w-11 flex-shrink-0 place-items-center text-gold transition-[transform,color] duration-500 group-hover:scale-110 group-hover:text-gold-light">
+              <span className="grid h-11 w-11 shrink-0 place-items-center text-gold transition-[scale,color] duration-500 group-hover:scale-110 group-hover:text-gold-light">
                 <Icon name={proj.icon} className="h-8 w-8" />
               </span>
               {proj.url ? (
@@ -116,7 +116,7 @@ function ProjectCard({ proj, idx }: { proj: (typeof projects)[0]; idx: number })
               )}
             </div>
 
-            <h3 className="mt-4 text-base font-semibold leading-snug text-fg sm:text-lg">
+            <h3 className="mt-4 text-base font-semibold leading-snug text-fg sm:text-lg sm:leading-7">
               {proj.title}
             </h3>
             <p className="mt-2.5 flex-1 text-sm leading-relaxed text-fg-70">{proj.desc}</p>
@@ -125,7 +125,7 @@ function ProjectCard({ proj, idx }: { proj: (typeof projects)[0]; idx: number })
               {proj.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-md border border-line bg-surface-warm/85 px-2 py-1 font-mono text-[10.5px] text-fg-70 backdrop-blur-sm transition-colors duration-500 group-hover:border-line-strong"
+                  className="rounded-md border border-line bg-surface-warm/85 px-2 py-1 font-mono text-[10.5px] text-fg-70 backdrop-blur-xs transition-colors duration-500 group-hover:border-line-strong"
                 >
                   {tag}
                 </span>

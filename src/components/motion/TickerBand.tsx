@@ -31,8 +31,8 @@ export default function TickerBand({
     <div className={className}>
       <span className="gradient-divider-gold block h-px w-full" aria-hidden="true" />
 
-      <div className="flex items-center gap-4 bg-gradient-to-b from-gold/[0.05] to-transparent py-3.5 sm:gap-6 sm:py-4">
-        <span className="flex-shrink-0 font-mono text-[10px] uppercase tracking-[0.2em] text-gold-light/70 sm:text-[11px]">
+      <div className="flex items-center gap-4 bg-linear-to-b/srgb from-gold/5 to-transparent py-3.5 sm:gap-6 sm:py-4">
+        <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.2em] text-gold-light/70 sm:text-[11px]">
           {label}
         </span>
         {/* min-w-0 lets the mask shrink inside the flex row instead of forcing

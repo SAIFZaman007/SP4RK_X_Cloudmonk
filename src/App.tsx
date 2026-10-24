@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { MotionConfig } from 'framer-motion';
+import { installHashCleanup } from './lib/scroll';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import MobileDeckBand from './components/MobileDeckBand';
@@ -16,6 +18,10 @@ import BackToTop from './components/BackToTop';
 import ScrollProgress from './components/motion/ScrollProgress';
 
 function App() {
+  // Keeps the address bar free of "#section" routes, even for hashes that
+  // arrive from outside (bookmarks, shared links). See lib/scroll.ts.
+  useEffect(() => installHashCleanup(), []);
+
   return (
     <MotionConfig reducedMotion="user">
       <div className="grain relative min-h-screen">

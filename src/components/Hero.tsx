@@ -1,5 +1,4 @@
-import { useRef } from 'react';
-import { motion, useMotionValue, useSpring, type Variants } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { hero, site } from '../data';
 import { useInView } from '../hooks/useInView';
 import { useCountUp } from '../hooks/useCountUp';
@@ -7,8 +6,10 @@ import HeroDeck from './HeroDeck';
 import Magnetic from './motion/Magnetic';
 import BlobField from './motion/BlobField';
 import CloudField from './motion/CloudField';
+import LightningCursor from './motion/LightningCursor';
 import TickerBand from './motion/TickerBand';
 import { cn, ctaGoldPill } from '../lib/utils';
+import { onSectionClick } from '../lib/scroll';
 
 const headlineVariants = {
   hidden: {},
@@ -49,53 +50,30 @@ function Stat({
 
 export default function Hero() {
   const { ref: statsRef, inView: statsInView } = useInView(0.4);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const GLOW = 460;
-  const glowX = useMotionValue(-GLOW);
-  const glowY = useMotionValue(-GLOW);
-  const springX = useSpring(glowX, { stiffness: 90, damping: 20 });
-  const springY = useSpring(glowY, { stiffness: 90, damping: 20 });
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const el = heroRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    glowX.set(e.clientX - rect.left - GLOW / 2);
-    glowY.set(e.clientY - rect.top - GLOW / 2);
-  };
 
   return (
     <section
       id="hero"
-      ref={heroRef}
-      onMouseMove={handleMouseMove}
-      className="dark-panel relative flex min-h-[100svh] flex-col overflow-hidden pb-5 pt-24 sm:pt-28 lg:pt-24 lg:pb-6"
+      className="dark-panel relative flex min-h-svh flex-col overflow-hidden pb-5 pt-24 sm:pt-28 lg:pt-24 lg:pb-6"
       aria-label="Intro"
     >
       <CloudField />
       <BlobField />
-      <motion.div
-        className="pointer-events-none absolute left-0 top-0 hidden rounded-full opacity-25 mix-blend-screen md:block"
-        style={{
-          width: GLOW,
-          height: GLOW,
-          x: springX,
-          y: springY,
-          background: 'radial-gradient(circle, #DF3640 0%, transparent 70%)',
-          filter: 'blur(20px)',
-        }}
-        aria-hidden="true"
-      />
+      {/* Cursor lightning. z-100 lifts it above the hero deck's cards (which
+          carry their own z-indices) so a bolt crossing a card lights it up
+          instead of vanishing behind it; it is pointer-events-none, so nothing
+          underneath loses its hover or click. */}
+      <LightningCursor className="z-100" />
 
       <div className="max-w-content relative mx-auto flex w-full flex-1 flex-col justify-center px-6">
-        <div className="grid items-center gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:gap-12">
+        <div className="grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_340px] lg:grid-cols-[1.08fr_0.92fr] lg:gap-12">
           {/* Left: copy */}
           <div>
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.05 }}
-              className="hero-badge inline-flex items-center gap-2 rounded-full border border-bone/15 bg-bone/5 px-3 py-1.5 backdrop-blur-sm"
+              className="hero-badge inline-flex items-center gap-2 rounded-full border border-bone/15 bg-bone/5 px-3 py-1.5 backdrop-blur-xs"
             >
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-crimson opacity-75" />
@@ -112,7 +90,7 @@ export default function Hero() {
                   href={hero.status.link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-sm font-medium text-crimson-light underline-offset-4 transition-colors duration-200 hover:text-crimson hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-coal-900"
+                  className="rounded-xs font-medium text-crimson-light underline-offset-4 transition-colors duration-200 hover:text-crimson hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-coal-900"
                 >
                   {hero.status.link.label}
                 </a>
@@ -167,7 +145,7 @@ export default function Hero() {
               className="mt-3.5 flex items-center gap-3 sm:mt-4"
             >
               <span
-                className="gradient-divider-gold h-px w-8 flex-shrink-0 sm:w-11"
+                className="gradient-divider-gold h-px w-8 shrink-0 sm:w-11"
                 aria-hidden="true"
               />
               <span className="text-gradient-gold font-mono text-[12px] font-medium leading-relaxed tracking-[0.02em] sm:text-[13.5px]">
@@ -191,7 +169,11 @@ export default function Hero() {
               className="mt-6 flex flex-wrap gap-3 sm:mt-7 sm:gap-4"
             >
               <Magnetic>
-                <a href="#contact" className={cn('group', ctaGoldPill)}>
+                <a
+                  href="#contact"
+                  onClick={(e) => onSectionClick(e, 'contact')}
+                  className={cn('group', ctaGoldPill)}
+                >
                   Get in touch
                   <span
                     aria-hidden="true"
@@ -226,10 +208,13 @@ export default function Hero() {
           </div>
 
           {/* Right: floating card deck - deals out into the Services grid on scroll.
-              Hidden below lg: a full viewport cannot hold the copy, CTAs, stats
-              AND the deck without something getting clipped. Mobile gets its own
-              compact deck band immediately below the fold instead. */}
-          <div className="hidden w-full lg:block">
+              Shown from md up, beside the copy (a fixed 340px column between md
+              and lg, so the deck is never squeezed; lg switches back to the
+              proportional split). It was lg-only, which made it vanish at 100%
+              browser zoom on a ~1000px-wide window and reappear at 90%. Below md
+              a single column cannot hold copy, CTAs, stats AND the deck without
+              clipping, so phones get the compact band in MobileDeckBand instead. */}
+          <div className="hidden w-full md:block">
             <HeroDeck />
           </div>
         </div>

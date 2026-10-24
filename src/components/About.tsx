@@ -1,7 +1,7 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useInView } from '../hooks/useInView';
-import { about, site } from '../data';
+import { about } from '../data';
+import LanyardBadge from './LanyardBadge';
 import MaktechLink from './MaktechLink';
 import SectionHeading from './SectionHeading';
 
@@ -52,9 +52,6 @@ function Emphasised({ text }: { text: string }) {
 
 export default function About() {
   const { ref, inView } = useInView();
-  const frameRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: frameRef, offset: ['start end', 'end start'] });
-  const y = useTransform(scrollYProgress, [0, 1], [-18, 18]);
 
   return (
     <section id="about" className="section-y relative">
@@ -67,44 +64,16 @@ export default function About() {
         />
 
         <div ref={ref} className="grid gap-12 md:grid-cols-[280px_1fr] md:gap-16">
-          {/* Portrait */}
+          {/* ID badge: a swinging 3D lanyard (lazy-loaded - see LanyardBadge).
+              Same column, same entrance as the portrait it replaced. Capped at
+              420px below md so it never balloons in the single-column layout. */}
           <motion.div
             initial={{ opacity: 0, x: -24 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="mx-auto w-56 md:mx-0 md:w-full"
+            className="mx-auto w-full max-w-[420px] md:mx-0 md:max-w-none"
           >
-            <div
-              ref={frameRef}
-              className="relative rounded-2xl bg-gradient-to-br from-crimson via-crimson-light to-steel p-[3px] shadow-card"
-            >
-              {/* aspect-[4/4.85] (was 4/5) plus dropping the old scale-110 zoom
-                  gives the crop enough headroom that the hairline never gets
-                  clipped, on any viewport - object-top keeps the head as the
-                  anchor if the frame is ever squeezed narrower than this. */}
-              <motion.div
-                style={{ y }}
-                className="relative aspect-[4/4.85] overflow-hidden rounded-[15px] bg-coal-900"
-              >
-                <picture>
-                  <source srcSet={about.imageWebp} type="image/webp" />
-                  <img
-                    src={about.image}
-                    alt={`${site.legalName} (${site.name}, ${site.brand}) - ${site.role}`}
-                    className="h-full w-full object-cover object-top"
-                    loading="lazy"
-                    width={900}
-                    height={900}
-                  />
-                </picture>
-              </motion.div>
-            </div>
-            <div className="mt-3 flex items-center gap-2 font-mono text-[11px] text-fg-45">
-              <span className="h-1.5 w-1.5 rounded-full bg-crimson" />
-              <span className="font-display text-[15px] font-bold tracking-wide text-fg-70">
-                {site.legalName}
-              </span>
-            </div>
+            <LanyardBadge />
           </motion.div>
 
           {/* Copy */}
@@ -113,7 +82,7 @@ export default function About() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="space-y-5">
+            <div className="[&>:not([hidden])~:not([hidden])]:mt-5">
               {about.paragraphs.map((p, i) => (
                 <p key={i} className="text-base leading-relaxed text-fg-70 sm:text-[1.0625rem]">
                   <Emphasised text={p} />

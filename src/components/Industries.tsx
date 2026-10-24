@@ -78,8 +78,8 @@ function IndustryCard({ item }: { item: Industry }) {
        * for the stack to read as anything but a jump cut.
        *
        * 5/4 gives 276px: the copy breathes and the effect has room to play.
-       * Desktop is unchanged. Revert by restoring `aspect-[16/9]`. */
-      className="relative aspect-[5/4] overflow-hidden rounded-3xl border border-line shadow-panel sm:aspect-[7/3]"
+       * Desktop is unchanged. Revert by restoring `aspect-video`. */
+      className="relative aspect-5/4 overflow-hidden rounded-3xl border border-line shadow-panel sm:aspect-7/3"
       style={{ backgroundImage: item.tint }}
     >
       {/* Layered over the tint rather than replacing it, so a missing file
@@ -97,7 +97,7 @@ function IndustryCard({ item }: { item: Industry }) {
 
       {/* Contrast floor for the copy, anchored bottom-left so the rest of the
           photograph stays at full brightness. */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-t/srgb from-black/85 via-black/30 to-transparent" />
 
       <span className="absolute left-6 top-5 font-display text-3xl font-semibold text-white/50 sm:text-4xl">
         {item.no}
@@ -107,7 +107,7 @@ function IndustryCard({ item }: { item: Industry }) {
         <h4 className="font-display text-xl font-semibold tracking-tight text-white sm:text-3xl">
           {item.title}
         </h4>
-        <p className="mt-2 max-w-[52ch] text-[13px] leading-relaxed text-white/80 sm:text-base">
+        <p className="mt-2 max-w-[52ch] text-[13px] leading-relaxed text-white/80 sm:text-base sm:leading-6">
           {item.desc}
         </p>
       </div>
@@ -193,7 +193,7 @@ export default function Industries() {
       </div>
 
       {reduce ? (
-        <ul className="max-w-content mx-auto mt-8 space-y-6 px-6">
+        <ul className="max-w-content mx-auto mt-8 [&>:not([hidden])~:not([hidden])]:mt-6 px-6">
           {industries.map((item) => (
             <li key={item.no} className="mx-auto w-full max-w-5xl">
               <IndustryCard item={item} />
