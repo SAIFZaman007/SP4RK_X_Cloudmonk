@@ -19,7 +19,7 @@ export const site = {
 export const hero = {
   eyebrow: 'AI-SaaS Engineer - Dhaka, BD',
   headline: ['AI-based products', 'shipped for the', 'real world...'],
-  tagline: 'Helping ambitious brands launch faster...',
+  tagline: 'Helping ambitious brands launch faster.',
   subtitle:
     'I build AI-powered, intelligent, industry-standard, enterprise leaning systems that move products from concept to market; with the engineering to scale beyond it.',
 
