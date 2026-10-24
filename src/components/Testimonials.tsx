@@ -14,10 +14,6 @@ function initials(name: string) {
 }
 
 const AUTOPLAY_MS = 6000;
-
-// Real, named people are credited here. Nothing renders until a quote is
-// actually written by them - an empty or half-filled carousel reads worse
-// than no section at all, and a placeholder quote would be fabrication.
 const MIN_TESTIMONIALS = 3;
 const testimonials = allTestimonials.filter((t) => t.quote.trim().length > 0);
 
@@ -142,9 +138,6 @@ export default function Testimonials() {
                 />
               </svg>
             </button>
-            {/* Invisible spacer, mobile only: the fixed back-to-top button sits
-                bottom-right, and this row is otherwise perfectly centered - which
-                can put the next-arrow directly under it. Biases the group left. */}
             <span className="w-9 shrink-0 sm:hidden" aria-hidden="true" />
           </div>
         </div>

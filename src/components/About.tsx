@@ -5,21 +5,6 @@ import LanyardBadge from './LanyardBadge';
 import MaktechLink from './MaktechLink';
 import SectionHeading from './SectionHeading';
 
-/**
- * Renders `**bold**` runs from the About copy as emphasised text.
- *
- * Replaces a `dangerouslySetInnerHTML` that was parsing raw HTML out of
- * data.ts. Nothing malicious was ever going to be in that file - it is copy the
- * author writes - but the pattern is worth removing on a site that otherwise
- * ships a strict CSP and an `object-src 'none'` policy: it is the one place
- * where editing a content file could inject markup, and the day that copy
- * starts coming from a CMS, a form, or a translation service, the vulnerability
- * arrives with it and nobody re-reads this component.
- *
- * Splitting on the delimiter and building real React nodes costs three lines
- * and removes the class of bug entirely. React escapes every text node it
- * renders, so the output cannot contain markup regardless of what the copy says.
- */
 function Emphasised({ text }: { text: string }) {
   const tokens = text.split(/(\*\*.*?\*\*|\[[^\]]+\]\([^)]+\))/g);
 
@@ -64,14 +49,11 @@ export default function About() {
         />
 
         <div ref={ref} className="grid gap-12 md:grid-cols-[280px_1fr] md:gap-16">
-          {/* ID badge: a swinging 3D lanyard (lazy-loaded - see LanyardBadge).
-              Same column, same entrance as the portrait it replaced. Capped at
-              420px below md so it never balloons in the single-column layout. */}
           <motion.div
             initial={{ opacity: 0, x: -24 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="mx-auto w-full max-w-[420px] md:mx-0 md:max-w-none"
+            className="mx-auto w-full max-w-105 md:mx-0 md:max-w-none"
           >
             <LanyardBadge />
           </motion.div>

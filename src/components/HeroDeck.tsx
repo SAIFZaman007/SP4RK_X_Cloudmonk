@@ -3,16 +3,6 @@ import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } fro
 import { services } from '../data';
 import Icon from './icons';
 
-/**
- * The hero's signature element: the same four service cards that later appear
- * in the Services grid, here stacked like a dealt hand. Each floats on its own
- * phase, the deck parallax-tilts to the cursor, and hovering fans them apart.
- * Scrolling "deals" them into the grid (Services.tsx) as one continuous move.
- *
- * Offsets are mostly vertical so every card's header stays readable instead of
- * being buried under the card in front.
- */
-
 const CARD_W = 272;
 const HALF_W = CARD_W / 2;
 const HALF_H = 68;
@@ -31,7 +21,6 @@ const fan = [
   { x: 78, y: 150, rot: 10, scale: 1.02 },
 ];
 
-// A concrete signal per card, so the deck carries information and not just style.
 const meta = [
   { tag: 'FastAPI · React', accent: 'from-crimson to-crimson-dark' },
   { tag: 'RAG · Vector DB', accent: 'from-steel to-steel-dark' },
@@ -40,9 +29,6 @@ const meta = [
 ];
 
 export function DeckCard({ i, compact = false }: { i: number; compact?: boolean }) {
-  // `services`, `meta`, `layout` and `fan` are parallel tables of the same
-  // length. Returning null on a miss keeps the invariant explicit and the
-  // component total, rather than asserting non-null at six call sites.
   const svc = services[i];
   const m = meta[i];
   if (!svc || !m) return null;
@@ -115,7 +101,7 @@ export default function HeroDeck() {
         px.set(0.5);
         py.set(0.5);
       }}
-      className="relative mx-auto h-[340px] w-full max-w-[340px] xl:h-[400px] xl:max-w-[360px]"
+      className="relative mx-auto h-85 w-full max-w-85 xl:h-100 xl:max-w-90"
       style={{ perspective: 1200 }}
     >
       <motion.div

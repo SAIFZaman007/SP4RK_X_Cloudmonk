@@ -67,7 +67,7 @@ export default function LanyardBadge() {
             if (!cancelled) setLanyard(() => module.default);
           })
           .catch(() => {
-            // Chunk failed to load (offline, stale deploy): keep the poster.
+            
           });
       },
       { rootMargin: PRELOAD_MARGIN }
@@ -96,12 +96,9 @@ export default function LanyardBadge() {
 
   return (
     <>
-      {/* `lanyard-fade` (index.css) softens all four edges of the canvas, so a
-          hard swing dissolves into the page instead of being sliced off at an
-          invisible line. */}
       <div
         ref={hostRef}
-        className="lanyard-fade relative -mx-6 h-[460px] sm:h-[480px] md:-mx-8"
+        className="lanyard-fade relative -mx-6 h-115 sm:h-120 md:-mx-8"
       >
         <div
           className={cn(

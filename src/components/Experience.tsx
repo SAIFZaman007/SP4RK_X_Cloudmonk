@@ -49,10 +49,10 @@ export default function Experience() {
       <div className="max-w-4xl mx-auto px-6">
         <SectionHeading index="04" label="Field Log" title="Where I've worked" accent="worked" />
         <div ref={containerRef} className="relative">
-          <span className="absolute left-[7px] top-2 bottom-2 w-px bg-line" aria-hidden="true" />
+          <span className="absolute left-1.75 top-2 bottom-2 w-px bg-line" aria-hidden="true" />
           <motion.span
             style={{ scaleY }}
-            className="absolute left-[7px] top-2 bottom-2 w-px origin-top bg-linear-to-b/srgb from-crimson via-crimson to-steel"
+            className="absolute left-1.75 top-2 bottom-2 w-px origin-top bg-linear-to-b/srgb from-crimson via-crimson to-steel"
             aria-hidden="true"
           />
           {experience.map((exp, idx) => (

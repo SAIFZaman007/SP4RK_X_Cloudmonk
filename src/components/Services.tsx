@@ -5,15 +5,7 @@ import SectionHeading from './SectionHeading';
 import Icon from './icons';
 import TiltCard from './motion/TiltCard';
 
-/**
- * Receives the hero's card deck. At scroll progress 0 the four cards are
- * collapsed onto each other (still "stacked", mid-fall from the hero); as you
- * scroll they translate to their natural grid cells, de-rotate and settle.
- * Collapsing is expressed in percentages of each card's own width so it works
- * at any breakpoint without measuring layout.
- */
-
-const CENTER = 1.5; // midpoint index of a 4-card row
+const CENTER = 1.5;
 
 function ServiceCard({
   svc,

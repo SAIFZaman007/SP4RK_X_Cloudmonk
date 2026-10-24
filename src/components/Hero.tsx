@@ -59,10 +59,6 @@ export default function Hero() {
     >
       <CloudField />
       <BlobField />
-      {/* Cursor lightning. z-100 lifts it above the hero deck's cards (which
-          carry their own z-indices) so a bolt crossing a card lights it up
-          instead of vanishing behind it; it is pointer-events-none, so nothing
-          underneath loses its hover or click. */}
       <LightningCursor className="z-100" />
 
       <div className="max-w-content relative mx-auto flex w-full flex-1 flex-col justify-center px-6">
@@ -79,11 +75,6 @@ export default function Hero() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-crimson opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-crimson" />
               </span>
-              {/* The company name is a real anchor inside the pill, not styled
-                  text - so it is keyboard reachable and announced as a link.
-                  `noopener noreferrer` is not optional on a target=_blank
-                  outbound link: without it the opened tab gets a live
-                  `window.opener` handle back into this document. */}
               <span className="font-mono text-[11px] tracking-wide text-bone/80">
                 {hero.status.lead}{' '}
                 <a
@@ -106,10 +97,6 @@ export default function Hero() {
               {hero.eyebrow}
             </motion.p>
 
-            {/* Size, family, weight and tracking live in .hero-headline
-                (index.css). The fluid clamp there is too long to read inline,
-                and keeping it in CSS puts it next to the short-viewport
-                override that has to stay in step with it. */}
             <motion.h1
               initial="hidden"
               animate="visible"
@@ -117,9 +104,6 @@ export default function Hero() {
               className="hero-headline text-balance mt-2.5 text-bone"
             >
               {hero.headline.map((line, i) => (
-                // overflow-hidden is the reveal mask for the line inside it;
-                // the padding keeps that mask clear of the descenders (the "p"
-                // in "products"), which sit ~3% of an em deeper in Sora.
                 <span key={i} className="block overflow-hidden pb-1.5">
                   <motion.span
                     custom={i}
@@ -132,12 +116,6 @@ export default function Hero() {
               ))}
             </motion.h1>
 
-            {/* One-line promise, set between the headline and the proof
-                paragraph. The leading rule replaces the literal dashes in the
-                copy: a drawn hairline scales with the type and reuses the gold
-                seam already used by the ticker and the footer, where a run of
-                hyphens would be read aloud by a screen reader as punctuation
-                and would not survive a font change. */}
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -207,23 +185,12 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right: floating card deck - deals out into the Services grid on scroll.
-              Shown from md up, beside the copy (a fixed 340px column between md
-              and lg, so the deck is never squeezed; lg switches back to the
-              proportional split). It was lg-only, which made it vanish at 100%
-              browser zoom on a ~1000px-wide window and reappear at 90%. Below md
-              a single column cannot hold copy, CTAs, stats AND the deck without
-              clipping, so phones get the compact band in MobileDeckBand instead. */}
           <div className="hidden w-full md:block">
             <HeroDeck />
           </div>
         </div>
       </div>
 
-      {/* runs daily on - a self-contained "ticker tape" strip, capped top and
-          bottom by a thin gold seam so it reads as a distinct, premium band
-          rather than a trailing footnote of the hero. Desktop only; mobile
-          gets its own compact band in MobileDeckBand. */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}

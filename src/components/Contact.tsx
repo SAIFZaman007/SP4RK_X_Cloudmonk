@@ -24,24 +24,6 @@ export default function Contact() {
   return (
     <section id="contact" className="section-y relative">
       <div className="max-w-3xl mx-auto px-6">
-        {/* The panel itself is now the magnetic object, not just the buttons
-            inside it.
-            
-            Tuned well below the service-card defaults, and for the same reason
-            in each case: this element is roughly five times their area. A pull
-            of 0.12 on a 700px panel is ~40px of travel, which slides the
-            headline out from under the reader; 8deg of tilt across that span
-            visibly skews the type at the far edge. At 0.045 and 3deg the panel
-            leans toward the cursor as a heavy object would - the response is
-            legible without the copy ever moving enough to chase.
-            
-            `radius` is widened to match: attraction should begin as the cursor
-            enters the section, not once it is already over the panel, or the
-            effect reads as a hover state rather than as proximity.
-            
-            Touch and reduced-motion users get a completely static panel -
-            FloatingCard gates on `(hover: hover) and (pointer: fine)` and on
-            `prefers-reduced-motion`, so no idle drift is scheduled at all. */}
         <FloatingCard
           radius={760}
           strength={0.045}
@@ -56,22 +38,6 @@ export default function Contact() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="dark-panel relative overflow-hidden rounded-3xl border border-bone/10 p-8 text-center shadow-panel sm:p-14"
           >
-            {/* Photographic backdrop.
-              The cloud motion that used to sit here has been removed: the
-              image is itself a sky full of cloud, so an animated haze on top
-              was two versions of the same idea fighting each other, and the
-              drift kept pulling the eye off the headline it sits behind.
-
-              The blur is doing real work, not decoration. At full sharpness the
-              monk and the ridgeline are recognisable subjects and the eye reads
-              them as content; blurred, the frame collapses into colour and
-              light, which is what a backdrop is supposed to be. `scale-110`
-              covers the soft, semi-transparent edge that `blur()` leaves around
-              a filtered element - without it you get a visible pale border
-              inside the panel's radius.
-
-              BlobField stays. It is coloured light rather than form, so it
-              layers over the photograph instead of competing with it. */}
             <div className="pointer-events-none absolute inset-0" aria-hidden="true">
               <img
                 src="/cloudmonk.webp"
@@ -80,14 +46,6 @@ export default function Contact() {
                 decoding="async"
                 className="h-full w-full scale-110 object-cover object-center blur-[6px] sm:blur-[1px]"
               />
-              {/* Veil strength is measured, not eyeballed.
-                The previous values (image at 42% under an 80% veil) left the
-                photograph about 8% visible - effectively black, which is what
-                was on screen. These were chosen by compositing the panel and
-                checking every text zone against WCAG: eyebrow 5.5:1, headline
-                3.1:1 (large text needs 3:1), body 5.6:1, buttons 8.1:1. That is
-                the lightest veil where all four still pass, so lifting it
-                further trades legibility for very little extra image. */}
               <div className="absolute inset-0 bg-linear-to-b/srgb from-coal-950/40 via-coal-950/34 to-coal-950/50" />
             </div>
 
@@ -125,10 +83,6 @@ export default function Contact() {
                 </a>
               </Magnetic>
               <Magnetic strength={0.25}>
-                {/* aria-live, because the only feedback on success is the label
-                  changing to "Copied" - a purely visual confirmation that a
-                  screen reader would never announce, leaving the user unsure
-                  whether the click did anything. */}
                 <button
                   onClick={copyEmail}
                   aria-live="polite"
@@ -179,9 +133,6 @@ export default function Contact() {
             </div>
 
             <div className="relative mt-10 flex items-center justify-center gap-3 border-t border-bone/10 pt-8">
-              {/* GitHub sits beside LinkedIn because for an engineering hire the
-                repo list is the stronger artefact of the two, and `site.github`
-                was already in data.ts with nothing rendering it. */}
               <Magnetic strength={0.4}>
                 <a
                   href={site.github}

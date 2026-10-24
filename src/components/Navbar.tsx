@@ -32,8 +32,6 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    // The hero is observed too (it has no nav link), so that being back at the
-    // top clears the highlight instead of leaving the last section lit.
     const sections = ['hero', ...links.map((l) => l.id)]
       .map((id) => document.getElementById(id))
       .filter(Boolean) as HTMLElement[];
@@ -45,7 +43,6 @@ export default function Navbar() {
     return () => io.disconnect();
   }, []);
 
-  // The pill indicator tracks hover when hovering, otherwise the active section.
   const highlighted = hovered ?? active;
 
   return (
@@ -58,11 +55,6 @@ export default function Navbar() {
       >
         <motion.nav
           animate={{
-            // Dark-first: the bar NEVER inverts to a light surface. Scrolling
-            // only densifies the glass and firms up the edge. (The previous
-            // values were the light-theme originals - hardcoded rgba inside a
-            // motion `animate` object, so the palette rename could not see
-            // them - which turned the bar cream-white under light text.)
             backgroundColor: scrolled ? 'rgba(9,6,10,0.82)' : 'rgba(11,8,12,0.28)',
             borderColor: scrolled ? 'rgba(242,236,238,0.16)' : 'rgba(242,236,238,0.10)',
             boxShadow: scrolled

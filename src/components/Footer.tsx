@@ -61,26 +61,14 @@ export default function Footer() {
       ref={ref}
       className="dark-panel relative isolate mt-8 overflow-hidden rounded-t-4xl sm:rounded-t-[3rem]"
     >
-      {/* Drifting haze, sitting under everything else in the footer.
-          `isolate` on the footer already creates a stacking context, and the
-          gold seam below carries z-10, so this stays behind the seam and the
-          content without needing a z-index of its own.
 
-          The footer is the one place on the page where slow ambient motion is
-          unambiguously right: there is nothing here to read closely, so drift
-          reads as atmosphere rather than as a distraction competing with copy. */}
       <CloudField className="opacity-70" />
 
-      {/* Gold seam capping the top edge - the same premium hairline used on
-          the hero ticker, so the two "expensive" details in the page read as
-          one deliberate motif rather than a one-off. */}
       <span
         className="gradient-divider-gold absolute inset-x-0 top-0 z-10 h-px w-full"
         aria-hidden="true"
       />
 
-      {/* Cursor lightning - the same layer as the hero, so the two "live"
-          sections of the page respond to the pointer identically. */}
       <LightningCursor className="z-20" />
 
       <div className="max-w-content mx-auto px-6 pt-16 sm:pt-20">
@@ -192,8 +180,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Oversized wordmark - the brand handle (SP4RK), not the legal name.
-            The copyright line below carries the legal name; this is signage. */}
         <motion.div
           style={{ y: markY }}
           initial={{ opacity: 0 }}
@@ -212,12 +198,6 @@ export default function Footer() {
           </span>
         </motion.div>
 
-        {/* Bottom bar.
-            The last line before a visitor leaves is prime real estate, so it
-            carries the thesis of the work rather than a framework credit list
-            or a fourth call to action. Centred and given its own line: a
-            statement squeezed into the right-hand slot of a justify-between
-            row reads as a footnote, which is the opposite of the intent. */}
         <div className="relative mt-8 pb-20 pt-8 sm:pb-8">
           <span
             className="gradient-divider-gold absolute inset-x-0 top-0 h-px w-full opacity-40"
@@ -225,10 +205,6 @@ export default function Footer() {
           />
 
           <blockquote className="mx-auto flex max-w-2xl items-center justify-center gap-4">
-            {/* Hairlines flank the quote rather than underline it, so the
-                sentence is framed by the same gold seam that caps the hero
-                ticker and this footer's top edge. Dropped below sm, where
-                they would leave the text ~120px to wrap inside. */}
             <span
               className="gradient-divider-gold hidden h-px min-w-0 flex-1 opacity-60 sm:block"
               aria-hidden="true"

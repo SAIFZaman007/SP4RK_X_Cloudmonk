@@ -11,10 +11,6 @@ function SkillCard({ skill, idx }: { skill: (typeof skills)[0]; idx: number }) {
   const { ref, inView } = useInView();
 
   return (
-    // The reveal lives on this outer element and the float/magnetism inside
-    // it. Both want a transform, and a `whileInView` animation that finishes
-    // by writing `y: 0` would otherwise stamp over the idle float the moment
-    // the card lands - the card would breathe until it entered, then stop.
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 34 }}
@@ -55,11 +51,6 @@ export default function Skills() {
     <section id="skills" className="section-y relative">
       <div className="max-w-content mx-auto px-6">
         <SectionHeading index="05" label="Capabilities" title="The toolkit" accent="toolkit" />
-
-        {/* The magnetic pull reaches ~340px beyond each card, so the grid needs
-            breathing room around it or a card's travel clips the section edge.
-            items-stretch keeps every card the height of the tallest in its row
-            even while they are individually floating out of alignment. */}
         <div className="grid items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {skills.map((skill, idx) => (
             <SkillCard key={skill.category} skill={skill} idx={idx} />

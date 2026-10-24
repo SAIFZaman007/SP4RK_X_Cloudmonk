@@ -10,10 +10,6 @@ function ProjectCard({ proj, idx }: { proj: (typeof projects)[0]; idx: number })
   const { ref, inView } = useInView();
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Card-local spotlight. Unlike the Toolkit's magnetic cards this needs no
-  // proximity field - the effect only means anything once the cursor is
-  // actually over the artwork - so a plain local handler is the cheaper and
-  // more predictable choice.
   const mx = useMotionValue(50);
   const my = useMotionValue(50);
   const reveal = useSpring(useMotionValue(0), { stiffness: 140, damping: 24 });
@@ -26,14 +22,6 @@ function ProjectCard({ proj, idx }: { proj: (typeof projects)[0]; idx: number })
     my.set(((e.clientY - r.top) / r.height) * 100);
   };
 
-  // A soft hole punched in the scrim under the cursor. The image is uniformly
-  // brighter on hover; this makes the patch the cursor is actually on brighter
-  // still, so the reveal feels directed rather than switched on.
-  //
-  // The hole's radius is driven by `reveal` rather than its opacity, so at rest
-  // the radius is 0, the gradient degenerates to solid black, and the scrim is
-  // fully intact. Animating opacity instead would leave a permanent bright
-  // patch at the card's centre whenever the cursor was not over it.
   const holeRadius = useTransform(reveal, [0, 1], [0, 300]);
   const scrimMask = useMotionTemplate`radial-gradient(${holeRadius}px circle at ${mx}% ${my}%, transparent 5%, black 72%)`;
 
@@ -53,12 +41,7 @@ function ProjectCard({ proj, idx }: { proj: (typeof projects)[0]; idx: number })
           onMouseLeave={() => reveal.set(0)}
           className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-line shadow-card transition-[border-color,box-shadow] duration-500 group-hover:border-gold/45 group-hover:shadow-card-glow"
         >
-          {/* Background artwork.
-              At rest it is a dim, desaturated texture. On hover it comes up to
-              near-full brightness, regains colour and pushes in slightly.
-              Three separate properties rather than one: opacity alone just
-              makes a grey image less grey, and the saturate/brightness pass is
-              what actually makes the shot read as a photograph. */}
+
           <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
             <picture>
               <source srcSet={proj.imageWebp} type="image/webp" />
@@ -71,20 +54,11 @@ function ProjectCard({ proj, idx }: { proj: (typeof projects)[0]; idx: number })
               />
             </picture>
 
-            {/* Flat scrim. Lifts substantially on hover so the image can come
-                through, and is masked out under the cursor for the local
-                brightening. */}
             <motion.div
               className="absolute inset-0 bg-surface/[0.55] transition-colors duration-650 group-hover:bg-surface/22"
               style={{ WebkitMaskImage: scrimMask, maskImage: scrimMask }}
             />
 
-            {/* Contrast floor. This is the part that makes the brighter image
-                safe: as the flat scrim lifts, a bottom-anchored gradient
-                *deepens* underneath the type. Brightness goes up where the
-                artwork lives and stays put where the words are, so the copy
-                holds its contrast ratio at every point of the transition
-                instead of washing out at the peak of it. */}
             <div className="absolute inset-0 bg-linear-to-t/srgb from-surface via-surface/70 to-transparent transition-opacity duration-650 group-hover:from-surface group-hover:via-surface/80" />
           </div>
 
